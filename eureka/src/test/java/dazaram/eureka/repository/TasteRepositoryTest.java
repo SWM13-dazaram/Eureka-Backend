@@ -25,13 +25,13 @@ class TasteRepositoryTest {
 	@Test
 	@Transactional
 	@DisplayName("기호 추가 테스트")
-	public void createTest() {
+	public void createTasteTest() {
 		Taste taste = Taste.create("양식", new ArrayList<>());
 		Taste saveTaste = tasteRepository.save(taste);
 
 		Optional<Taste> findTaste = tasteRepository.findById(saveTaste.getId());
 
-		Assertions.assertFalse(taste.equals(findTaste));
-		Assertions.assertFalse(saveTaste.equals(findTaste));
+		Assertions.assertEquals(taste, findTaste.get());
+		Assertions.assertEquals(saveTaste, findTaste.get());
 	}
 }

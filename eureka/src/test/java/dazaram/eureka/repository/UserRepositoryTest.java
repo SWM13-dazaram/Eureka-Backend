@@ -24,7 +24,7 @@ public class UserRepositoryTest {
 	@Test
 	@Transactional
 	@DisplayName("유저 추가 테스트")
-	public void createTest() {
+	public void createUserTest() {
 		User user = User.create(
 			"test",
 			"010-1234-5678",
@@ -40,7 +40,7 @@ public class UserRepositoryTest {
 
 		Optional<User> findUser = userRepository.findById(newUser.getId());
 
-		Assertions.assertFalse(user.equals(findUser));
-		Assertions.assertFalse(newUser.equals(findUser));
+		Assertions.assertEquals(user, findUser.get());
+		Assertions.assertEquals(newUser, findUser.get());
 	}
 }
