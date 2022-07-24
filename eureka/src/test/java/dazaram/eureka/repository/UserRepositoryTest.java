@@ -40,6 +40,7 @@ public class UserRepositoryTest {
 
 		Optional<User> findUser = userRepository.findById(newUser.getId());
 
+		Assertions.assertFalse(user.equals(findUser));
 		Assertions.assertFalse(newUser.equals(findUser));
 	}
 }
