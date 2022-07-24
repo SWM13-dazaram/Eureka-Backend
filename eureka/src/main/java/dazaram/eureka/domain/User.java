@@ -71,4 +71,7 @@ public class User {
 		);
 	}
 
+	public void addUserTaste(UserTaste userTaste){
+		userTastes.add(userTaste);
+	}
 }

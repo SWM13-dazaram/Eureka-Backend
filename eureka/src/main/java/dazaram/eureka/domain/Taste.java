@@ -32,4 +32,8 @@ public class Taste {
 	public static Taste create(String name, List<UserTaste> userTastes){
 		return new Taste(null, name, userTastes);
 	}
+
+	public void addUserTaste(UserTaste userTaste){
+		userTastes.add(userTaste);
+	}
 }
