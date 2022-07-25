@@ -1,4 +1,4 @@
-package dazaram.eureka.domain;
+package dazaram.eureka.UserTaste;
 
 import java.nio.file.attribute.UserDefinedFileAttributeView;
 
@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import dazaram.eureka.Taste.Taste;
+import dazaram.eureka.User.User;
 import lombok.Getter;
 
 @Entity

@@ -1,8 +1,6 @@
-package dazaram.eureka.repository;
+package dazaram.eureka.Oauth;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import dazaram.eureka.domain.Oauth;
 
 public interface OauthRepository extends JpaRepository<Oauth, Long> {
 }

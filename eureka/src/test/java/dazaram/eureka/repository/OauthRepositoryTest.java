@@ -1,7 +1,5 @@
 package dazaram.eureka.repository;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
@@ -11,15 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import dazaram.eureka.domain.Gender;
-import dazaram.eureka.domain.Oauth;
-import dazaram.eureka.domain.User;
+import dazaram.eureka.Oauth.OauthRepository;
+import dazaram.eureka.User.UserRepository;
+import dazaram.eureka.User.Gender;
+import dazaram.eureka.Oauth.Oauth;
+import dazaram.eureka.User.User;
 
 @SpringBootTest
 class OauthRepositoryTest {
 
-	@Autowired OauthRepository oauthRepository;
-	@Autowired UserRepository userRepository;
+	@Autowired
+	OauthRepository oauthRepository;
+	@Autowired
+	UserRepository userRepository;
 
 	@Test
 	@Transactional
@@ -31,8 +33,6 @@ class OauthRepositoryTest {
 			false,
 			"src/test_profile.jpg",
 			Gender.M,
-			new ArrayList<>(),
-			new ArrayList<>(),
 			new ArrayList<>(),
 			new ArrayList<>()
 		);

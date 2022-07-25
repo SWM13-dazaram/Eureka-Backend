@@ -1,4 +1,4 @@
-package dazaram.eureka.domain;
+package dazaram.eureka.User;
 
 import java.util.List;
 
@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import dazaram.eureka.Oauth.Oauth;
+import dazaram.eureka.UserTaste.UserTaste;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,12 +42,6 @@ public class User {
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<UserTaste> userTastes;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	private List<CustomIngredient> customIngredients;
-
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	private List<UserIngredient> userIngredients;
-
 	public static User create(
 		String name,
 		String phoneNumber,
@@ -53,9 +49,7 @@ public class User {
 		String profileImage,
 		Gender gender,
 		List<Oauth> oauths,
-		List<UserTaste> userTastes,
-		List<CustomIngredient> customIngredients,
-		List<UserIngredient> userIngredients
+		List<UserTaste> userTastes
 	) {
 		return new User(
 			null,
@@ -65,9 +59,7 @@ public class User {
 			profileImage,
 			gender,
 			oauths,
-			userTastes,
-			customIngredients,
-			userIngredients
+			userTastes
 		);
 	}
 

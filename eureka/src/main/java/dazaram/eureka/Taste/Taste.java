@@ -1,4 +1,4 @@
-package dazaram.eureka.domain;
+package dazaram.eureka.Taste;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import dazaram.eureka.UserTaste.UserTaste;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

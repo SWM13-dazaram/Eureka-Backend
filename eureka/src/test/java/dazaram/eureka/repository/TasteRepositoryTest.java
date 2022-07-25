@@ -1,11 +1,7 @@
 package dazaram.eureka.repository;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.Optional;
-
-import javax.persistence.EntityManager;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import dazaram.eureka.domain.Taste;
+import dazaram.eureka.Taste.Taste;
+import dazaram.eureka.Taste.TasteRepository;
 
 @SpringBootTest
 class TasteRepositoryTest {

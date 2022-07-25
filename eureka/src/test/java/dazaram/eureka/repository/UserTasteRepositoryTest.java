@@ -1,12 +1,7 @@
 package dazaram.eureka.repository;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 
-import javax.persistence.EntityManager;
-
-import org.hibernate.Session;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,17 +9,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import dazaram.eureka.domain.Gender;
-import dazaram.eureka.domain.Taste;
-import dazaram.eureka.domain.User;
-import dazaram.eureka.domain.UserTaste;
+import dazaram.eureka.Taste.TasteRepository;
+import dazaram.eureka.User.UserRepository;
+import dazaram.eureka.UserTaste.UserTasteRepository;
+import dazaram.eureka.User.Gender;
+import dazaram.eureka.Taste.Taste;
+import dazaram.eureka.User.User;
+import dazaram.eureka.UserTaste.UserTaste;
 
 @SpringBootTest
 class UserTasteRepositoryTest {
 
-	@Autowired UserRepository userRepository;
-	@Autowired TasteRepository tasteRepository;
-	@Autowired UserTasteRepository userTasteRepository;
+	@Autowired
+	UserRepository userRepository;
+	@Autowired
+	TasteRepository tasteRepository;
+	@Autowired
+	UserTasteRepository userTasteRepository;
 
 	@Test
 	@Transactional
@@ -36,8 +37,6 @@ class UserTasteRepositoryTest {
 			false,
 			"src/test_profile.jpg",
 			Gender.M,
-			new ArrayList<>(),
-			new ArrayList<>(),
 			new ArrayList<>(),
 			new ArrayList<>()
 		);

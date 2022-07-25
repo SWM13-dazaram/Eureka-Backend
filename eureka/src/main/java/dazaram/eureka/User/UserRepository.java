@@ -1,8 +1,6 @@
-package dazaram.eureka.repository;
+package dazaram.eureka.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import dazaram.eureka.domain.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 

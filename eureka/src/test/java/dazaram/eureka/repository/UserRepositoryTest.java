@@ -1,7 +1,5 @@
 package dazaram.eureka.repository;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -12,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import dazaram.eureka.domain.Gender;
-import dazaram.eureka.domain.User;
+import dazaram.eureka.User.UserRepository;
+import dazaram.eureka.User.Gender;
+import dazaram.eureka.User.User;
 
 @SpringBootTest
 public class UserRepositoryTest {
@@ -31,8 +30,6 @@ public class UserRepositoryTest {
 			false,
 			"src/test_profile.jpg",
 			Gender.M,
-			new ArrayList<>(),
-			new ArrayList<>(),
 			new ArrayList<>(),
 			new ArrayList<>()
 		);
