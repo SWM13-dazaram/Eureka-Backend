@@ -74,4 +74,8 @@ public class User {
 	public void addUserTaste(UserTaste userTaste){
 		userTastes.add(userTaste);
 	}
+
+	public void addOauth(Oauth oauth){
+		oauths.add(oauth);
+	}
 }
