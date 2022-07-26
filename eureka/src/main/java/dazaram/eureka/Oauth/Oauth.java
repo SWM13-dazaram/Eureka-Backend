@@ -34,12 +34,37 @@ public class Oauth extends BaseTimeEntity {
 	@JoinColumn(name = "oauth")
 	private User user;
 
-	public static Oauth create(String provider, String accessToken, User user) {
-		Oauth oauth = new Oauth();
-		oauth.provider = provider;
-		oauth.accessToken = accessToken;
-		oauth.user = user;
-		user.addOauth(oauth);
-		return oauth;
+	private Oauth(OauthBuilder oauthBuilder){
+		this.provider = oauthBuilder.provider;
+		this.accessToken = oauthBuilder.accessToken;
+		this.user = oauthBuilder.user;
 	}
+
+	public static class OauthBuilder {
+		private String provider;
+		private String accessToken;
+		private User user;
+
+		public OauthBuilder(){}
+
+		public OauthBuilder setProvider(String provider){
+			this.provider = provider;
+			return this;
+		}
+
+		public OauthBuilder setAccessToken(String accessToken){
+			this.accessToken = accessToken;
+			return this;
+		}
+
+		public OauthBuilder setUser(User user){
+			this.user = user;
+			return this;
+		}
+
+		public Oauth build() {
+			return new Oauth(this);
+		}
+	}
+
 }

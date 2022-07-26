@@ -24,15 +24,13 @@ public class UserRepositoryTest {
 	@Transactional
 	@DisplayName("유저 추가 테스트")
 	public void createUserTest() {
-		User user = User.create(
-			"test",
-			"010-1234-5678",
-			false,
-			"src/test_profile.jpg",
-			Gender.M,
-			new ArrayList<>(),
-			new ArrayList<>()
-		);
+		User user = new User.UserBuilder()
+			.setName("test")
+			.setPhoneNumber("010-1234-5678")
+			.setPushAlarmAllow(false)
+			.setProfileImage("src/test_profile.jpg")
+			.setGender(Gender.M)
+			.build();
 		User newUser = userRepository.save(user);
 
 		Optional<User> findUser = userRepository.findById(newUser.getId());

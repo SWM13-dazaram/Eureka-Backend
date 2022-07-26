@@ -26,18 +26,20 @@ class OauthRepositoryTest {
 	@Test
 	@Transactional
 	@DisplayName("Oauth 추가 테스트")
-	public void createOauthTest(){
-		User user = User.create(
-			"test",
-			"010-1234-5678",
-			false,
-			"src/test_profile.jpg",
-			Gender.M,
-			new ArrayList<>(),
-			new ArrayList<>()
-		);
+	public void createOauthTest() {
+		User user = new User.UserBuilder()
+			.setName("test")
+			.setPhoneNumber("010-1234-5678")
+			.setPushAlarmAllow(false)
+			.setProfileImage("src/test_profile.jpg")
+			.setGender(Gender.M)
+			.build();
 		userRepository.save(user);
-		Oauth oauth = Oauth.create("admin", "abcd0123", user);
+		Oauth oauth = new Oauth.OauthBuilder()
+			.setProvider("admin")
+			.setAccessToken("abcd0123")
+			.setUser(user)
+			.build();
 		oauthRepository.save(oauth);
 
 		Assertions.assertEquals(user.getOauths().get(0), oauth);

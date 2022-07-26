@@ -31,15 +31,13 @@ class UserTasteRepositoryTest {
 	@Transactional
 	@DisplayName("유저 취향 추가 테스트")
 	public void createUserTasteTest(){
-		User user = User.create(
-			"test",
-			"010-1234-5678",
-			false,
-			"src/test_profile.jpg",
-			Gender.M,
-			new ArrayList<>(),
-			new ArrayList<>()
-		);
+		User user = new User.UserBuilder()
+			.setName("test")
+			.setPhoneNumber("010-1234-5678")
+			.setPushAlarmAllow(false)
+			.setProfileImage("src/test_profile.jpg")
+			.setGender(Gender.M)
+			.build();
 		userRepository.save(user);
 
 		Taste taste = Taste.create("양식", new ArrayList<>());
