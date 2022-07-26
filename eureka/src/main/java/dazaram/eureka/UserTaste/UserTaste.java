@@ -10,13 +10,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import dazaram.eureka.BaseTimeEntity;
 import dazaram.eureka.Taste.Taste;
 import dazaram.eureka.User.User;
 import lombok.Getter;
 
 @Entity
 @Getter
-public class UserTaste {
+public class UserTaste extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue
