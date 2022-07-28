@@ -24,12 +24,12 @@ public class UserRepositoryTest {
 	@Transactional
 	@DisplayName("유저 추가 테스트")
 	public void createUserTest() {
-		User user = new User.UserBuilder()
-			.setName("test")
-			.setPhoneNumber("010-1234-5678")
-			.setPushAlarmAllow(false)
-			.setProfileImage("src/test_profile.jpg")
-			.setGender(Gender.M)
+		User user = User.builder()
+			.name("test")
+			.phoneNumber("010-1234-5678")
+			.pushAlarmAllow(false)
+			.profileImage("src/test_profile.jpg")
+			.gender(Gender.M)
 			.build();
 		User newUser = userRepository.save(user);
 

@@ -27,18 +27,18 @@ class OauthRepositoryTest {
 	@Transactional
 	@DisplayName("Oauth 추가 테스트")
 	public void createOauthTest() {
-		User user = new User.UserBuilder()
-			.setName("test")
-			.setPhoneNumber("010-1234-5678")
-			.setPushAlarmAllow(false)
-			.setProfileImage("src/test_profile.jpg")
-			.setGender(Gender.M)
+		User user = User.builder()
+			.name("test")
+			.phoneNumber("010-1234-5678")
+			.pushAlarmAllow(false)
+			.profileImage("src/test_profile.jpg")
+			.gender(Gender.M)
 			.build();
 		userRepository.save(user);
-		Oauth oauth = new Oauth.OauthBuilder()
-			.setProvider("admin")
-			.setAccessToken("abcd0123")
-			.setUser(user)
+		Oauth oauth = Oauth.builder()
+			.provider("admin")
+			.accessToken("abcd0123")
+			.user(user)
 			.build();
 		oauthRepository.save(oauth);
 
