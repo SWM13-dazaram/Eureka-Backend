@@ -2,6 +2,7 @@ package dazaram.eureka.user;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,7 @@ import javax.persistence.OneToMany;
 
 import dazaram.eureka.BaseTimeEntity;
 import dazaram.eureka.oauth.Oauth;
+import dazaram.eureka.useringredient.UserIngredient;
 import dazaram.eureka.usertaste.UserTaste;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -39,11 +41,14 @@ public class User extends BaseTimeEntity {
 
 	private Gender gender;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Oauth> oauths;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserTaste> userTastes;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<UserIngredient> userIngredients;
 
 	public void addUserTaste(UserTaste userTaste) {
 		userTastes.add(userTaste);
