@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import dazaram.eureka.Taste.Taste;
-import dazaram.eureka.Taste.TasteRepository;
+import dazaram.eureka.taste.Taste;
+import dazaram.eureka.taste.TasteRepository;
 
 @SpringBootTest
 class TasteRepositoryTest {

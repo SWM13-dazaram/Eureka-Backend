@@ -1,4 +1,4 @@
-package dazaram.eureka.User;
+package dazaram.eureka.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

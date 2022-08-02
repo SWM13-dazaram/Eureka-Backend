@@ -1,4 +1,4 @@
-package dazaram.eureka.UserTaste;
+package dazaram.eureka.usertaste;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

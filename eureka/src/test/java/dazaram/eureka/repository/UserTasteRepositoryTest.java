@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import dazaram.eureka.Taste.TasteRepository;
-import dazaram.eureka.User.UserRepository;
-import dazaram.eureka.UserTaste.UserTasteRepository;
-import dazaram.eureka.User.Gender;
-import dazaram.eureka.Taste.Taste;
-import dazaram.eureka.User.User;
-import dazaram.eureka.UserTaste.UserTaste;
+import dazaram.eureka.taste.TasteRepository;
+import dazaram.eureka.user.UserRepository;
+import dazaram.eureka.usertaste.UserTasteRepository;
+import dazaram.eureka.user.Gender;
+import dazaram.eureka.taste.Taste;
+import dazaram.eureka.user.User;
+import dazaram.eureka.usertaste.UserTaste;
 
 @SpringBootTest
 class UserTasteRepositoryTest {

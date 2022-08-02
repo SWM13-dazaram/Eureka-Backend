@@ -1,4 +1,4 @@
-package dazaram.eureka.User;
+package dazaram.eureka.user;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import dazaram.eureka.BaseTimeEntity;
-import dazaram.eureka.Oauth.Oauth;
-import dazaram.eureka.UserTaste.UserTaste;
+import dazaram.eureka.oauth.Oauth;
+import dazaram.eureka.usertaste.UserTaste;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

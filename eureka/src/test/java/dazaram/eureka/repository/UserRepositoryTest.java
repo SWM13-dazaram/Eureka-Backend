@@ -1,6 +1,5 @@
 package dazaram.eureka.repository;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
@@ -10,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import dazaram.eureka.User.UserRepository;
-import dazaram.eureka.User.Gender;
-import dazaram.eureka.User.User;
+import dazaram.eureka.user.UserRepository;
+import dazaram.eureka.user.Gender;
+import dazaram.eureka.user.User;
 
 @SpringBootTest
 public class UserRepositoryTest {
