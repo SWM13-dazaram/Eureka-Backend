@@ -1,5 +1,6 @@
 package dazaram.eureka.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -21,8 +22,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+// @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
@@ -40,10 +40,20 @@ public class User extends BaseTimeEntity {
 	private Gender gender;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	private List<Oauth> oauths;
+	private List<Oauth> oauths = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	private List<UserTaste> userTastes;
+	private List<UserTaste> userTastes = new ArrayList<>();
+
+	@Builder
+	public User(Long id, String name, String phoneNumber, boolean pushAlarmAllow, String profileImage, Gender gender) {
+		this.id = id;
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+		this.pushAlarmAllow = pushAlarmAllow;
+		this.profileImage = profileImage;
+		this.gender = gender;
+	}
 
 	public void addUserTaste(UserTaste userTaste) {
 		userTastes.add(userTaste);

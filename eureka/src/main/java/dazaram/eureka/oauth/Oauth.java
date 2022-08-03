@@ -18,8 +18,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Oauth extends BaseTimeEntity {
 
@@ -36,10 +34,12 @@ public class Oauth extends BaseTimeEntity {
 	@JoinColumn(name = "oauth")
 	private User user;
 
-	// private Oauth(OauthBuilder oauthBuilder){
-	// 	this.provider = oauthBuilder.provider;
-	// 	this.accessToken = oauthBuilder.accessToken;
-	// 	this.user = oauthBuilder.user;
-	// }
-
+	@Builder
+	public Oauth(Long id, String provider, String accessToken, User user) {
+		this.id = id;
+		this.provider = provider;
+		this.accessToken = accessToken;
+		this.user = user;
+		user.addOauth(this);
+	}
 }
