@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import dazaram.eureka.oauth.OauthRepository;
-import dazaram.eureka.user.UserRepository;
-import dazaram.eureka.user.Gender;
 import dazaram.eureka.oauth.Oauth;
+import dazaram.eureka.oauth.OauthRepository;
+import dazaram.eureka.user.Gender;
 import dazaram.eureka.user.User;
+import dazaram.eureka.user.UserRepository;
 
 @SpringBootTest
 class OauthRepositoryTest {
@@ -25,6 +25,7 @@ class OauthRepositoryTest {
 	@Transactional
 	@DisplayName("Oauth 추가 테스트")
 	public void createOauthTest() {
+
 		User user = User.builder()
 			.name("test")
 			.phoneNumber("010-1234-5678")
