@@ -59,4 +59,7 @@ public abstract class Recipe extends BaseTimeEntity {
 		this.recipeSequences = recipeSequences;
 	}
 
+	public void setRecipeSequences(List<RecipeSequence> recipeSequences) {
+		this.recipeSequences = recipeSequences;
+	}
 }

@@ -9,80 +9,77 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-class RecipeTest {
+public class RecipeTest {
+	public static final String EXISTINGRECIPENAME = "부대찌개";
+	public static final String URL = "existing.com";
+	public static final String EXISTINGRECIPEIMAGE = "existingImg";
 
-	private ExistingRecipe makeExistingRecipe(String name, String url, String image) {
+	public static final String AIRECIPENAME = "된장찌개";
+	public static final String AIIMAGE = "aiImg";
+
+	public static final int SEQ1 = 1;
+	public static final int SEQ2 = 2;
+	public static final String CONTENT1 = "만든다";
+	public static final String CONTENT2 = "먹는다";
+
+	public static ExistingRecipe makeExistingRecipe() {
 		return ExistingRecipe.builder()
-			.name(name)
-			.url(url)
-			.image(image)
+			.name(EXISTINGRECIPENAME)
+			.url(URL)
+			.image(EXISTINGRECIPEIMAGE)
 			.build();
 	}
 
-	private AiRecipe makeAiRecipe(String name, String image, ExistingRecipe existingRecipe) {
+	public static AiRecipe makeAiRecipe(ExistingRecipe existingRecipe) {
 		return AiRecipe.builder()
-			.name(name)
-			.image(image)
+			.name(AIRECIPENAME)
+			.image(AIIMAGE)
 			.reference(existingRecipe)
+			.build();
+	}
+
+	public static RecipeSequence makeSequence(int sequence, String content, Recipe recipe) {
+		return RecipeSequence.builder()
+			.sequence(sequence)
+			.content(content)
+			.recipe(recipe)
 			.build();
 	}
 
 	@Test
 	void ExistingRecipe를_생성한다() {
-		String name = "부대찌개";
-		String url = "a.com";
-		String image = "img";
-
-		ExistingRecipe existingRecipe = makeExistingRecipe(name, url, image);
+		ExistingRecipe existingRecipe = makeExistingRecipe();
 
 		assertAll(
-			() -> assertThat(existingRecipe.getUrl()).isEqualTo(url),
-			() -> assertThat(existingRecipe.getName()).isEqualTo(name),
-			() -> assertThat(existingRecipe.getImage()).isEqualTo(image)
+			() -> assertThat(existingRecipe.getUrl()).isEqualTo(URL),
+			() -> assertThat(existingRecipe.getName()).isEqualTo(EXISTINGRECIPENAME),
+			() -> assertThat(existingRecipe.getImage()).isEqualTo(EXISTINGRECIPEIMAGE)
 		);
 
 	}
 
 	@Test
 	void AiRecipe를_생성한다() {
-		String name = "된장찌개";
-		String image = "img";
-
-		String ExistingName = "부대찌개";
-		String url = "a.com";
-		String ExistingImage = "img";
-
-		ExistingRecipe existingRecipe = makeExistingRecipe(ExistingName, url, ExistingImage);
-		AiRecipe aiRecipe = makeAiRecipe(name, image, existingRecipe);
+		ExistingRecipe existingRecipe = makeExistingRecipe();
+		AiRecipe aiRecipe = makeAiRecipe(existingRecipe);
 
 		assertAll(
 			() -> assertThat(aiRecipe.getReference()).isEqualTo(existingRecipe),
-			() -> assertThat(aiRecipe.getName()).isEqualTo(name),
-			() -> assertThat(aiRecipe.getImage()).isEqualTo(image)
+			() -> assertThat(aiRecipe.getName()).isEqualTo(AIRECIPENAME),
+			() -> assertThat(aiRecipe.getImage()).isEqualTo(AIIMAGE)
 		);
 
 	}
 
 	@Test
 	void RecipeSequence를_생성한다() {
-		int seq1 = 1;
-		String content1 = "만든다";
+		ExistingRecipe existingRecipe = makeExistingRecipe();
 
-		String ExistingName = "부대찌개";
-		String url = "a.com";
-		String ExistingImage = "img";
-
-		ExistingRecipe existingRecipe = makeExistingRecipe(ExistingName, url, ExistingImage);
-
-		RecipeSequence sequence1 = RecipeSequence.builder()
-			.sequence(seq1)
-			.content(content1)
-			.recipe(existingRecipe)
-			.build();
+		RecipeSequence sequence1 = makeSequence(SEQ1, CONTENT1, existingRecipe);
 
 		assertAll(
-			() -> assertThat(sequence1.getSequence()).isEqualTo(seq1),
-			() -> assertThat(sequence1.getContent()).isEqualTo(content1),
+			() -> assertThat(sequence1.getSequence()).isEqualTo(SEQ1),
+			() -> assertThat(sequence1.getContent()).isEqualTo(CONTENT1),
 			() -> assertThat(sequence1.getRecipe()).isEqualTo(existingRecipe)
 		);
 
@@ -90,38 +87,25 @@ class RecipeTest {
 
 	@Test
 	void RecipeSequence과_레시피를_연결한다() {
-		int seq1 = 1;
-		int seq2 = 2;
-		String content1 = "만든다";
-		String content2 = "먹는다";
-
-		String ExistingName = "부대찌개";
-		String url = "a.com";
-		String ExistingImage = "img";
-
 		RecipeSequence sequence1 = RecipeSequence.builder()
-			.sequence(seq1)
-			.content(content1)
+			.sequence(SEQ1)
+			.content(CONTENT1)
 			.build();
 
 		RecipeSequence sequence2 = RecipeSequence.builder()
-			.sequence(seq2)
-			.content(content2)
+			.sequence(SEQ2)
+			.content(CONTENT2)
 			.build();
 
 		List<RecipeSequence> recipeSequences = new ArrayList<>(Arrays.asList(sequence1, sequence2));
 
-		ExistingRecipe existingRecipe = ExistingRecipe.builder()
-			.name(ExistingName)
-			.url(url)
-			.image(ExistingImage)
-			.recipeSequences(recipeSequences)
-			.build();
+		ExistingRecipe existingRecipe = makeExistingRecipe();
+		existingRecipe.setRecipeSequences(recipeSequences);
 
 		assertAll(
 			() -> assertThat(existingRecipe.getRecipeSequences().size()).isEqualTo(2),
-			() -> assertThat(existingRecipe.getRecipeSequences().get(0).getContent()).isEqualTo(content1),
-			() -> assertThat(existingRecipe.getRecipeSequences().get(1).getContent()).isEqualTo(content2)
+			() -> assertThat(existingRecipe.getRecipeSequences().get(0).getContent()).isEqualTo(CONTENT1),
+			() -> assertThat(existingRecipe.getRecipeSequences().get(1).getContent()).isEqualTo(CONTENT2)
 		);
 
 	}
