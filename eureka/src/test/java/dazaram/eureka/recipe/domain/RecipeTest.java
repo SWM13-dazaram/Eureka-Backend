@@ -30,11 +30,11 @@ public class RecipeTest {
 			.build();
 	}
 
-	public static AiRecipe makeAiRecipe(ExistingRecipe existingRecipe) {
+	public static AiRecipe makeAiRecipe(Long referenceRecipeId) {
 		return AiRecipe.builder()
 			.name(AIRECIPENAME)
 			.image(AIIMAGE)
-			.reference(existingRecipe)
+			.referenceRecipeId(referenceRecipeId)
 			.build();
 	}
 
@@ -61,10 +61,10 @@ public class RecipeTest {
 	@Test
 	void AiRecipe를_생성한다() {
 		ExistingRecipe existingRecipe = makeExistingRecipe();
-		AiRecipe aiRecipe = makeAiRecipe(existingRecipe);
+		AiRecipe aiRecipe = makeAiRecipe(existingRecipe.getId());
 
 		assertAll(
-			() -> assertThat(aiRecipe.getReference()).isEqualTo(existingRecipe),
+			() -> assertThat(aiRecipe.getReferenceRecipeId()).isEqualTo(existingRecipe.getId()),
 			() -> assertThat(aiRecipe.getName()).isEqualTo(AIRECIPENAME),
 			() -> assertThat(aiRecipe.getImage()).isEqualTo(AIIMAGE)
 		);
