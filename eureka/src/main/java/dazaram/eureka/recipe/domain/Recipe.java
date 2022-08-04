@@ -1,5 +1,10 @@
 package dazaram.eureka.recipe.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -8,6 +13,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import dazaram.eureka.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -21,6 +27,7 @@ import lombok.NoArgsConstructor;
 public abstract class Recipe extends BaseTimeEntity {
 	@Id
 	@GeneratedValue
+	@Column(name = "recipe_id")
 	private Long id;
 
 	private String name;
@@ -35,15 +42,21 @@ public abstract class Recipe extends BaseTimeEntity {
 	@JoinColumn(name = "recipe_platform_id")
 	private RecipePlatform recipePlatform;
 
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+	private List<RecipeSequence> recipeSequences = new ArrayList<>();
+
 	public Recipe(
 		String name,
 		String image,
 		RecipeCategory recipeCategory,
-		RecipePlatform recipePlatform) {
+		RecipePlatform recipePlatform,
+		List<RecipeSequence> recipeSequences
+	) {
 		this.name = name;
 		this.image = image;
 		this.recipeCategory = recipeCategory;
 		this.recipePlatform = recipePlatform;
+		this.recipeSequences = recipeSequences;
 	}
 
 }

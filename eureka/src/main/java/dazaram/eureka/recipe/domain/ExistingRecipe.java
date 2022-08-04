@@ -1,5 +1,7 @@
 package dazaram.eureka.recipe.domain;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 
 import lombok.AccessLevel;
@@ -16,13 +18,14 @@ public class ExistingRecipe extends Recipe {
 
 	@Builder
 	public ExistingRecipe(
-		final String name,
-		final String image,
-		final RecipeCategory recipeCategory,
-		final RecipePlatform recipePlatform,
-		final String url
+		String name,
+		String image,
+		RecipeCategory recipeCategory,
+		RecipePlatform recipePlatform,
+		List<RecipeSequence> recipeSequences,
+		String url
 	) {
-		super(name, image, recipeCategory, recipePlatform);
+		super(name, image, recipeCategory, recipePlatform, recipeSequences);
 		this.url = url;
 	}
 

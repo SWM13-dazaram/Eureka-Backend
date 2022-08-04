@@ -10,12 +10,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import dazaram.eureka.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecipeCategory {
+public class RecipeCategory extends BaseTimeEntity {
 	@Id
 	@GeneratedValue
 	@Column(name = "recipe_category_id")
