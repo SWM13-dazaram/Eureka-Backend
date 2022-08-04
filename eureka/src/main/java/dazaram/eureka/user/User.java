@@ -2,9 +2,9 @@ package dazaram.eureka.user;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,10 +39,10 @@ public class User extends BaseTimeEntity {
 
 	private Gender gender;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Oauth> oauths;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserTaste> userTastes;
 
 	public void addUserTaste(UserTaste userTaste) {
