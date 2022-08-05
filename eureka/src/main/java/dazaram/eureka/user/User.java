@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,7 +29,7 @@ import lombok.NoArgsConstructor;
 public class User extends BaseTimeEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	@Column(name = "user_id")
 	private Long id;
 
@@ -37,6 +39,7 @@ public class User extends BaseTimeEntity {
 
 	private String profileImage;
 
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
