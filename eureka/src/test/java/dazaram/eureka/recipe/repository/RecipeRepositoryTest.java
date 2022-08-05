@@ -1,6 +1,5 @@
 package dazaram.eureka.recipe.repository;
 
-import static dazaram.eureka.recipe.domain.RecipeTest.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import dazaram.eureka.recipe.RecipeTest;
 import dazaram.eureka.recipe.domain.AiRecipe;
 import dazaram.eureka.recipe.domain.ExistingRecipe;
 import dazaram.eureka.recipe.domain.RecipeSequence;
@@ -24,7 +24,7 @@ import dazaram.eureka.recipe.domain.RecipeSequence;
 // @DataJpaTest
 // @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
 @Transactional(readOnly = true)
-class RecipeRepositoryTest {
+class RecipeRepositoryTest extends RecipeTest {
 	@PersistenceContext
 	EntityManager entityManager;
 

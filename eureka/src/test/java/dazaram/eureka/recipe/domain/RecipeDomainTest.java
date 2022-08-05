@@ -9,43 +9,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class RecipeTest {
-	public static final String EXISTINGRECIPENAME = "부대찌개";
-	public static final String URL = "existing.com";
-	public static final String EXISTINGRECIPEIMAGE = "existingImg";
+import dazaram.eureka.recipe.RecipeTest;
 
-	public static final String AIRECIPENAME = "된장찌개";
-	public static final String AIIMAGE = "aiImg";
-
-	public static final int SEQ1 = 1;
-	public static final int SEQ2 = 2;
-	public static final String CONTENT1 = "만든다";
-	public static final String CONTENT2 = "먹는다";
-
-	public static ExistingRecipe makeExistingRecipe() {
-		return ExistingRecipe.builder()
-			.name(EXISTINGRECIPENAME)
-			.url(URL)
-			.image(EXISTINGRECIPEIMAGE)
-			.build();
-	}
-
-	public static AiRecipe makeAiRecipe(Long referenceRecipeId) {
-		return AiRecipe.builder()
-			.name(AIRECIPENAME)
-			.image(AIIMAGE)
-			.referenceRecipeId(referenceRecipeId)
-			.build();
-	}
-
-	public static RecipeSequence makeSequence(int sequence, String content, Recipe recipe) {
-		return RecipeSequence.builder()
-			.sequence(sequence)
-			.content(content)
-			.recipe(recipe)
-			.build();
-	}
-
+public class RecipeDomainTest extends RecipeTest {
 	@Test
 	void ExistingRecipe를_생성한다() {
 		ExistingRecipe existingRecipe = makeExistingRecipe();
