@@ -1,7 +1,8 @@
-package dazaram.eureka.taste;
+package dazaram.eureka.user.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import dazaram.eureka.BaseTimeEntity;
-import dazaram.eureka.usertaste.UserTaste;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,14 +28,14 @@ public class Taste extends BaseTimeEntity {
 
 	private String name;
 
-	@OneToMany(mappedBy = "taste")
+	@OneToMany(mappedBy = "taste", cascade = CascadeType.ALL)
 	private List<UserTaste> userTastes;
 
-	public static Taste create(String name, List<UserTaste> userTastes){
+	public static Taste create(String name, List<UserTaste> userTastes) {
 		return new Taste(null, name, userTastes);
 	}
 
-	public void addUserTaste(UserTaste userTaste){
+	public void addUserTaste(UserTaste userTaste) {
 		userTastes.add(userTaste);
 	}
 }

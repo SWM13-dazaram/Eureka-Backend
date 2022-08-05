@@ -1,4 +1,4 @@
-package dazaram.eureka.repository;
+package dazaram.eureka.user.repository;
 
 import java.util.ArrayList;
 
@@ -9,12 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import dazaram.eureka.oauth.OauthRepository;
-import dazaram.eureka.user.UserRepository;
-import dazaram.eureka.user.Gender;
-import dazaram.eureka.oauth.Oauth;
-import dazaram.eureka.user.User;
-import dazaram.eureka.usertaste.UserTaste;
+import dazaram.eureka.user.domain.Gender;
+import dazaram.eureka.user.domain.Oauth;
+import dazaram.eureka.user.domain.User;
 
 @SpringBootTest
 class OauthRepositoryTest {
