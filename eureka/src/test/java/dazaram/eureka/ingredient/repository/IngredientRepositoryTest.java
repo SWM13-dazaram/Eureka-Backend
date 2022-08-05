@@ -18,14 +18,15 @@ class IngredientRepositoryTest extends IngredientTest {
 	@Autowired
 	IngredientRepository ingredientRepository;
 
+	private Ingredient ingredient = createIngredient(null);
+
 	@Test
 	public void 식재료를_저장한다() {
-		Ingredient savedIngredient = ingredientRepository.save(createIngredient(null));
+		Ingredient savedIngredient = ingredientRepository.save(ingredient);
 
 		assertAll(
-			() -> assertThat(savedIngredient.getName()).isEqualTo(INGREDIENT_NAME),
-			() -> assertThat(savedIngredient.getExpirePeriod()).isEqualTo(INGREDIENT_EXPIRE_PERIOD),
-			() -> assertThat(savedIngredient.getIcon()).isEqualTo(INGREDIENT_ICON)
+			() -> assertThat(savedIngredient.getId()).isNotNull(),
+			() -> assertThat(savedIngredient).isEqualTo(ingredient)
 		);
 	}
 

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dazaram.eureka.ingredient.IngredientTest;
 import dazaram.eureka.ingredient.domain.CustomIngredient;
-import dazaram.eureka.user.repository.UserRepository;
 
 @SpringBootTest
 @Transactional

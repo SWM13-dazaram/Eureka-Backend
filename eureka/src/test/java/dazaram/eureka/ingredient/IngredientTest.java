@@ -37,20 +37,22 @@ public abstract class IngredientTest {
 			.build();
 	}
 
-	public Ingredient createIngredient() {
+	public Ingredient createIngredient(Category category) {
 		return Ingredient.builder()
 			.name(INGREDIENT_NAME)
 			.expirePeriod(INGREDIENT_EXPIRE_PERIOD)
 			.icon(INGREDIENT_ICON)
+			.category(category)
 			.build();
 	}
 
-	public UserIngredient createUserIngredient() {
+	public UserIngredient createUserIngredient(Ingredient ingredient) {
 		return UserIngredient.builder()
 			.name(USER_INGREDIENT_NAME)
 			.insertDate(USER_INGREDIENT_INSERT_DATE)
 			.expireDate(USER_INGREDIENT_EXPIRE_DATE)
 			.memo(USER_INGREDIENT_MEMO)
+			.ingredient(ingredient)
 			.build();
 	}
 }
