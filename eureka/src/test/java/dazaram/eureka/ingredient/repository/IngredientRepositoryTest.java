@@ -34,10 +34,10 @@ class IngredientRepositoryTest extends IngredientTest {
 	public void 식재료를_id로_조회한다() {
 		Ingredient savedIngredient = ingredientRepository.save(createIngredient(null));
 
-		Ingredient findbyIngredientId = ingredientRepository.findById(savedIngredient.getId()).get();
+		Ingredient findByIngredientId = ingredientRepository.findById(savedIngredient.getId()).get();
 
 		assertAll(
-			() -> assertThat(findbyIngredientId).isEqualTo(savedIngredient)
+			() -> assertThat(findByIngredientId).isEqualTo(savedIngredient)
 		);
 	}
 }

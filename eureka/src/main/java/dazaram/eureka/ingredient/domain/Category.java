@@ -1,5 +1,6 @@
-package dazaram.eureka.ingredient;
+package dazaram.eureka.ingredient.domain;
 
+import java.nio.charset.CodingErrorAction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,18 @@ public class Category {
 	@OneToMany(mappedBy = "category")
 	private List<Ingredient> ingredients;
 
-	public static Category create(String name){
-		return new Category(null, name, new ArrayList<>());
+	@OneToMany(mappedBy = "category")
+	private List<CustomIngredient> customIngredients;
+
+	public static Category create(String name) {
+		return new Category(null, name, new ArrayList<>(), new ArrayList<>());
+	}
+
+	public void addIngredient(Ingredient ingredient){
+		ingredients.add(ingredient);
+	}
+
+	public void addCustomIngredient(CustomIngredient customIngredient){
+		customIngredients.add(customIngredient);
 	}
 }
