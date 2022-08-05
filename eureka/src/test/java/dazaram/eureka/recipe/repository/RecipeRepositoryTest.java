@@ -5,6 +5,10 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +25,8 @@ import dazaram.eureka.recipe.domain.RecipeSequence;
 // @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
 @Transactional(readOnly = true)
 class RecipeRepositoryTest {
+	@PersistenceContext
+	EntityManager entityManager;
 
 	@Autowired
 	ExistingRecipeRepository existingRecipeRepository;
@@ -40,7 +46,6 @@ class RecipeRepositoryTest {
 	}
 
 	@Test
-	@Transactional
 	void existingRecipe를_저장합니다() {
 		// given
 
@@ -54,7 +59,6 @@ class RecipeRepositoryTest {
 	}
 
 	@Test
-	@Transactional
 	void aiRecipe를_저장합니다() {
 		//given
 
@@ -70,21 +74,21 @@ class RecipeRepositoryTest {
 	}
 
 	@Test
-	@Transactional
 	void url로_ExistingRecipe을_찾습니다() {
 		//given
 		ExistingRecipe savedExisting = existingRecipeRepository.save(existingRecipe);
+		// 영속성 컨텍스트를 DB에 반영합니다 -> 아래에서 URL로 찾기 위해서
+		entityManager.flush();
 		//when
-		ExistingRecipe byUrl = existingRecipeRepository.findByUrl(URL).get();
+		Optional<ExistingRecipe> byUrl = existingRecipeRepository.findByUrl(URL);
 		//then
 		assertAll(
-			() -> assertThat(byUrl.getUrl()).isEqualTo(savedExisting.getUrl()),
-			() -> assertThat(byUrl).isEqualTo(savedExisting)
+			() -> assertThat(byUrl.get().getUrl()).isEqualTo(savedExisting.getUrl()),
+			() -> assertThat(byUrl.get()).isEqualTo(savedExisting)
 		);
 	}
 
 	@Test
-	@Transactional
 	void AiRecipe가_참고한_레시피의_아이디로_그_레시피를_찾습니다() {
 		//given
 		ExistingRecipe savedExisting = existingRecipeRepository.save(existingRecipe);
