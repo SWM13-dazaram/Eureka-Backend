@@ -5,30 +5,31 @@ import dazaram.eureka.recipe.domain.ExistingRecipe;
 import dazaram.eureka.recipe.domain.RecipeSequence;
 
 public abstract class RecipeTest {
-	public final String EXISTINGRECIPENAME = "부대찌개";
+	public final String EXISTING_RECIPE_NAME = "부대찌개";
 	public final String URL = "existing.com";
-	public final String EXISTINGRECIPEIMAGE = "existingImg";
+	public final String EXISTING_RECIPE_IMAGE = "existingImg";
 
-	public final String AIRECIPENAME = "된장찌개";
-	public final String AIIMAGE = "aiImg";
+	public final String AI_RECIPE_NAME = "된장찌개";
+	public final String AI_IMAGE = "aiImg";
 
-	public final int SEQ1 = 1;
-	public final int SEQ2 = 2;
-	public final String CONTENT1 = "만든다";
-	public final String CONTENT2 = "먹는다";
+	public final int SEQ_1 = 1;
+	public final int SEQ_2 = 2;
+
+	public final String CONTENT_1 = "만든다";
+	public final String CONTENT_2 = "먹는다";
 
 	public ExistingRecipe makeExistingRecipe() {
 		return ExistingRecipe.builder()
-			.name(EXISTINGRECIPENAME)
+			.name(EXISTING_RECIPE_NAME)
 			.url(URL)
-			.image(EXISTINGRECIPEIMAGE)
+			.image(EXISTING_RECIPE_IMAGE)
 			.build();
 	}
 
 	public AiRecipe makeAiRecipe(Long referenceRecipeId) {
 		return AiRecipe.builder()
-			.name(AIRECIPENAME)
-			.image(AIIMAGE)
+			.name(AI_RECIPE_NAME)
+			.image(AI_IMAGE)
 			.referenceRecipeId(referenceRecipeId)
 			.build();
 	}

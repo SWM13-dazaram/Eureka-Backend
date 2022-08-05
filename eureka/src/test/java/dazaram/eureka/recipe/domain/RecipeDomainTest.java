@@ -18,8 +18,8 @@ public class RecipeDomainTest extends RecipeTest {
 
 		assertAll(
 			() -> assertThat(existingRecipe.getUrl()).isEqualTo(URL),
-			() -> assertThat(existingRecipe.getName()).isEqualTo(EXISTINGRECIPENAME),
-			() -> assertThat(existingRecipe.getImage()).isEqualTo(EXISTINGRECIPEIMAGE)
+			() -> assertThat(existingRecipe.getName()).isEqualTo(EXISTING_RECIPE_NAME),
+			() -> assertThat(existingRecipe.getImage()).isEqualTo(EXISTING_RECIPE_IMAGE)
 		);
 
 	}
@@ -31,8 +31,8 @@ public class RecipeDomainTest extends RecipeTest {
 
 		assertAll(
 			() -> assertThat(aiRecipe.getReferenceRecipeId()).isEqualTo(existingRecipe.getId()),
-			() -> assertThat(aiRecipe.getName()).isEqualTo(AIRECIPENAME),
-			() -> assertThat(aiRecipe.getImage()).isEqualTo(AIIMAGE)
+			() -> assertThat(aiRecipe.getName()).isEqualTo(AI_RECIPE_NAME),
+			() -> assertThat(aiRecipe.getImage()).isEqualTo(AI_IMAGE)
 		);
 
 	}
@@ -41,11 +41,11 @@ public class RecipeDomainTest extends RecipeTest {
 	void RecipeSequence를_생성한다() {
 		ExistingRecipe existingRecipe = makeExistingRecipe();
 
-		RecipeSequence sequence1 = makeSequence(SEQ1, CONTENT1, existingRecipe);
+		RecipeSequence sequence1 = makeSequence(SEQ_1, CONTENT_1, existingRecipe);
 
 		assertAll(
-			() -> assertThat(sequence1.getSequence()).isEqualTo(SEQ1),
-			() -> assertThat(sequence1.getContent()).isEqualTo(CONTENT1),
+			() -> assertThat(sequence1.getSequence()).isEqualTo(SEQ_1),
+			() -> assertThat(sequence1.getContent()).isEqualTo(CONTENT_1),
 			() -> assertThat(sequence1.getRecipe()).isEqualTo(existingRecipe)
 		);
 
@@ -54,13 +54,13 @@ public class RecipeDomainTest extends RecipeTest {
 	@Test
 	void RecipeSequence과_레시피를_연결한다() {
 		RecipeSequence sequence1 = RecipeSequence.builder()
-			.sequence(SEQ1)
-			.content(CONTENT1)
+			.sequence(SEQ_1)
+			.content(CONTENT_1)
 			.build();
 
 		RecipeSequence sequence2 = RecipeSequence.builder()
-			.sequence(SEQ2)
-			.content(CONTENT2)
+			.sequence(SEQ_2)
+			.content(CONTENT_2)
 			.build();
 
 		List<RecipeSequence> recipeSequences = new ArrayList<>(Arrays.asList(sequence1, sequence2));
@@ -70,8 +70,8 @@ public class RecipeDomainTest extends RecipeTest {
 
 		assertAll(
 			() -> assertThat(existingRecipe.getRecipeSequences().size()).isEqualTo(2),
-			() -> assertThat(existingRecipe.getRecipeSequences().get(0).getContent()).isEqualTo(CONTENT1),
-			() -> assertThat(existingRecipe.getRecipeSequences().get(1).getContent()).isEqualTo(CONTENT2)
+			() -> assertThat(existingRecipe.getRecipeSequences().get(0).getContent()).isEqualTo(CONTENT_1),
+			() -> assertThat(existingRecipe.getRecipeSequences().get(1).getContent()).isEqualTo(CONTENT_2)
 		);
 
 	}

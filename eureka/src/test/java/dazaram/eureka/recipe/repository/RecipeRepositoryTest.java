@@ -40,8 +40,8 @@ class RecipeRepositoryTest extends RecipeTest {
 	@BeforeEach
 	void setUp() {
 		existingRecipe = makeExistingRecipe();
-		sequence1 = makeSequence(SEQ1, CONTENT1, existingRecipe);
-		sequence2 = makeSequence(SEQ2, CONTENT2, existingRecipe);
+		sequence1 = makeSequence(SEQ_1, CONTENT_1, existingRecipe);
+		sequence2 = makeSequence(SEQ_2, CONTENT_2, existingRecipe);
 		existingRecipe.setRecipeSequences(Arrays.asList(sequence1, sequence2));
 	}
 
