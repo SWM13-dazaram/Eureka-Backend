@@ -1,7 +1,9 @@
-package dazaram.eureka.ingredient;
+package dazaram.eureka.ingredient.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,19 +13,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import dazaram.eureka.useringredient.UserIngredient;
+import dazaram.eureka.BaseTimeEntity;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Ingredient {
+public class Ingredient extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue
@@ -40,8 +39,24 @@ public class Ingredient {
 
 	private String icon;
 
-	private Type type;
-
-	@OneToMany(mappedBy = "ingredient")
+	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
 	private List<UserIngredient> userIngredients;
+
+	@Builder
+	public Ingredient(Long id, String name, Long expirePeriod, Category category, String icon) {
+		this.id = id;
+		this.name = name;
+		this.expirePeriod = expirePeriod;
+		this.category = category;
+		this.icon = icon;
+		this.userIngredients = new ArrayList<>();
+
+		if (category != null) {
+			category.addIngredient(this);
+		}
+	}
+
+	public void addUserIngredient(UserIngredient userIngredient) {
+		userIngredients.add(userIngredient);
+	}
 }
