@@ -18,9 +18,6 @@ class CustomIngredientRepositoryTest extends IngredientTest {
 
 	@Autowired
 	CustomIngredientRepository customIngredientRepository;
-	@Autowired
-	UserRepository userRepository;
-	@Autowired CategoryRepository categoryRepository;
 
 	private CustomIngredient customIngredient = createCustomIngredient(null);
 
