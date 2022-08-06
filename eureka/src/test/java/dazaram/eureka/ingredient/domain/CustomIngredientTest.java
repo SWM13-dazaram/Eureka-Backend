@@ -22,12 +22,12 @@ class CustomIngredientTest extends IngredientTest {
 
 	@Test
 	public void 직접입력_식재료와_카테고리를_매핑한다() {
-		Category category = createCategory();
-		CustomIngredient customIngredient = createCustomIngredient(category);
+		IngredientCategory ingredientCategory = createIngredientCategory();
+		CustomIngredient customIngredient = createCustomIngredient(ingredientCategory);
 
 		assertAll(
-			() -> assertThat(customIngredient.getCategory()).isEqualTo(category),
-			() -> assertThat(category.getCustomIngredients().get(0)).isEqualTo(customIngredient)
+			() -> assertThat(customIngredient.getIngredientCategory()).isEqualTo(ingredientCategory),
+			() -> assertThat(ingredientCategory.getCustomIngredients().get(0)).isEqualTo(customIngredient)
 		);
 	}
 }

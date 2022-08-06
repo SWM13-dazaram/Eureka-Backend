@@ -7,14 +7,14 @@ import org.junit.jupiter.api.Test;
 
 import dazaram.eureka.ingredient.IngredientTest;
 
-public class CategoryTest extends IngredientTest {
+public class IngredientCategoryTest extends IngredientTest {
 
 	@Test
 	public void 카테고리를_생성한다(){
-		Category category = createCategory();
+		IngredientCategory ingredientCategory = createIngredientCategory();
 
 		assertAll(
-			() -> assertThat(category.getName()).isEqualTo(CATEGORY_NAME)
+			() -> assertThat(ingredientCategory.getName()).isEqualTo(INGREDIENT_CATEGORY_NAME)
 		);
 	}
 }

@@ -34,8 +34,8 @@ public class Ingredient extends BaseTimeEntity {
 	private Long expirePeriod;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "category_id")
-	private Category category;
+	@JoinColumn(name = "ingredient_category_id")
+	private IngredientCategory ingredientCategory;
 
 	private String icon;
 
@@ -43,16 +43,16 @@ public class Ingredient extends BaseTimeEntity {
 	private List<UserIngredient> userIngredients;
 
 	@Builder
-	public Ingredient(Long id, String name, Long expirePeriod, Category category, String icon) {
+	public Ingredient(Long id, String name, Long expirePeriod, IngredientCategory ingredientCategory, String icon) {
 		this.id = id;
 		this.name = name;
 		this.expirePeriod = expirePeriod;
-		this.category = category;
+		this.ingredientCategory = ingredientCategory;
 		this.icon = icon;
 		this.userIngredients = new ArrayList<>();
 
-		if (category != null) {
-			category.addIngredient(this);
+		if (ingredientCategory != null) {
+			ingredientCategory.addIngredient(this);
 		}
 	}
 

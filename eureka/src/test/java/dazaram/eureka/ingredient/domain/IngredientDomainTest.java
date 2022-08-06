@@ -22,12 +22,12 @@ class IngredientDomainTest extends IngredientTest {
 
 	@Test
 	public void 식재료와_카테고리를_매핑한다() {
-		Category category = createCategory();
-		Ingredient ingredient = createIngredient(category);
+		IngredientCategory ingredientCategory = createIngredientCategory();
+		Ingredient ingredient = createIngredient(ingredientCategory);
 
 		assertAll(
-			() -> assertThat(ingredient.getCategory()).isEqualTo(category),
-			() -> assertThat(category.getIngredients().get(0)).isEqualTo(ingredient)
+			() -> assertThat(ingredient.getIngredientCategory()).isEqualTo(ingredientCategory),
+			() -> assertThat(ingredientCategory.getIngredients().get(0)).isEqualTo(ingredient)
 		);
 	}
 

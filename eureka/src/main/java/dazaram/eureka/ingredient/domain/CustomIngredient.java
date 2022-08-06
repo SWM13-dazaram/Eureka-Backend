@@ -11,9 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import dazaram.eureka.BaseTimeEntity;
-import dazaram.eureka.user.domain.User;
+import dazaram.eureka.user.User;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,12 +42,12 @@ public class CustomIngredient extends BaseTimeEntity {
 	private String icon;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "category_id")
-	private Category category;
+	@JoinColumn(name = "ingredient_category_id")
+	private IngredientCategory ingredientCategory;
 
 	@Builder
 	public CustomIngredient(Long id, User user, String name, LocalDateTime expireDate, String memo,
-		LocalDateTime insertDate, String icon, Category category) {
+		LocalDateTime insertDate, String icon, IngredientCategory ingredientCategory) {
 		this.id = id;
 		this.user = user;
 		this.name = name;
@@ -56,13 +55,13 @@ public class CustomIngredient extends BaseTimeEntity {
 		this.memo = memo;
 		this.insertDate = insertDate;
 		this.icon = icon;
-		this.category = category;
+		this.ingredientCategory = ingredientCategory;
 
 		if (user != null) {
 			user.addCustomIngredient(this);
 		}
-		if (category != null) {
-			category.addCustomIngredient(this);
+		if (ingredientCategory != null) {
+			ingredientCategory.addCustomIngredient(this);
 		}
 	}
 }

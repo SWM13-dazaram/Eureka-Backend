@@ -1,6 +1,5 @@
 package dazaram.eureka.ingredient.domain;
 
-import java.nio.charset.CodingErrorAction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,23 +18,23 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Category {
+public class IngredientCategory {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "category_id")
+	@Column(name = "ingredient_category_id")
 	private Long id;
 
 	private String name;
 
-	@OneToMany(mappedBy = "category")
+	@OneToMany(mappedBy = "ingredientCategory")
 	private List<Ingredient> ingredients;
 
-	@OneToMany(mappedBy = "category")
+	@OneToMany(mappedBy = "ingredientCategory")
 	private List<CustomIngredient> customIngredients;
 
-	public static Category create(String name) {
-		return new Category(null, name, new ArrayList<>(), new ArrayList<>());
+	public static IngredientCategory create(String name) {
+		return new IngredientCategory(null, name, new ArrayList<>(), new ArrayList<>());
 	}
 
 	public void addIngredient(Ingredient ingredient){
