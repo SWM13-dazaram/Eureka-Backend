@@ -11,9 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import dazaram.eureka.BaseTimeEntity;
-import dazaram.eureka.user.domain.User;
+import dazaram.eureka.user.User;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,9 +55,6 @@ public class UserIngredient extends BaseTimeEntity {
 
 		if (user != null) {
 			user.addUserIngredient(this);
-		}
-		if (ingredient != null) {
-			ingredient.addUserIngredient(this);
 		}
 	}
 }

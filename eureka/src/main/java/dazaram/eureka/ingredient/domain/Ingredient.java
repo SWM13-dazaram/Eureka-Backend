@@ -55,8 +55,4 @@ public class Ingredient extends BaseTimeEntity {
 			ingredientCategory.addIngredient(this);
 		}
 	}
-
-	public void addUserIngredient(UserIngredient userIngredient) {
-		userIngredients.add(userIngredient);
-	}
 }
