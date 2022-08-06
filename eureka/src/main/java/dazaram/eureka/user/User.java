@@ -12,8 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import dazaram.eureka.BaseTimeEntity;
+import dazaram.eureka.ingredient.domain.CustomIngredient;
+import dazaram.eureka.ingredient.domain.UserIngredient;
 import dazaram.eureka.oauth.Oauth;
-import dazaram.eureka.useringredient.UserIngredient;
 import dazaram.eureka.usertaste.UserTaste;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -50,11 +51,21 @@ public class User extends BaseTimeEntity {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserIngredient> userIngredients;
 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<CustomIngredient> customIngredients;
+
 	public void addUserTaste(UserTaste userTaste) {
 		userTastes.add(userTaste);
 	}
 
 	public void addOauth(Oauth oauth) {
 		oauths.add(oauth);
+	}
+	public void addUserIngredient(UserIngredient userIngredient) {
+		userIngredients.add(userIngredient);
+	}
+
+	public void addCustomIngredient(CustomIngredient customIngredient) {
+		customIngredients.add(customIngredient);
 	}
 }
