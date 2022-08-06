@@ -1,4 +1,4 @@
-package dazaram.eureka.repository;
+package dazaram.eureka.user.repository;
 
 import java.util.ArrayList;
 
@@ -9,13 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import dazaram.eureka.taste.TasteRepository;
-import dazaram.eureka.user.UserRepository;
-import dazaram.eureka.usertaste.UserTasteRepository;
-import dazaram.eureka.user.Gender;
-import dazaram.eureka.taste.Taste;
-import dazaram.eureka.user.User;
-import dazaram.eureka.usertaste.UserTaste;
+import dazaram.eureka.user.domain.Gender;
+import dazaram.eureka.user.domain.Taste;
+import dazaram.eureka.user.domain.User;
+import dazaram.eureka.user.domain.UserTaste;
 
 @SpringBootTest
 class UserTasteRepositoryTest {
@@ -30,7 +27,7 @@ class UserTasteRepositoryTest {
 	@Test
 	@Transactional
 	@DisplayName("유저 취향 추가 테스트")
-	public void createUserTasteTest(){
+	public void createUserTasteTest() {
 		User user = User.builder()
 			.name("test")
 			.phoneNumber("010-1234-5678")
@@ -38,12 +35,12 @@ class UserTasteRepositoryTest {
 			.profileImage("src/test_profile.jpg")
 			.gender(Gender.M)
 			.build();
-		userRepository.save(user);
+		User saveUser = userRepository.save(user);
 
 		Taste taste = Taste.create("양식", new ArrayList<>());
-		tasteRepository.save(taste);
+		Taste saveTaste = tasteRepository.save(taste);
 
-		UserTaste userTaste = UserTaste.create(user, taste);
+		UserTaste userTaste = UserTaste.create(saveUser, saveTaste);
 		UserTaste newUserTaste = userTasteRepository.save(userTaste);
 
 		Assertions.assertEquals(newUserTaste.getTaste(), taste);

@@ -1,4 +1,6 @@
-package dazaram.eureka.repository;
+package dazaram.eureka.user.repository;
+
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -7,11 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import dazaram.eureka.oauth.OauthRepository;
-import dazaram.eureka.user.UserRepository;
-import dazaram.eureka.user.Gender;
-import dazaram.eureka.oauth.Oauth;
-import dazaram.eureka.user.User;
+import dazaram.eureka.user.domain.Gender;
+import dazaram.eureka.user.domain.Oauth;
+import dazaram.eureka.user.domain.User;
 
 @SpringBootTest
 class OauthRepositoryTest {
@@ -32,14 +32,14 @@ class OauthRepositoryTest {
 			.profileImage("src/test_profile.jpg")
 			.gender(Gender.M)
 			.build();
-		userRepository.save(user);
+		User saveUser = userRepository.save(user);
 		Oauth oauth = Oauth.builder()
 			.provider("admin")
 			.accessToken("abcd0123")
-			.user(user)
+			.user(saveUser)
 			.build();
-		oauthRepository.save(oauth);
+		Oauth saveOauth = oauthRepository.save(oauth);
 
-		Assertions.assertEquals(user.getOauths().get(0), oauth);
+		Assertions.assertEquals(saveUser.getOauths().get(0), saveOauth);
 	}
 }

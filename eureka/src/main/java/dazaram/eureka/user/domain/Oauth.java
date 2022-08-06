@@ -1,4 +1,4 @@
-package dazaram.eureka.oauth;
+package dazaram.eureka.user.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,17 +9,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import dazaram.eureka.BaseTimeEntity;
-import dazaram.eureka.user.User;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Oauth extends BaseTimeEntity {
 
@@ -36,10 +32,15 @@ public class Oauth extends BaseTimeEntity {
 	@JoinColumn(name = "oauth")
 	private User user;
 
-	// private Oauth(OauthBuilder oauthBuilder){
-	// 	this.provider = oauthBuilder.provider;
-	// 	this.accessToken = oauthBuilder.accessToken;
-	// 	this.user = oauthBuilder.user;
-	// }
+	@Builder
+	public Oauth(Long id, String provider, String accessToken, User user) {
+		this.id = id;
+		this.provider = provider;
+		this.accessToken = accessToken;
+		this.user = user;
 
+		if(user != null) {
+			user.addOauth(this);
+		}
+	}
 }
