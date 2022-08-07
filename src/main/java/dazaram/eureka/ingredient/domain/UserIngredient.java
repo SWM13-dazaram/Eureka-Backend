@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import dazaram.eureka.BaseTimeEntity;
-import dazaram.eureka.user.User;
+import dazaram.eureka.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
