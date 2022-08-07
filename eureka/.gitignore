@@ -4,12 +4,13 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+.DS_Store
+../.DS_Store
 ### STS ###
 .apt_generated
 .classpath
 .factorypath
-.project
+.projects
 .settings
 .springBeans
 .sts4-cache
@@ -19,6 +20,7 @@ bin/
 
 ### IntelliJ IDEA ###
 .idea
+../.idea
 *.iws
 *.iml
 *.ipr
