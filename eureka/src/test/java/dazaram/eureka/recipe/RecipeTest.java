@@ -2,6 +2,7 @@ package dazaram.eureka.recipe;
 
 import dazaram.eureka.recipe.domain.AiRecipe;
 import dazaram.eureka.recipe.domain.ExistingRecipe;
+import dazaram.eureka.recipe.domain.Recipe;
 import dazaram.eureka.recipe.domain.RecipeSequence;
 
 public abstract class RecipeTest {
@@ -34,7 +35,7 @@ public abstract class RecipeTest {
 			.build();
 	}
 
-	public RecipeSequence makeSequence(int sequence, String content, dazaram.eureka.recipe.domain.Recipe recipe) {
+	public RecipeSequence makeSequence(int sequence, String content, Recipe recipe) {
 		return RecipeSequence.builder()
 			.sequence(sequence)
 			.content(content)
