@@ -1,4 +1,4 @@
-package dazaram.eureka.taste;
+package dazaram.eureka.user.domain;
 
 import java.util.List;
 
@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import dazaram.eureka.BaseTimeEntity;
-import dazaram.eureka.usertaste.UserTaste;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

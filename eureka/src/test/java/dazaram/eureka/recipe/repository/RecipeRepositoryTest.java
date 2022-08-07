@@ -23,7 +23,7 @@ import dazaram.eureka.recipe.domain.RecipeSequence;
 @SpringBootTest
 // @DataJpaTest
 // @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
-@Transactional(readOnly = true)
+@Transactional
 class RecipeRepositoryTest extends RecipeTest {
 	@PersistenceContext
 	EntityManager entityManager;

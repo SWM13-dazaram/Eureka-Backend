@@ -1,4 +1,4 @@
-package dazaram.eureka.repository;
+package dazaram.eureka.user.repository;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import dazaram.eureka.taste.Taste;
-import dazaram.eureka.taste.TasteRepository;
+import dazaram.eureka.user.domain.Taste;
 
 @SpringBootTest
 class TasteRepositoryTest {
