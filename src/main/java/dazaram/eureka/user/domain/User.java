@@ -24,8 +24,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
@@ -43,7 +41,7 @@ public class User extends BaseTimeEntity {
 	private Gender gender;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<Oauth> oauths;
+	private List<Oauth> oauths = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserTaste> userTastes;
@@ -54,6 +52,20 @@ public class User extends BaseTimeEntity {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<CustomIngredient> customIngredients;
 
+	@Builder
+	public User(Long id, String name, String phoneNumber, boolean pushAlarmAllow, String profileImage, Gender gender) {
+		this.id = id;
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+		this.pushAlarmAllow = pushAlarmAllow;
+		this.profileImage = profileImage;
+		this.gender = gender;
+		this.oauths = new ArrayList<>();
+		this.userTastes = new ArrayList<>();
+		this.userIngredients = new ArrayList<>();
+		this.customIngredients = new ArrayList<>();
+	}
+
 	public void addUserTaste(UserTaste userTaste) {
 		userTastes.add(userTaste);
 	}
@@ -61,6 +73,7 @@ public class User extends BaseTimeEntity {
 	public void addOauth(Oauth oauth) {
 		oauths.add(oauth);
 	}
+
 	public void addUserIngredient(UserIngredient userIngredient) {
 		userIngredients.add(userIngredient);
 	}

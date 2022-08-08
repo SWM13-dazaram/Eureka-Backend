@@ -23,7 +23,6 @@ class OauthRepositoryTest {
 	@Transactional
 	@DisplayName("Oauth 추가 테스트")
 	public void createOauthTest() {
-
 		User user = User.builder()
 			.name("test")
 			.phoneNumber("010-1234-5678")
