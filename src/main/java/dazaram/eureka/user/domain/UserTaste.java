@@ -36,8 +36,12 @@ public class UserTaste extends BaseTimeEntity {
 
 	public static UserTaste create(User user, Taste taste) {
 		UserTaste userTaste = new UserTaste(null, user, taste);
-		user.addUserTaste(userTaste);
-		taste.addUserTaste(userTaste);
+		if (user != null) {
+			user.addUserTaste(userTaste);
+		}
+		if (taste != null) {
+			taste.addUserTaste(userTaste);
+		}
 		return userTaste;
 	}
 }

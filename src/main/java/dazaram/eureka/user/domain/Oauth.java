@@ -39,7 +39,7 @@ public class Oauth extends BaseTimeEntity {
 		this.accessToken = accessToken;
 		this.user = user;
 
-		if(user != null) {
+		if (user != null) {
 			user.addOauth(this);
 		}
 	}
