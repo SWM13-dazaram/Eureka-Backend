@@ -1,5 +1,6 @@
 package dazaram.eureka.ingredient.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -15,9 +16,13 @@ import lombok.RequiredArgsConstructor;
 public class IngredientCategoryService {
 	private final IngredientCategoryRepository ingredientCategoryRepository;
 
-	public IngredientCategory findById(Long id){
+	public IngredientCategory findById(Long id) {
 		Optional<IngredientCategory> byId = ingredientCategoryRepository.findById(id);
 
 		return byId.isEmpty() ? null : byId.get();
+	}
+
+	public List<IngredientCategory> findAll() {
+		return ingredientCategoryRepository.findAll();
 	}
 }

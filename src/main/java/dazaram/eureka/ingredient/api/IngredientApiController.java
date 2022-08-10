@@ -12,44 +12,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import dazaram.eureka.ingredient.domain.Ingredient;
 import dazaram.eureka.ingredient.domain.IngredientCategory;
-import dazaram.eureka.ingredient.dto.BasicIngredientDto;
+import dazaram.eureka.ingredient.dto.FindAllCategoryIngredientResponse;
+import dazaram.eureka.ingredient.dto.GetSelectedIngredientInfoResponse;
 import dazaram.eureka.ingredient.dto.UserIngredientDetailsDto;
-import dazaram.eureka.ingredient.repository.IngredientCategoryRepository;
-import dazaram.eureka.ingredient.repository.IngredientRepository;
 import dazaram.eureka.ingredient.service.IngredientCategoryService;
 import dazaram.eureka.ingredient.service.IngredientService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 public class IngredientApiController {
-	private final IngredientCategoryRepository ingredientCategoryRepository;
 	private final IngredientService ingredientService;
 	private final IngredientCategoryService ingredientCategoryService;
 
 	@GetMapping("/api/v1/ingredients/categories")
-	public List<AllCategoryIngredientDto> findAllIngredientsByCategoryId(
+	public List<FindAllCategoryIngredientResponse> findAllIngredientsByCategoryId(
 		@RequestParam(required = false) Long categoryId) {
 		if (categoryId == null) {
-			return ingredientCategoryRepository.findAll().stream()
-				.map(AllCategoryIngredientDto::new)
+			return ingredientCategoryService.findAll().stream()
+				.map(FindAllCategoryIngredientResponse::new)
 				.collect(Collectors.toList());
 		}
 		IngredientCategory ingredientCategory = ingredientCategoryService.findById(categoryId);
 
-		return new ArrayList<>(List.of(new AllCategoryIngredientDto(ingredientCategory)));
+		return new ArrayList<>(List.of(new FindAllCategoryIngredientResponse(ingredientCategory)));
 	}
 
 	@PostMapping("/api/v1/ingredients/selected")
-	public List<SelectedIngredientDto> getSelectedIngredientInfo(@RequestBody @Valid List<Long> selectedIngredientIds) {
-		if (selectedIngredientIds.isEmpty())
-			return null;
-
+	public List<GetSelectedIngredientInfoResponse> getSelectedIngredientInfo(
+		@RequestBody @Valid List<Long> selectedIngredientIds) {
 		return selectedIngredientIds.stream()
-			.map(o -> new SelectedIngredientDto(ingredientService.findById(o)))
+			.map(o -> new GetSelectedIngredientInfoResponse(ingredientService.findById(o)))
 			.collect(Collectors.toList());
 	}
 
@@ -61,37 +55,4 @@ public class IngredientApiController {
 				o.getIngredient()));
 		return userIngredientDetails;
 	}
-
-	@Data
-	static class AllCategoryIngredientDto {
-		private Long categoryId;
-		private String categoryName;
-		private List<BasicIngredientDto> ingredients;
-
-		public AllCategoryIngredientDto(IngredientCategory ingredientCategory) {
-			if (ingredientCategory != null) {
-				categoryId = ingredientCategory.getId();
-				categoryName = ingredientCategory.getName();
-				ingredients = ingredientCategory.getIngredients().stream()
-					.map(BasicIngredientDto::new)
-					.collect(Collectors.toList());
-			}
-		}
-	}
-
-	@Data
-	static class SelectedIngredientDto {
-		private Long id;
-		private String name;
-		private String icon;
-		private Long expirePeriod;
-
-		public SelectedIngredientDto(Ingredient ingredient) {
-			id = ingredient.getId();
-			name = ingredient.getName();
-			icon = ingredient.getIcon();
-			expirePeriod = ingredient.getExpirePeriod();
-		}
-	}
-
 }

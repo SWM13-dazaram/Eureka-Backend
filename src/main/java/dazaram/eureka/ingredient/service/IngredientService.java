@@ -24,14 +24,6 @@ public class IngredientService {
 	public Long UserIngredient(String name, LocalDate insertDate, LocalDate expireDate, String memo,
 		BasicIngredientDto basicIngredientDto) {
 		Ingredient ingredient = this.findById(basicIngredientDto.getId());
-		if (ingredient == null) {
-			Ingredient ing = Ingredient.builder()
-				.id(basicIngredientDto.getId())
-				.name(basicIngredientDto.getName())
-				.icon(basicIngredientDto.getIcon())
-				.build();
-			ingredient = ingredientRepository.save(ing);
-		}
 
 		UserIngredient userIngredient = UserIngredient.builder()
 			.name(name)
