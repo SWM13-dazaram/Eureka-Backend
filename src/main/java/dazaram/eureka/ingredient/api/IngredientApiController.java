@@ -30,9 +30,7 @@ public class IngredientApiController {
 	public List<FindAllCategoryIngredientResponse> findAllIngredientsByCategoryId(
 		@RequestParam(required = false) Long categoryId) {
 		if (categoryId == null) {
-			return ingredientCategoryService.findAll().stream()
-				.map(FindAllCategoryIngredientResponse::new)
-				.collect(Collectors.toList());
+			return ingredientCategoryService.findAllCategoryIngredient();
 		}
 		IngredientCategory ingredientCategory = ingredientCategoryService.findById(categoryId);
 
@@ -42,17 +40,13 @@ public class IngredientApiController {
 	@PostMapping("/api/v1/ingredients/selected")
 	public List<GetSelectedIngredientInfoResponse> getSelectedIngredientInfo(
 		@RequestBody @Valid List<Long> selectedIngredientIds) {
-		return selectedIngredientIds.stream()
-			.map(o -> new GetSelectedIngredientInfoResponse(ingredientService.findById(o)))
-			.collect(Collectors.toList());
+		return ingredientService.getSelectedIngredientInfo(selectedIngredientIds);
 	}
 
 	@PostMapping("/api/v1/ingredients/store")
 	public List<UserIngredientDetailsDto> setSelectedIngredient(
 		@RequestBody @Valid List<UserIngredientDetailsDto> userIngredientDetails) {
-		userIngredientDetails.stream()
-			.map(o -> ingredientService.UserIngredient(o.getName(), o.getInsertDate(), o.getExpireDate(), o.getMemo(),
-				o.getIngredient()));
+		ingredientService.StoreUserIngredient(userIngredientDetails);
 		return userIngredientDetails;
 	}
 }
