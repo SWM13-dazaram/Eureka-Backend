@@ -1,6 +1,6 @@
 package dazaram.eureka.ingredient.domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,11 +33,11 @@ public class CustomIngredient extends BaseTimeEntity {
 
 	private String name;
 
-	private LocalDateTime expireDate;
+	private LocalDate expireDate;
 
 	private String memo;
 
-	private LocalDateTime insertDate;
+	private LocalDate insertDate;
 
 	private String icon;
 
@@ -46,8 +46,8 @@ public class CustomIngredient extends BaseTimeEntity {
 	private IngredientCategory ingredientCategory;
 
 	@Builder
-	public CustomIngredient(Long id, User user, String name, LocalDateTime expireDate, String memo,
-		LocalDateTime insertDate, String icon, IngredientCategory ingredientCategory) {
+	public CustomIngredient(Long id, User user, String name, LocalDate expireDate, String memo,
+		LocalDate insertDate, String icon, IngredientCategory ingredientCategory) {
 		this.id = id;
 		this.user = user;
 		this.name = name;
