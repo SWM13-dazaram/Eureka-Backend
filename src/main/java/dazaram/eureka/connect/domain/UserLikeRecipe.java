@@ -1,4 +1,4 @@
-package dazaram.eureka.connect;
+package dazaram.eureka.connect.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

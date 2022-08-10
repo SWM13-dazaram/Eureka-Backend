@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import dazaram.eureka.connect.UserLikeRecipe;
 import dazaram.eureka.recipe.RecipeTest;
 import dazaram.eureka.recipe.domain.AiRecipe;
 import dazaram.eureka.recipe.domain.ExistingRecipe;

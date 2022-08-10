@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import dazaram.eureka.connect.UserLikeRecipe;
+import dazaram.eureka.connect.domain.UserLikeRecipe;
 import dazaram.eureka.recipe.RecipeTest;
 import dazaram.eureka.recipe.domain.ExistingRecipe;
 import dazaram.eureka.recipe.repository.ExistingRecipeRepository;

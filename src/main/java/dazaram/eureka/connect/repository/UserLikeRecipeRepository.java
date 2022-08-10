@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import dazaram.eureka.connect.UserLikeRecipe;
+import dazaram.eureka.connect.domain.UserLikeRecipe;
 import dazaram.eureka.recipe.domain.Recipe;
 import dazaram.eureka.user.domain.User;
 
