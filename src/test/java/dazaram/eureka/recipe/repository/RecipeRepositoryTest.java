@@ -15,6 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import dazaram.eureka.connect.domain.ReplaceIngredient;
+import dazaram.eureka.connect.repository.ReplaceIngredientRepository;
+import dazaram.eureka.ingredient.domain.Ingredient;
+import dazaram.eureka.ingredient.repository.IngredientRepository;
 import dazaram.eureka.recipe.RecipeTest;
 import dazaram.eureka.recipe.domain.AiRecipe;
 import dazaram.eureka.recipe.domain.ExistingRecipe;
@@ -32,6 +36,12 @@ class RecipeRepositoryTest extends RecipeTest {
 	ExistingRecipeRepository existingRecipeRepository;
 	@Autowired
 	AiRecipeRepository aiRecipeRepository;
+
+	@Autowired
+	IngredientRepository ingredientRepository;
+
+	@Autowired
+	ReplaceIngredientRepository replaceIngredientRepository;
 	private ExistingRecipe existingRecipe;
 	private AiRecipe aiRecipe;
 	private RecipeSequence sequence1;
@@ -46,7 +56,7 @@ class RecipeRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void existingRecipe를_저장합니다() {
+	void existingRecipe를_저장한다() {
 		// given
 
 		// when
@@ -59,7 +69,7 @@ class RecipeRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void aiRecipe를_저장합니다() {
+	void aiRecipe를_저장한다() {
 		//given
 
 		ExistingRecipe savedExisting = existingRecipeRepository.save(existingRecipe);
@@ -74,7 +84,7 @@ class RecipeRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void url로_ExistingRecipe을_찾습니다() {
+	void url로_ExistingRecipe을_찾는온() {
 		//given
 		ExistingRecipe savedExisting = existingRecipeRepository.save(existingRecipe);
 		// 영속성 컨텍스트를 DB에 반영합니다 -> 아래에서 URL로 찾기 위해서
@@ -89,7 +99,7 @@ class RecipeRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void AiRecipe가_참고한_레시피의_아이디로_그_레시피를_찾습니다() {
+	void AiRecipe가_참고한_레시피의_아이디로_그_레시피를_찾는다() {
 		//given
 		ExistingRecipe savedExisting = existingRecipeRepository.save(existingRecipe);
 		aiRecipe = makeAiRecipe(savedExisting.getId());
@@ -99,6 +109,46 @@ class RecipeRepositoryTest extends RecipeTest {
 
 		assertAll(
 			() -> assertThat(byReferenceRecipeId).isEqualTo(savedExisting)
+		);
+	}
+
+	@Test
+	void id로_ExistingRecipe을_찾고_대체된_식재료를_조회한다() {
+		final String replaceIngredientName = "replace";
+		final String missingIngredientName = "missing";
+		//given
+		ExistingRecipe savedExisting = existingRecipeRepository.save(existingRecipe);
+		AiRecipe aiRecipe = makeAiRecipe(savedExisting.getId());
+
+		Ingredient replace = Ingredient.builder()
+			.name(replaceIngredientName)
+			.build();
+		Ingredient missing = Ingredient.builder()
+			.name(missingIngredientName)
+			.build();
+
+		ReplaceIngredient replaceIngredient = ReplaceIngredient.builder()
+			.replaceIngredient(replace)
+			.missingIngredient(missing)
+			.similarity(1.2f)
+			.build();
+
+		aiRecipe.setReplaceIngredient(replaceIngredient);
+
+		ingredientRepository.save(replace);
+		ingredientRepository.save(missing);
+		AiRecipe savedAiRecipe = aiRecipeRepository.save(aiRecipe);
+		replaceIngredientRepository.save(replaceIngredient);
+
+		//when
+		AiRecipe byId = aiRecipeRepository.findById(savedAiRecipe.getId()).get();
+		//then
+		assertAll(
+			() -> assertThat(byId.getReplaceIngredient()).isEqualTo(replaceIngredient),
+			() -> assertThat(byId.getReplaceIngredient().getReplaceIngredient()).isEqualTo(replace),
+			() -> assertThat(byId.getReplaceIngredient().getMissingIngredient().getName()).isEqualTo(
+				missingIngredientName)
+
 		);
 	}
 

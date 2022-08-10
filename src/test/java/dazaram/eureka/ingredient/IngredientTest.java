@@ -1,6 +1,6 @@
 package dazaram.eureka.ingredient;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import dazaram.eureka.ingredient.domain.IngredientCategory;
 import dazaram.eureka.ingredient.domain.CustomIngredient;
@@ -20,8 +20,8 @@ public abstract class IngredientTest {
 	public static final String INGREDIENT_ICON = "src/onion.jpg";
 
 	public static final String USER_INGREDIENT_NAME = "저번주에 산 양파";
-	public static final LocalDateTime USER_INGREDIENT_INSERT_DATE = LocalDateTime.of(2022, 8, 2, 12, 32, 22, 3333);
-	public static final LocalDateTime USER_INGREDIENT_EXPIRE_DATE = LocalDateTime.of(2022, 8, 8, 12, 32, 22, 3333);
+	public static final LocalDate USER_INGREDIENT_INSERT_DATE = LocalDate.of(2022, 8, 2);
+	public static final LocalDate USER_INGREDIENT_EXPIRE_DATE = LocalDate.of(2022, 8, 8);
 	public static final String USER_INGREDIENT_MEMO = "이마트에서 삼";
 
 	public IngredientCategory createIngredientCategory() {
