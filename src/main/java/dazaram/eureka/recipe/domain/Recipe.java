@@ -35,6 +35,8 @@ public abstract class Recipe extends BaseTimeEntity {
 
 	private String image;
 
+	private String size;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "recipe_category_id")
 	private RecipeCategory recipeCategory;
