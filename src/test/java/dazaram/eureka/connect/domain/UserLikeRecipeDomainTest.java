@@ -11,7 +11,7 @@ import dazaram.eureka.recipe.domain.ExistingRecipe;
 import dazaram.eureka.user.domain.Gender;
 import dazaram.eureka.user.domain.User;
 
-class UserLikeRecipeTest extends RecipeTest {
+class UserLikeRecipeDomainTest extends RecipeTest {
 
 	@Test
 	void ExistingRecipe의_좋아요를_1개_생성합니다() {
