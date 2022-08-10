@@ -13,8 +13,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import dazaram.eureka.connect.domain.ReplaceIngredient;
+import dazaram.eureka.connect.repository.ReplaceIngredientRepository;
+import dazaram.eureka.ingredient.domain.Ingredient;
+import dazaram.eureka.ingredient.repository.IngredientRepository;
 import dazaram.eureka.recipe.RecipeTest;
 import dazaram.eureka.recipe.domain.AiRecipe;
 import dazaram.eureka.recipe.domain.ExistingRecipe;
@@ -32,6 +37,12 @@ class RecipeRepositoryTest extends RecipeTest {
 	ExistingRecipeRepository existingRecipeRepository;
 	@Autowired
 	AiRecipeRepository aiRecipeRepository;
+
+	@Autowired
+	IngredientRepository ingredientRepository;
+
+	@Autowired
+	ReplaceIngredientRepository replaceIngredientRepository;
 	private ExistingRecipe existingRecipe;
 	private AiRecipe aiRecipe;
 	private RecipeSequence sequence1;
@@ -99,6 +110,47 @@ class RecipeRepositoryTest extends RecipeTest {
 
 		assertAll(
 			() -> assertThat(byReferenceRecipeId).isEqualTo(savedExisting)
+		);
+	}
+
+	@Test
+	@Rollback(value = false)
+	void id로_ExistingRecipe을_찾고_대체된_식재료를_조회합니다() {
+		final String replaceIngredientName = "replace";
+		final String missingIngredientName = "missing";
+		//given
+		ExistingRecipe savedExisting = existingRecipeRepository.save(existingRecipe);
+		AiRecipe aiRecipe = makeAiRecipe(savedExisting.getId());
+
+		Ingredient replace = Ingredient.builder()
+			.name(replaceIngredientName)
+			.build();
+		Ingredient missing = Ingredient.builder()
+			.name(missingIngredientName)
+			.build();
+
+		ReplaceIngredient replaceIngredient = ReplaceIngredient.builder()
+			.replaceIngredient(replace)
+			.missingIngredient(missing)
+			.similarity(1.2f)
+			.build();
+
+		aiRecipe.setReplaceIngredient(replaceIngredient);
+
+		ingredientRepository.save(replace);
+		ingredientRepository.save(missing);
+		AiRecipe savedAiRecipe = aiRecipeRepository.save(aiRecipe);
+		replaceIngredientRepository.save(replaceIngredient);
+
+		//when
+		AiRecipe byId = aiRecipeRepository.findById(savedAiRecipe.getId()).get();
+		//then
+		assertAll(
+			() -> assertThat(byId.getReplaceIngredient()).isEqualTo(replaceIngredient),
+			() -> assertThat(byId.getReplaceIngredient().getReplaceIngredient()).isEqualTo(replace),
+			() -> assertThat(byId.getReplaceIngredient().getMissingIngredient().getName()).isEqualTo(
+				missingIngredientName)
+
 		);
 	}
 

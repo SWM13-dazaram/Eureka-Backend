@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import dazaram.eureka.BaseTimeEntity;
 import dazaram.eureka.ingredient.domain.Ingredient;
 import dazaram.eureka.recipe.domain.Recipe;
 import lombok.AccessLevel;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecipeIngredient {
+public class RecipeIngredient extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "recipe_ingredient_id")
