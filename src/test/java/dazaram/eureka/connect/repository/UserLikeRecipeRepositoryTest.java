@@ -58,7 +58,7 @@ class UserLikeRecipeRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void 레시피에_대한_좋아요_정보를_DB에_저장합니다() {
+	void 레시피에_대한_좋아요_정보를_DB에_저장한다() {
 		// given
 		userLikeRecipe = UserLikeRecipe.create(existingRecipe, user);
 		// when
@@ -98,7 +98,7 @@ class UserLikeRecipeRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void 유저가_좋아요_누른_레시피를_확인합니다() {
+	void 유저가_좋아요_누른_레시피를_확인한다() {
 		// given
 		userLikeRecipe = UserLikeRecipe.create(existingRecipe, user);
 		UserLikeRecipe saved = userLikeRecipeRepository.save(userLikeRecipe);

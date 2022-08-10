@@ -47,7 +47,7 @@ class AiRecipeLogRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void AiRecipeLog를_DB에_저장합니다() {
+	void AiRecipeLog를_DB에_저장한다() {
 		// given
 
 		// when
@@ -61,7 +61,7 @@ class AiRecipeLogRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void 유저가_생성한_AiRecipeLog를_조회합니다() {
+	void 유저가_생성한_AiRecipeLog를_조회한다() {
 		// given
 		AiRecipe savedAiRecipe2 = aiRecipeRepository.save(makeAiRecipe(2L));
 

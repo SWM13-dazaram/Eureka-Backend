@@ -16,7 +16,7 @@ public class RecipeIngredientDomainTest extends RecipeTest {
 	RecipeIngredient recipeIngredient;
 
 	@Test
-	void RecipeIngredient를_생성합니다() {
+	void RecipeIngredient를_생성한다() {
 		// given
 
 		// when

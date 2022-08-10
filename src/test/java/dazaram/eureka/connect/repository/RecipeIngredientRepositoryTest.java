@@ -50,7 +50,7 @@ class RecipeIngredientRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void RecipeIngredient를_DB에_저장합니다() {
+	void RecipeIngredient를_DB에_저장한다() {
 		//given
 
 		//when
@@ -63,7 +63,7 @@ class RecipeIngredientRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void 레시피에_저장된_재료를_가져옵니다() {
+	void 레시피에_저장된_재료를_가져온다() {
 		//given
 		final String ingredientName = "재료2";
 

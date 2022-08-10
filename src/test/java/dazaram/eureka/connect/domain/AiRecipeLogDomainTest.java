@@ -14,7 +14,7 @@ class AiRecipeLogDomainTest extends RecipeTest {
 	final String userName = "testUser";
 
 	@Test
-	void AiRecipeLog를_1개_생성합니다() {
+	void AiRecipeLog를_1개_생성한다() {
 		// given
 		AiRecipe aiRecipe = makeAiRecipe(makeExistingRecipe().getId());
 		User user = User.builder()

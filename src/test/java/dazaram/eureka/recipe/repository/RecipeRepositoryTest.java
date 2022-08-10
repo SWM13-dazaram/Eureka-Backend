@@ -56,7 +56,7 @@ class RecipeRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void existingRecipe를_저장합니다() {
+	void existingRecipe를_저장한다() {
 		// given
 
 		// when
@@ -69,7 +69,7 @@ class RecipeRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void aiRecipe를_저장합니다() {
+	void aiRecipe를_저장한다() {
 		//given
 
 		ExistingRecipe savedExisting = existingRecipeRepository.save(existingRecipe);
@@ -84,7 +84,7 @@ class RecipeRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void url로_ExistingRecipe을_찾습니다() {
+	void url로_ExistingRecipe을_찾는온() {
 		//given
 		ExistingRecipe savedExisting = existingRecipeRepository.save(existingRecipe);
 		// 영속성 컨텍스트를 DB에 반영합니다 -> 아래에서 URL로 찾기 위해서
@@ -99,7 +99,7 @@ class RecipeRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void AiRecipe가_참고한_레시피의_아이디로_그_레시피를_찾습니다() {
+	void AiRecipe가_참고한_레시피의_아이디로_그_레시피를_찾는다() {
 		//given
 		ExistingRecipe savedExisting = existingRecipeRepository.save(existingRecipe);
 		aiRecipe = makeAiRecipe(savedExisting.getId());
@@ -113,7 +113,7 @@ class RecipeRepositoryTest extends RecipeTest {
 	}
 
 	@Test
-	void id로_ExistingRecipe을_찾고_대체된_식재료를_조회합니다() {
+	void id로_ExistingRecipe을_찾고_대체된_식재료를_조회한다() {
 		final String replaceIngredientName = "replace";
 		final String missingIngredientName = "missing";
 		//given

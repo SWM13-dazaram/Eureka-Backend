@@ -14,7 +14,7 @@ import dazaram.eureka.user.domain.User;
 class UserLikeRecipeDomainTest extends RecipeTest {
 
 	@Test
-	void ExistingRecipe의_좋아요를_1개_생성합니다() {
+	void ExistingRecipe의_좋아요를_1개_생성한다() {
 		// given
 		ExistingRecipe existingRecipe = makeExistingRecipe();
 		User user = User.builder()
@@ -34,7 +34,7 @@ class UserLikeRecipeDomainTest extends RecipeTest {
 	}
 
 	@Test
-	void AiRecipe의_좋아요를_1개_생성합니다() {
+	void AiRecipe의_좋아요를_1개_생성한다() {
 		// given
 		AiRecipe aiRecipe = makeAiRecipe(makeExistingRecipe().getId());
 		User user = User.builder()
