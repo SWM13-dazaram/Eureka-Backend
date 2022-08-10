@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class IngredientCategory {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ingredient_category_id")
 	private Long id;
 
@@ -37,11 +38,11 @@ public class IngredientCategory {
 		return new IngredientCategory(null, name, new ArrayList<>(), new ArrayList<>());
 	}
 
-	public void addIngredient(Ingredient ingredient){
+	public void addIngredient(Ingredient ingredient) {
 		ingredients.add(ingredient);
 	}
 
-	public void addCustomIngredient(CustomIngredient customIngredient){
+	public void addCustomIngredient(CustomIngredient customIngredient) {
 		customIngredients.add(customIngredient);
 	}
 }

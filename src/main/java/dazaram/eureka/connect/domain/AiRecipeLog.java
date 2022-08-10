@@ -1,4 +1,4 @@
-package dazaram.eureka.recipe.domain;
+package dazaram.eureka.connect.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,30 +8,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import dazaram.eureka.BaseTimeEntity;
+import dazaram.eureka.recipe.domain.AiRecipe;
+import dazaram.eureka.user.domain.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecipeSequence extends BaseTimeEntity {
+public class AiRecipeLog extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "recipe_sequence_id")
+	@Column(name = "ai_recipe_log")
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "recipe_id")
-	private Recipe recipe;
+	private AiRecipe recipe;
 
-	private String content;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 
-	private int sequence;
+	public static AiRecipeLog create(AiRecipe recipe, User user) {
+		return new AiRecipeLog(null, recipe, user);
+	}
+
 }

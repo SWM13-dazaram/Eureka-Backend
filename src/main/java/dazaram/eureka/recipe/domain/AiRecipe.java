@@ -3,7 +3,10 @@ package dazaram.eureka.recipe.domain;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
+import dazaram.eureka.connect.domain.ReplaceIngredient;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +19,10 @@ public class AiRecipe extends Recipe {
 
 	private Long referenceRecipeId;
 
+	@OneToOne
+	@JoinColumn(name = "replace_ingredient_id")
+	private ReplaceIngredient replaceIngredient;
+
 	@Builder
 	public AiRecipe(
 		String name,
@@ -23,9 +30,15 @@ public class AiRecipe extends Recipe {
 		RecipeCategory recipeCategory,
 		RecipePlatform recipePlatform,
 		List<RecipeSequence> recipeSequences,
-		Long referenceRecipeId
+		Long referenceRecipeId,
+		ReplaceIngredient replaceIngredient
 	) {
 		super(name, image, recipeCategory, recipePlatform, recipeSequences);
 		this.referenceRecipeId = referenceRecipeId;
+		this.replaceIngredient = replaceIngredient;
+	}
+
+	public void setReplaceIngredient(ReplaceIngredient replaceIngredient) {
+		this.replaceIngredient = replaceIngredient;
 	}
 }
