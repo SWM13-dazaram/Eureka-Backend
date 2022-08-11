@@ -18,15 +18,9 @@ import lombok.RequiredArgsConstructor;
 public class IngredientCategoryService {
 	private final IngredientCategoryRepository ingredientCategoryRepository;
 
-	public IngredientCategory findById(Long id) {
+	public IngredientCategory findById(String id) {
 		Optional<IngredientCategory> byId = ingredientCategoryRepository.findById(id);
 
 		return byId.isEmpty() ? null : byId.get();
-	}
-
-	public List<FindAllCategoryIngredientResponse> findAllCategoryIngredient() {
-		return ingredientCategoryRepository.findAll().stream()
-			.map(FindAllCategoryIngredientResponse::new)
-			.collect(Collectors.toList());
 	}
 }

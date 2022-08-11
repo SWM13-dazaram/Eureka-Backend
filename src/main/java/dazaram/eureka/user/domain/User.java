@@ -38,6 +38,7 @@ public class User extends BaseTimeEntity {
 
 	private String profileImage;
 
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
