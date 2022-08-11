@@ -18,7 +18,7 @@ class CustomIngredientRepositoryTest extends IngredientTest {
 	@Autowired
 	CustomIngredientRepository customIngredientRepository;
 
-	private CustomIngredient customIngredient = createCustomIngredient();
+	private CustomIngredient customIngredient = createCustomIngredient(null);
 
 	@Test
 	public void 직접입력_식재료를_저장한다() {
@@ -31,11 +31,10 @@ class CustomIngredientRepositoryTest extends IngredientTest {
 	}
 
 	@Test
-	public void 직접입력_식재료를_id로_조회한다() {
+	public void 직접입력_식재료를_id로_조회한다(){
 		CustomIngredient savedCustomIngredient = customIngredientRepository.save(customIngredient);
 
-		CustomIngredient findByCustomIngredientId = customIngredientRepository.findById(savedCustomIngredient.getId())
-			.get();
+		CustomIngredient findByCustomIngredientId = customIngredientRepository.findById(savedCustomIngredient.getId()).get();
 
 		assertAll(
 			() -> assertThat(findByCustomIngredientId).isEqualTo(savedCustomIngredient)
