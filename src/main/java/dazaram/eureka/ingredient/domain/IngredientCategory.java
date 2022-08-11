@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -22,9 +20,8 @@ import lombok.NoArgsConstructor;
 public class IngredientCategory {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ingredient_category_id")
-	private Long id;
+	private String id;
 
 	private String name;
 
@@ -34,8 +31,8 @@ public class IngredientCategory {
 	@OneToMany(mappedBy = "ingredientCategory")
 	private List<CustomIngredient> customIngredients;
 
-	public static IngredientCategory create(String name) {
-		return new IngredientCategory(null, name, new ArrayList<>(), new ArrayList<>());
+	public static IngredientCategory create(String id, String name) {
+		return new IngredientCategory(id, name, new ArrayList<>(), new ArrayList<>());
 	}
 
 	public void addIngredient(Ingredient ingredient) {

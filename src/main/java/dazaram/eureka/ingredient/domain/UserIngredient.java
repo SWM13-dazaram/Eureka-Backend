@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import dazaram.eureka.BaseTimeEntity;
+import dazaram.eureka.ingredient.dto.UserIngredientDetailsDto;
 import dazaram.eureka.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -57,5 +58,16 @@ public class UserIngredient extends BaseTimeEntity {
 		if (user != null) {
 			user.addUserIngredient(this);
 		}
+	}
+
+	public static UserIngredient CreateFromDto(UserIngredientDetailsDto dto, Ingredient ingredient){
+		return UserIngredient.builder()
+			.id(dto.getId())
+			.name(dto.getName())
+			.insertDate(dto.getInsertDate())
+			.expireDate(dto.getExpireDate())
+			.memo(dto.getMemo())
+			.ingredient(ingredient)
+			.build();
 	}
 }
