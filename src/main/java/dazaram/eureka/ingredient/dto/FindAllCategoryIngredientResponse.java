@@ -14,12 +14,10 @@ public class FindAllCategoryIngredientResponse {
 	private List<BasicIngredientDto> ingredients;
 
 	public FindAllCategoryIngredientResponse(IngredientCategory ingredientCategory, List<Ingredient> ingredients) {
-		if (ingredientCategory != null) {
-			this.categoryId = ingredientCategory.getId();
-			this.categoryName = ingredientCategory.getName();
-			this.ingredients = ingredients.stream()
-				.map(BasicIngredientDto::new)
-				.collect(Collectors.toList());
-		}
+		this.categoryId = ingredientCategory.getId();
+		this.categoryName = ingredientCategory.getName();
+		this.ingredients = ingredients.stream()
+			.map(BasicIngredientDto::new)
+			.collect(Collectors.toList());
 	}
 }
