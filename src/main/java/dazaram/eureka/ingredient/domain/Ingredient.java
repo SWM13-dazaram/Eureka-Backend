@@ -6,12 +6,11 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import dazaram.eureka.BaseTimeEntity;
@@ -34,8 +33,7 @@ public class Ingredient extends BaseTimeEntity {
 
 	private Long expirePeriod;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ingredient_category_id")
+	@Enumerated(EnumType.STRING)
 	private IngredientCategory ingredientCategory;
 
 	private String icon;
@@ -51,9 +49,5 @@ public class Ingredient extends BaseTimeEntity {
 		this.ingredientCategory = ingredientCategory;
 		this.icon = icon;
 		this.userIngredients = new ArrayList<>();
-
-		if (ingredientCategory != null) {
-			ingredientCategory.addIngredient(this);
-		}
 	}
 }

@@ -11,7 +11,7 @@ class CustomIngredientTest extends IngredientTest {
 
 	@Test
 	public void 직접입력_식재료를_생성한다() {
-		CustomIngredient customIngredient = createCustomIngredient(null);
+		CustomIngredient customIngredient = createCustomIngredient();
 
 		assertAll(
 			() -> assertThat(customIngredient.getName()).isEqualTo(CUSTOM_INGREDIENT_NAME),
@@ -22,12 +22,10 @@ class CustomIngredientTest extends IngredientTest {
 
 	@Test
 	public void 직접입력_식재료와_카테고리를_매핑한다() {
-		IngredientCategory ingredientCategory = createIngredientCategory();
-		CustomIngredient customIngredient = createCustomIngredient(ingredientCategory);
+		CustomIngredient customIngredient = createCustomIngredient();
 
 		assertAll(
-			() -> assertThat(customIngredient.getIngredientCategory()).isEqualTo(ingredientCategory),
-			() -> assertThat(ingredientCategory.getCustomIngredients().get(0)).isEqualTo(customIngredient)
+			() -> assertThat(customIngredient.getIngredientCategory()).isEqualTo(INGREDIENT_CATEGORY)
 		);
 	}
 }

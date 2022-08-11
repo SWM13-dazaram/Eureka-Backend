@@ -2,14 +2,14 @@ package dazaram.eureka.ingredient;
 
 import java.time.LocalDate;
 
-import dazaram.eureka.ingredient.domain.IngredientCategory;
 import dazaram.eureka.ingredient.domain.CustomIngredient;
 import dazaram.eureka.ingredient.domain.Ingredient;
+import dazaram.eureka.ingredient.domain.IngredientCategory;
 import dazaram.eureka.ingredient.domain.UserIngredient;
 
 public abstract class IngredientTest {
 
-	public static final String INGREDIENT_CATEGORY_NAME = "채소";
+	public static final IngredientCategory INGREDIENT_CATEGORY = IngredientCategory.VEGETABLE;
 
 	public static final String CUSTOM_INGREDIENT_NAME = "상어고기";
 	public static final String CUSTOM_INGREDIENT_ICON = "src/shark_meat.jpg";
@@ -24,25 +24,21 @@ public abstract class IngredientTest {
 	public static final LocalDate USER_INGREDIENT_EXPIRE_DATE = LocalDate.of(2022, 8, 8);
 	public static final String USER_INGREDIENT_MEMO = "이마트에서 삼";
 
-	public IngredientCategory createIngredientCategory() {
-		return IngredientCategory.create(INGREDIENT_CATEGORY_NAME);
-	}
-
-	public CustomIngredient createCustomIngredient(IngredientCategory ingredientCategory) {
+	public CustomIngredient createCustomIngredient() {
 		return CustomIngredient.builder()
 			.name(CUSTOM_INGREDIENT_NAME)
 			.icon(CUSTOM_INGREDIENT_ICON)
 			.memo(CUSTOM_INGREDIENT_MEMO)
-			.ingredientCategory(ingredientCategory)
+			.ingredientCategory(INGREDIENT_CATEGORY)
 			.build();
 	}
 
-	public Ingredient createIngredient(IngredientCategory ingredientCategory) {
+	public Ingredient createIngredient() {
 		return Ingredient.builder()
 			.name(INGREDIENT_NAME)
 			.expirePeriod(INGREDIENT_EXPIRE_PERIOD)
 			.icon(INGREDIENT_ICON)
-			.ingredientCategory(ingredientCategory)
+			.ingredientCategory(INGREDIENT_CATEGORY)
 			.build();
 	}
 

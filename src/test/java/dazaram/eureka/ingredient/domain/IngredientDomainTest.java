@@ -11,7 +11,7 @@ class IngredientDomainTest extends IngredientTest {
 
 	@Test
 	public void 식재료를_생성한다() {
-		Ingredient ingredient = createIngredient(null);
+		Ingredient ingredient = createIngredient();
 
 		assertAll(
 			() -> assertThat(ingredient.getName()).isEqualTo(INGREDIENT_NAME),
@@ -22,23 +22,20 @@ class IngredientDomainTest extends IngredientTest {
 
 	@Test
 	public void 식재료와_카테고리를_매핑한다() {
-		IngredientCategory ingredientCategory = createIngredientCategory();
-		Ingredient ingredient = createIngredient(ingredientCategory);
+		Ingredient ingredient = createIngredient();
 
 		assertAll(
-			() -> assertThat(ingredient.getIngredientCategory()).isEqualTo(ingredientCategory),
-			() -> assertThat(ingredientCategory.getIngredients().get(0)).isEqualTo(ingredient)
+			() -> assertThat(ingredient.getIngredientCategory()).isEqualTo(INGREDIENT_CATEGORY)
 		);
 	}
 
 	@Test
 	public void 식재료와_선택_식재료를_매핑한다() {
-		Ingredient ingredient = createIngredient(null);
+		Ingredient ingredient = createIngredient();
 		UserIngredient userIngredient = createUserIngredient(ingredient);
 
 		assertAll(
 			() -> assertThat(userIngredient.getIngredient()).isEqualTo(ingredient)
-			// () -> assertThat(ingredient.getUserIngredients().get(0)).isEqualTo(userIngredient)
 		);
 	}
 }

@@ -42,8 +42,6 @@ public class CustomIngredient extends BaseTimeEntity {
 
 	private String icon;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ingredient_category_id")
 	private IngredientCategory ingredientCategory;
 
 	@Builder
@@ -60,9 +58,6 @@ public class CustomIngredient extends BaseTimeEntity {
 
 		if (user != null) {
 			user.addCustomIngredient(this);
-		}
-		if (ingredientCategory != null) {
-			ingredientCategory.addCustomIngredient(this);
 		}
 	}
 }
