@@ -64,7 +64,7 @@ public class IngredientService {
 			.collect(Collectors.toList());
 	}
 
-	public void StoreUserIngredient(List<UserIngredientDetailsDto> userIngredientDetails) {
+	public void storeUserIngredient(List<UserIngredientDetailsDto> userIngredientDetails) {
 		userIngredientDetails.stream()
 			.map(o -> this.UserIngredient(o.getName(), o.getInsertDate(), o.getExpireDate(), o.getMemo(),
 				o.getIngredient()));
@@ -80,7 +80,7 @@ public class IngredientService {
 	}
 
 	@Transactional
-	public void StoreCustomIngredient(CustomIngredientRequest customIngredientRequest) {
+	public void storeCustomIngredient(CustomIngredientRequest customIngredientRequest) {
 		CustomIngredientDetailsDto ingredientDetails = customIngredientRequest.getUserIngredient();
 
 		CustomIngredient customIngredient = CustomIngredient.builder()

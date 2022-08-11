@@ -46,14 +46,14 @@ public class IngredientApiController {
 	@PostMapping("/api/v1/ingredients/store")
 	public List<UserIngredientDetailsDto> setSelectedIngredient(
 		@RequestBody @Valid List<UserIngredientDetailsDto> userIngredientDetails) {
-		ingredientService.StoreUserIngredient(userIngredientDetails);
+		ingredientService.storeUserIngredient(userIngredientDetails);
 		return userIngredientDetails;
 	}
 
 	@PostMapping("/api/v1/custom-ingredients")
 	public CustomIngredientRequest createCustomIngredient(
 		@RequestBody @Valid CustomIngredientRequest customIngredientRequest) {
-		ingredientService.StoreCustomIngredient(customIngredientRequest);
+		ingredientService.storeCustomIngredient(customIngredientRequest);
 		return customIngredientRequest;
 	}
 }
