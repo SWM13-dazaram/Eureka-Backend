@@ -33,14 +33,7 @@ public class IngredientService {
 
 	private Long CreateUserIngredient(UserIngredientDetailsDto dto) {
 		Ingredient ingredient = findIngredientById(dto.getIngredient().getId());
-		UserIngredient userIngredient = UserIngredient.builder()
-			.id(dto.getId())
-			.name(dto.getName())
-			.insertDate(dto.getInsertDate())
-			.expireDate(dto.getExpireDate())
-			.memo(dto.getMemo())
-			.ingredient(ingredient)
-			.build();
+		UserIngredient userIngredient = UserIngredient.CreateFromDto(dto, ingredient);
 		return userIngredientRepository.save(userIngredient).getId();
 	}
 
