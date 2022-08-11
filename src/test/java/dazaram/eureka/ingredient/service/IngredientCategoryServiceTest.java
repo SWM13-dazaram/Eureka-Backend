@@ -13,11 +13,12 @@ import dazaram.eureka.ingredient.domain.IngredientCategory;
 @SpringBootTest
 @Transactional(readOnly = true)
 class IngredientCategoryServiceTest {
-	@Autowired IngredientCategoryService ingredientCategoryService;
+	@Autowired
+	IngredientCategoryService ingredientCategoryService;
 
 	@Test
-	public void 존재하지_않는_식재료_카테고리id를_조회한다(){
-		IngredientCategory byId = ingredientCategoryService.findById(1L);
+	public void 존재하지_않는_식재료_카테고리id를_조회한다() {
+		IngredientCategory byId = ingredientCategoryService.findById("TST");
 
 		assertAll(
 			() -> assertThat(byId).isEqualTo(null)
