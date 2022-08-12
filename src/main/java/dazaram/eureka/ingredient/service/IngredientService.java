@@ -1,6 +1,5 @@
 package dazaram.eureka.ingredient.service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import dazaram.eureka.ingredient.domain.Ingredient;
 import dazaram.eureka.ingredient.domain.IngredientCategory;
 import dazaram.eureka.ingredient.domain.UserIngredient;
-import dazaram.eureka.ingredient.dto.BasicIngredientDto;
 import dazaram.eureka.ingredient.dto.FindAllCategoryIngredientResponse;
 import dazaram.eureka.ingredient.dto.GetSelectedIngredientInfoResponse;
 import dazaram.eureka.ingredient.dto.UserIngredientDetailsDto;
@@ -88,5 +86,11 @@ public class IngredientService {
 		return new ArrayList<>(List.of(
 			new FindAllCategoryIngredientResponse(ingredientCategory,
 				ingredientRepository.findIngredientsByIngredientCategory(ingredientCategory))));
+	}
+
+	public List<UserIngredientDetailsDto> getAllUserIngredientDetails() {
+		return userIngredientRepository.findAll().stream()
+			.map(UserIngredientDetailsDto::new)
+			.collect(Collectors.toList());
 	}
 }

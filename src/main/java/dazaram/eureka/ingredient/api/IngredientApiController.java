@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import dazaram.eureka.ingredient.domain.IngredientCategory;
 import dazaram.eureka.ingredient.dto.FindAllCategoryIngredientResponse;
 import dazaram.eureka.ingredient.dto.GetSelectedIngredientInfoResponse;
 import dazaram.eureka.ingredient.dto.UserIngredientDetailsDto;
@@ -41,5 +40,10 @@ public class IngredientApiController {
 	public List<Long> setSelectedIngredient(
 		@RequestBody @Valid List<UserIngredientDetailsDto> userIngredientDetails) {
 		return ingredientService.StoreUserIngredient(userIngredientDetails);
+	}
+
+	@GetMapping("/api/v1/user-ingredients")
+	public List<UserIngredientDetailsDto> findAllUserIngredientsByUserId() {
+		return ingredientService.getAllUserIngredientDetails();
 	}
 }
