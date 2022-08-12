@@ -89,4 +89,14 @@ public class IngredientService {
 			new FindAllCategoryIngredientResponse(ingredientCategory,
 				ingredientRepository.findIngredientsByIngredientCategory(ingredientCategory))));
 	}
+
+	@Transactional
+	public String deleteUserIngredient(Long ingredientId) {
+		Ingredient ingredient = findIngredientById(ingredientId);
+		if(ingredient == null){
+			return "Error";
+		}
+		ingredientRepository.delete(ingredient);
+		return "Successfully Deleted";
+	}
 }
