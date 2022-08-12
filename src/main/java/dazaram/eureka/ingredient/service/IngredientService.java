@@ -91,12 +91,8 @@ public class IngredientService {
 	}
 
 	@Transactional
-	public String deleteUserIngredient(Long ingredientId) {
-		Ingredient ingredient = findIngredientById(ingredientId);
-		if(ingredient == null){
-			return "Error";
-		}
-		ingredientRepository.delete(ingredient);
+	public String deleteUserIngredient(Long id) {
+		userIngredientRepository.deleteUserIngredientById(id);
 		return "Successfully Deleted";
 	}
 }
