@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import dazaram.eureka.ingredient.domain.UserIngredient;
 import lombok.Data;
 
 @Data
@@ -19,4 +20,13 @@ public class UserIngredientDetailsDto {
 
 	private String memo;
 	private BasicIngredientDto ingredient;
+
+	public UserIngredientDetailsDto(UserIngredient userIngredient){
+		id = userIngredient.getId();
+		name = userIngredient.getName();
+		insertDate = userIngredient.getInsertDate();
+		expireDate = userIngredient.getExpireDate();
+		memo = userIngredient.getMemo();
+		ingredient = new BasicIngredientDto(userIngredient.getIngredient());
+	}
 }
