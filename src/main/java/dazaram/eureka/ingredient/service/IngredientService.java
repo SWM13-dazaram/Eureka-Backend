@@ -89,4 +89,11 @@ public class IngredientService {
 			new FindAllCategoryIngredientResponse(ingredientCategory,
 				ingredientRepository.findIngredientsByIngredientCategory(ingredientCategory))));
 	}
+
+	@Transactional
+	public Long updateUserIngredient(UserIngredientDetailsDto dto) {
+		Ingredient ingredient = findIngredientById(dto.getIngredient().getId());
+		UserIngredient userIngredient = UserIngredient.CreateFromDto(dto, ingredient);
+		return userIngredientRepository.save(userIngredient).getId();
+	}
 }

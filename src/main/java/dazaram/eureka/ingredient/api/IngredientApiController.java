@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,5 +42,10 @@ public class IngredientApiController {
 	public List<Long> setSelectedIngredient(
 		@RequestBody @Valid List<UserIngredientDetailsDto> userIngredientDetails) {
 		return ingredientService.StoreUserIngredient(userIngredientDetails);
+	}
+
+	@PutMapping("/api/v1/user-ingredients")
+	public Long updateUserIngredient(@RequestBody @Valid UserIngredientDetailsDto userIngredientDetailsDto) {
+		return ingredientService.updateUserIngredient(userIngredientDetailsDto);
 	}
 }
