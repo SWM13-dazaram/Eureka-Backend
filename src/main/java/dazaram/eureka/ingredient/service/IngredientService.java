@@ -130,4 +130,10 @@ public class IngredientService {
 		UserIngredient userIngredient = UserIngredient.createFromDto(dto, ingredient);
 		return userIngredientRepository.save(userIngredient).getId();
 	}
+
+	@Transactional
+	public String deleteUserIngredient(Long id) {
+		userIngredientRepository.deleteUserIngredientById(id);
+		return "Successfully Deleted";
+	}
 }

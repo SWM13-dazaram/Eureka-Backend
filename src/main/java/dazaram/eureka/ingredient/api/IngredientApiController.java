@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,5 +61,10 @@ public class IngredientApiController {
 	@PutMapping("/api/v1/user-ingredients")
 	public Long updateUserIngredient(@RequestBody @Valid UserIngredientDetailsDto userIngredientDetailsDto) {
 		return ingredientService.updateUserIngredient(userIngredientDetailsDto);
+	}
+
+	@DeleteMapping("/api/v1/user-ingredients/{userIngredientId}")
+	public String deleteUserIngredient(@PathVariable("userIngredientId") Long id){
+		return ingredientService.deleteUserIngredient(id);
 	}
 }
