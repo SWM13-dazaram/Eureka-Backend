@@ -25,8 +25,8 @@ class IngredientCategoryRepositoryTest extends IngredientTest {
 		IngredientCategory savedIngredientCategory = ingredientCategoryRepository.save(ingredientCategory);
 
 		assertAll(
-			() -> assertThat(savedIngredientCategory.getId()).isNotNull(),
-			() -> assertThat(savedIngredientCategory).isEqualTo(ingredientCategory)
+			() -> assertThat(savedIngredientCategory.getId()).isEqualTo(ingredientCategory.getId()),
+			() -> assertThat(savedIngredientCategory.getName()).isEqualTo(ingredientCategory.getName())
 		);
 	}
 

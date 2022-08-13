@@ -9,6 +9,7 @@ import dazaram.eureka.ingredient.domain.UserIngredient;
 
 public abstract class IngredientTest {
 
+	public static final String INGREDIENT_CATEGORY_ID = "VGT";
 	public static final String INGREDIENT_CATEGORY_NAME = "채소";
 
 	public static final String CUSTOM_INGREDIENT_NAME = "상어고기";
@@ -25,7 +26,7 @@ public abstract class IngredientTest {
 	public static final String USER_INGREDIENT_MEMO = "이마트에서 삼";
 
 	public IngredientCategory createIngredientCategory() {
-		return IngredientCategory.create(INGREDIENT_CATEGORY_NAME);
+		return IngredientCategory.create(INGREDIENT_CATEGORY_ID, INGREDIENT_CATEGORY_NAME);
 	}
 
 	public CustomIngredient createCustomIngredient(IngredientCategory ingredientCategory) {

@@ -1,6 +1,5 @@
 package dazaram.eureka.ingredient.api;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -16,7 +15,6 @@ import dazaram.eureka.ingredient.dto.CustomIngredientRequest;
 import dazaram.eureka.ingredient.dto.FindAllCategoryIngredientResponse;
 import dazaram.eureka.ingredient.dto.GetSelectedIngredientInfoResponse;
 import dazaram.eureka.ingredient.dto.UserIngredientDetailsDto;
-import dazaram.eureka.ingredient.service.IngredientCategoryService;
 import dazaram.eureka.ingredient.service.IngredientService;
 import lombok.RequiredArgsConstructor;
 
@@ -24,17 +22,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class IngredientApiController {
 	private final IngredientService ingredientService;
-	private final IngredientCategoryService ingredientCategoryService;
 
 	@GetMapping("/api/v1/ingredients/categories")
 	public List<FindAllCategoryIngredientResponse> findAllIngredientsByCategoryId(
-		@RequestParam(required = false) Long categoryId) {
-		if (categoryId == null) {
-			return ingredientCategoryService.findAllCategoryIngredient();
+		@RequestParam(required = false) String categoryId) {
+		if (categoryId.isEmpty()) {
+			return ingredientService.findAllCategoryIngredient();
 		}
-		IngredientCategory ingredientCategory = ingredientCategoryService.findById(categoryId);
-
-		return new ArrayList<>(List.of(new FindAllCategoryIngredientResponse(ingredientCategory)));
+		return ingredientService.findCategoryIngredient(categoryId);
 	}
 
 	@PostMapping("/api/v1/ingredients/selected")
@@ -44,10 +39,9 @@ public class IngredientApiController {
 	}
 
 	@PostMapping("/api/v1/ingredients/store")
-	public List<UserIngredientDetailsDto> setSelectedIngredient(
+	public List<Long> setSelectedIngredient(
 		@RequestBody @Valid List<UserIngredientDetailsDto> userIngredientDetails) {
-		ingredientService.storeUserIngredient(userIngredientDetails);
-		return userIngredientDetails;
+		return ingredientService.storeUserIngredient(userIngredientDetails);
 	}
 
 	@PostMapping("/api/v1/custom-ingredients")

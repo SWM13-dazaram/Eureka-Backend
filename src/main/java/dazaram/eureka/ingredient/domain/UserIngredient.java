@@ -6,11 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import dazaram.eureka.BaseTimeEntity;
+import dazaram.eureka.ingredient.dto.UserIngredientDetailsDto;
 import dazaram.eureka.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -23,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class UserIngredient extends BaseTimeEntity {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_ingredient_id")
 	private Long id;
 
@@ -56,5 +58,16 @@ public class UserIngredient extends BaseTimeEntity {
 		if (user != null) {
 			user.addUserIngredient(this);
 		}
+	}
+
+	public static UserIngredient CreateFromDto(UserIngredientDetailsDto dto, Ingredient ingredient){
+		return UserIngredient.builder()
+			.id(dto.getId())
+			.name(dto.getName())
+			.insertDate(dto.getInsertDate())
+			.expireDate(dto.getExpireDate())
+			.memo(dto.getMemo())
+			.ingredient(ingredient)
+			.build();
 	}
 }
