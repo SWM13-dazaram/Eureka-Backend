@@ -95,7 +95,7 @@ public class IngredientService {
 				ingredientRepository.findIngredientsByIngredientCategory(ingredientCategory))));
 	}
 
-	public IngredientCategory findIngredientCategoryById(Long id) {
+	public IngredientCategory findIngredientCategoryById(String id) {
 		if (id == null) {
 			return null;
 		}

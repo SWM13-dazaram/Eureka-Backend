@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class CustomIngredientRequest {
-	private Long categoryId;
+	private String categoryId;
 
 	private CustomIngredientDetailsDto userIngredient;
 }
