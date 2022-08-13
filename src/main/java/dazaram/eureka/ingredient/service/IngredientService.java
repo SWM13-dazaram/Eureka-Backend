@@ -1,6 +1,5 @@
 package dazaram.eureka.ingredient.service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import dazaram.eureka.ingredient.domain.Ingredient;
 import dazaram.eureka.ingredient.domain.IngredientCategory;
 import dazaram.eureka.ingredient.domain.UserIngredient;
-import dazaram.eureka.ingredient.dto.BasicIngredientDto;
 import dazaram.eureka.ingredient.dto.FindAllCategoryIngredientResponse;
 import dazaram.eureka.ingredient.dto.GetSelectedIngredientInfoResponse;
 import dazaram.eureka.ingredient.dto.UserIngredientDetailsDto;
@@ -33,7 +31,7 @@ public class IngredientService {
 
 	private Long CreateUserIngredient(UserIngredientDetailsDto dto) {
 		Ingredient ingredient = findIngredientById(dto.getIngredient().getId());
-		UserIngredient userIngredient = UserIngredient.CreateFromDto(dto, ingredient);
+		UserIngredient userIngredient = UserIngredient.createFromDto(dto, ingredient);
 		return userIngredientRepository.save(userIngredient).getId();
 	}
 
@@ -93,7 +91,7 @@ public class IngredientService {
 	@Transactional
 	public Long updateUserIngredient(UserIngredientDetailsDto dto) {
 		Ingredient ingredient = findIngredientById(dto.getIngredient().getId());
-		UserIngredient userIngredient = UserIngredient.CreateFromDto(dto, ingredient);
+		UserIngredient userIngredient = UserIngredient.createFromDto(dto, ingredient);
 		return userIngredientRepository.save(userIngredient).getId();
 	}
 }
