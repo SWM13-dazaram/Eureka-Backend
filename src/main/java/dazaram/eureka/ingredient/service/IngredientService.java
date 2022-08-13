@@ -11,13 +11,17 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import dazaram.eureka.ingredient.domain.CustomIngredient;
 import dazaram.eureka.ingredient.domain.Ingredient;
 import dazaram.eureka.ingredient.domain.IngredientCategory;
 import dazaram.eureka.ingredient.domain.UserIngredient;
 import dazaram.eureka.ingredient.dto.BasicIngredientDto;
-import dazaram.eureka.ingredient.dto.FindAllCategoryIngredientResponse;
+import dazaram.eureka.ingredient.dto.CustomIngredientDetailsDto;
+import dazaram.eureka.ingredient.dto.CustomIngredientRequest;
 import dazaram.eureka.ingredient.dto.GetSelectedIngredientInfoResponse;
 import dazaram.eureka.ingredient.dto.UserIngredientDetailsDto;
+import dazaram.eureka.ingredient.repository.CustomIngredientRepository;
+import dazaram.eureka.ingredient.dto.FindAllCategoryIngredientResponse;
 import dazaram.eureka.ingredient.repository.IngredientCategoryRepository;
 import dazaram.eureka.ingredient.repository.IngredientRepository;
 import dazaram.eureka.ingredient.repository.UserIngredientRepository;
@@ -29,9 +33,10 @@ import lombok.RequiredArgsConstructor;
 public class IngredientService {
 	private final IngredientRepository ingredientRepository;
 	private final UserIngredientRepository userIngredientRepository;
+	private final CustomIngredientRepository customIngredientRepository;
 	private final IngredientCategoryRepository ingredientCategoryRepository;
 
-	private Long CreateUserIngredient(UserIngredientDetailsDto dto) {
+	private Long createUserIngredient(UserIngredientDetailsDto dto) {
 		Ingredient ingredient = findIngredientById(dto.getIngredient().getId());
 		UserIngredient userIngredient = UserIngredient.CreateFromDto(dto, ingredient);
 		return userIngredientRepository.save(userIngredient).getId();
@@ -53,9 +58,9 @@ public class IngredientService {
 	}
 
 	@Transactional
-	public List<Long> StoreUserIngredient(List<UserIngredientDetailsDto> userIngredientDetails) {
+	public List<Long> storeUserIngredient(List<UserIngredientDetailsDto> userIngredientDetails) {
 		return userIngredientDetails.stream()
-			.map(this::CreateUserIngredient)
+			.map(this::createUserIngredient)
 			.collect(Collectors.toList());
 	}
 
@@ -88,5 +93,30 @@ public class IngredientService {
 		return new ArrayList<>(List.of(
 			new FindAllCategoryIngredientResponse(ingredientCategory,
 				ingredientRepository.findIngredientsByIngredientCategory(ingredientCategory))));
+	}
+
+	public IngredientCategory findIngredientCategoryById(Long id) {
+		if (id == null) {
+			return null;
+		}
+		Optional<IngredientCategory> byId = ingredientCategoryRepository.findById(id);
+
+		return byId.isEmpty() ? null : byId.get();
+	}
+
+	@Transactional
+	public void storeCustomIngredient(CustomIngredientRequest customIngredientRequest) {
+		CustomIngredientDetailsDto ingredientDetails = customIngredientRequest.getUserIngredient();
+
+		CustomIngredient customIngredient = CustomIngredient.builder()
+			.insertDate(ingredientDetails.getInsertDate())
+			.expireDate(ingredientDetails.getExpireDate())
+			.memo(ingredientDetails.getMemo())
+			.name(ingredientDetails.getIngredient().getName())
+			.icon(ingredientDetails.getIngredient().getIcon())
+			.ingredientCategory(this.findIngredientCategoryById(customIngredientRequest.getCategoryId()))
+			.build();
+
+		customIngredientRepository.save(customIngredient);
 	}
 }
