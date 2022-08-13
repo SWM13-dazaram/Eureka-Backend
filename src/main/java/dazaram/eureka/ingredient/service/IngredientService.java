@@ -1,6 +1,5 @@
 package dazaram.eureka.ingredient.service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,13 +14,12 @@ import dazaram.eureka.ingredient.domain.CustomIngredient;
 import dazaram.eureka.ingredient.domain.Ingredient;
 import dazaram.eureka.ingredient.domain.IngredientCategory;
 import dazaram.eureka.ingredient.domain.UserIngredient;
-import dazaram.eureka.ingredient.dto.BasicIngredientDto;
 import dazaram.eureka.ingredient.dto.CustomIngredientDetailsDto;
 import dazaram.eureka.ingredient.dto.CustomIngredientRequest;
+import dazaram.eureka.ingredient.dto.FindAllCategoryIngredientResponse;
 import dazaram.eureka.ingredient.dto.GetSelectedIngredientInfoResponse;
 import dazaram.eureka.ingredient.dto.UserIngredientDetailsDto;
 import dazaram.eureka.ingredient.repository.CustomIngredientRepository;
-import dazaram.eureka.ingredient.dto.FindAllCategoryIngredientResponse;
 import dazaram.eureka.ingredient.repository.IngredientCategoryRepository;
 import dazaram.eureka.ingredient.repository.IngredientRepository;
 import dazaram.eureka.ingredient.repository.UserIngredientRepository;
@@ -118,5 +116,11 @@ public class IngredientService {
 			.build();
 
 		customIngredientRepository.save(customIngredient);
+	}
+
+	public List<UserIngredientDetailsDto> getAllUserIngredientDetails() {
+		return userIngredientRepository.findAll().stream()
+			.map(UserIngredientDetailsDto::new)
+			.collect(Collectors.toList());
 	}
 }
