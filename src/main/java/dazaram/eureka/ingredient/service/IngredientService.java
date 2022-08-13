@@ -36,7 +36,7 @@ public class IngredientService {
 
 	private Long createUserIngredient(UserIngredientDetailsDto dto) {
 		Ingredient ingredient = findIngredientById(dto.getIngredient().getId());
-		UserIngredient userIngredient = UserIngredient.CreateFromDto(dto, ingredient);
+		UserIngredient userIngredient = UserIngredient.createFromDto(dto, ingredient);
 		return userIngredientRepository.save(userIngredient).getId();
 	}
 
@@ -122,5 +122,12 @@ public class IngredientService {
 		return userIngredientRepository.findAll().stream()
 			.map(UserIngredientDetailsDto::new)
 			.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public Long updateUserIngredient(UserIngredientDetailsDto dto) {
+		Ingredient ingredient = findIngredientById(dto.getIngredient().getId());
+		UserIngredient userIngredient = UserIngredient.createFromDto(dto, ingredient);
+		return userIngredientRepository.save(userIngredient).getId();
 	}
 }

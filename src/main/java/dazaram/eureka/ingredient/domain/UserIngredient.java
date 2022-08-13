@@ -60,7 +60,7 @@ public class UserIngredient extends BaseTimeEntity {
 		}
 	}
 
-	public static UserIngredient CreateFromDto(UserIngredientDetailsDto dto, Ingredient ingredient){
+	public static UserIngredient createFromDto(UserIngredientDetailsDto dto, Ingredient ingredient){
 		return UserIngredient.builder()
 			.id(dto.getId())
 			.name(dto.getName())
