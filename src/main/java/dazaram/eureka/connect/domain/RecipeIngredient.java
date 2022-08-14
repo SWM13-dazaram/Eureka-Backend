@@ -13,7 +13,6 @@ import dazaram.eureka.BaseTimeEntity;
 import dazaram.eureka.ingredient.domain.Ingredient;
 import dazaram.eureka.recipe.domain.Recipe;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,10 +35,24 @@ public class RecipeIngredient extends BaseTimeEntity {
 
 	private String quantity;
 
-	@Builder
-	public RecipeIngredient(Recipe recipe, Ingredient ingredient, String quantity) {
-		this.recipe = recipe;
-		this.ingredient = ingredient;
+	private RecipeIngredient(String quantity) {
 		this.quantity = quantity;
+	}
+
+	public static RecipeIngredient create(Recipe recipe, Ingredient ingredient, String quantity) {
+		RecipeIngredient recipeIngredient = new RecipeIngredient(quantity);
+		recipeIngredient.setRecipe(recipe);
+		recipeIngredient.setIngredient(ingredient);
+		return recipeIngredient;
+	}
+
+	private void setIngredient(Ingredient ingredient) {
+		this.ingredient = ingredient;
+		ingredient.getRecipeIngredients().add(this);
+	}
+
+	private void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
+		recipe.getRecipeIngredients().add(this);
 	}
 }

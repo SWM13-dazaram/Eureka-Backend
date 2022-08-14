@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import dazaram.eureka.BaseTimeEntity;
+import dazaram.eureka.connect.domain.RecipeIngredient;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,11 +38,15 @@ public class Ingredient extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ingredient_category_id")
 	private IngredientCategory ingredientCategory;
-
 	private String icon;
 
 	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
-	private List<UserIngredient> userIngredients;
+	private List<UserIngredient> userIngredients = new ArrayList<>();
+	;
+
+	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
+	private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+	;
 
 	@Builder
 	public Ingredient(Long id, String name, Long expirePeriod, IngredientCategory ingredientCategory, String icon) {

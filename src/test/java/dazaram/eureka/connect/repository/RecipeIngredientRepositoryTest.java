@@ -40,10 +40,7 @@ class RecipeIngredientRepositoryTest extends RecipeTest {
 
 	@BeforeEach
 	void setUp() {
-		recipeIngredient = RecipeIngredient.builder()
-			.ingredient(ingredient)
-			.recipe(existingRecipe)
-			.build();
+		recipeIngredient = RecipeIngredient.create(existingRecipe, ingredient, null);
 
 		savedIngredient = ingredientRepository.save(ingredient);
 		savedExistingRecipe = existingRecipeRepository.save(existingRecipe);
@@ -73,15 +70,13 @@ class RecipeIngredientRepositoryTest extends RecipeTest {
 			.name(ingredientName)
 			.build());
 
-		recipeIngredientRepository.save(RecipeIngredient.builder()
-			.recipe(existingRecipe)
-			.ingredient(ingredient2)
-			.build());
+		recipeIngredientRepository.save(RecipeIngredient.create(existingRecipe, ingredient2, null));
+
 		//when
 		List<RecipeIngredient> recipeIngredients = recipeIngredientRepository.findAllByRecipe(existingRecipe);
 		// then
 		assertAll(
-			() -> assertThat(recipeIngredients.size()).isEqualTo(2),
+			() -> assertThat(recipeIngredients).hasSize(2),
 			() -> assertThat(recipeIngredients.get(0).getIngredient().getName()).isEqualTo(INGREDIENT_NAME),
 			() -> assertThat(recipeIngredients.get(1).getIngredient().getName()).isEqualTo(ingredientName)
 		);
