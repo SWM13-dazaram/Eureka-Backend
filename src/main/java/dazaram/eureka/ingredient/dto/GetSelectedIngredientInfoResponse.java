@@ -5,15 +5,11 @@ import lombok.Data;
 
 @Data
 public class GetSelectedIngredientInfoResponse {
-	private Long id;
-	private String name;
-	private String icon;
+	private BasicIngredientDto ingredient;
 	private Long expirePeriod;
 
 	public GetSelectedIngredientInfoResponse(Ingredient ingredient) {
-		id = ingredient.getId();
-		name = ingredient.getName();
-		icon = ingredient.getIcon();
-		expirePeriod = ingredient.getExpirePeriod();
+		this.ingredient = new BasicIngredientDto(ingredient);
+		this.expirePeriod = ingredient.getExpirePeriod();
 	}
 }
