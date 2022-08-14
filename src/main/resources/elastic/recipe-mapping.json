@@ -1,0 +1,43 @@
+{
+  "properties": {
+    "id": {
+      "type": "keyword"
+    },
+    "url": {
+      "type": "keyword"
+    },
+    "title": {
+      "type": "text",
+      "analyzer": "nori"
+    },
+    "ingredients": {
+      "type": "nested",
+      "properties": {
+        "id": {
+          "type": "keyword"
+        },
+        "name": {
+          "type": "keyword"
+        },
+        "categoryName": {
+          "type": "keyword"
+        },
+        "categoryId": {
+          "type": "keyword"
+        }
+      }
+    },
+    "recipeSequences": {
+      "type": "nested",
+      "properties": {
+        "content": {
+          "type": "text",
+          "analyzer": "nori"
+        },
+        "sequence": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
