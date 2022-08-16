@@ -11,13 +11,18 @@
       "analyzer": "nori"
     },
     "ingredients": {
-      "type": "nested",
       "properties": {
         "id": {
           "type": "keyword"
         },
         "name": {
-          "type": "keyword"
+          "type": "text",
+          "analyzer": "nori",
+          "fields": {
+            "nameKeyword": {
+              "type": "keyword"
+            }
+          }
         },
         "categoryName": {
           "type": "keyword"
@@ -28,7 +33,6 @@
       }
     },
     "recipeSequences": {
-      "type": "nested",
       "properties": {
         "content": {
           "type": "text",
