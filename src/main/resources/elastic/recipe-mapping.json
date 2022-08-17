@@ -10,6 +10,9 @@
       "type": "text",
       "analyzer": "nori"
     },
+    "image": {
+      "type": "keyword"
+    },
     "ingredients": {
       "properties": {
         "id": {
@@ -23,6 +26,9 @@
               "type": "keyword"
             }
           }
+        },
+        "icon": {
+          "type": "keyword"
         },
         "categoryName": {
           "type": "keyword"
