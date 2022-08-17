@@ -12,10 +12,12 @@ public class IngredientDocument {
 	private String name;
 	private String categoryName;
 	private String categoryId;
+	private String icon;
 
 	public IngredientDocument(Ingredient ingredient) {
 		this.id = ingredient.getId();
 		this.name = ingredient.getName();
+		this.icon = ingredient.getIcon();
 		this.categoryName = ingredient.getIngredientCategory().getName();
 		this.categoryId = ingredient.getIngredientCategory().getId();
 	}

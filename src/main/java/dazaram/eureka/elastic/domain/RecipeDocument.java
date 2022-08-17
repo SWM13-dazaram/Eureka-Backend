@@ -29,6 +29,7 @@ public class RecipeDocument {
 	private Long id;
 	private String url;
 	private String title;
+	private String image;
 	private List<IngredientDocument> ingredients;
 	private List<RecipeSequenceDocument> recipeSequences;
 
@@ -36,6 +37,7 @@ public class RecipeDocument {
 		this.id = existingRecipe.getId();
 		this.url = existingRecipe.getUrl();
 		this.title = existingRecipe.getName();
+		this.image = existingRecipe.getImage();
 		this.ingredients = existingRecipe.getRecipeIngredients().stream()
 			.map(RecipeIngredient::getIngredient)
 			.map(IngredientDocument::new)
