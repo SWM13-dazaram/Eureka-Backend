@@ -42,11 +42,9 @@ public class Ingredient extends BaseTimeEntity {
 
 	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
 	private List<UserIngredient> userIngredients = new ArrayList<>();
-	;
 
 	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
 	private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
-	;
 
 	@Builder
 	public Ingredient(Long id, String name, Long expirePeriod, IngredientCategory ingredientCategory, String icon) {

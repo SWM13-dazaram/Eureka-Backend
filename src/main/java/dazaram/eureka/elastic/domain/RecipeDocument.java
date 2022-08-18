@@ -46,4 +46,10 @@ public class RecipeDocument {
 			.map(RecipeSequenceDocument::new)
 			.collect(Collectors.toList());
 	}
+
+	public List<Long> getAllIngredientsIds() {
+		return ingredients.stream().map(IngredientDocument::getId)
+			.collect(Collectors.toList());
+	}
+	
 }
