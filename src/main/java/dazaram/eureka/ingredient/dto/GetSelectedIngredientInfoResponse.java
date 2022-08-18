@@ -9,7 +9,7 @@ public class GetSelectedIngredientInfoResponse {
 	private Long expirePeriod;
 
 	public GetSelectedIngredientInfoResponse(Ingredient ingredient) {
-		this.ingredient = new BasicIngredientDto(ingredient);
+		this.ingredient = BasicIngredientDto.fromEntity(ingredient);
 		this.expirePeriod = ingredient.getExpirePeriod();
 	}
 }
