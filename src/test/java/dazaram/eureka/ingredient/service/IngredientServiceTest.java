@@ -23,7 +23,7 @@ class IngredientServiceTest extends IngredientTest {
 	@Test
 	@Transactional
 	public void 존재하지_않는_식재료id를_조회한다() {
-		Ingredient byId = ingredientService.findIngredientById(1L);
+		Ingredient byId = ingredientService.findIngredientById(-1L);
 
 		assertAll(
 			() -> assertThat(byId).isEqualTo(null)

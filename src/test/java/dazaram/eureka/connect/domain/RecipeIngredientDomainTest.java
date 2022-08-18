@@ -20,10 +20,7 @@ public class RecipeIngredientDomainTest extends RecipeTest {
 		// given
 
 		// when
-		recipeIngredient = RecipeIngredient.builder()
-			.ingredient(ingredient)
-			.recipe(existingRecipe)
-			.build();
+		recipeIngredient = RecipeIngredient.create(existingRecipe, ingredient, null);
 		// then
 		assertAll(
 			() -> assertThat(recipeIngredient.getRecipe()).isEqualTo(existingRecipe),

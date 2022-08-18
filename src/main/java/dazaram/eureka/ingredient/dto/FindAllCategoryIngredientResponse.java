@@ -17,7 +17,7 @@ public class FindAllCategoryIngredientResponse {
 		this.categoryId = ingredientCategory.getId();
 		this.categoryName = ingredientCategory.getName();
 		this.ingredients = ingredients.stream()
-			.map(BasicIngredientDto::new)
+			.map(BasicIngredientDto::fromEntity)
 			.collect(Collectors.toList());
 	}
 }

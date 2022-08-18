@@ -1,0 +1,53 @@
+{
+  "properties": {
+    "id": {
+      "type": "keyword"
+    },
+    "url": {
+      "type": "keyword"
+    },
+    "title": {
+      "type": "text",
+      "analyzer": "nori"
+    },
+    "image": {
+      "type": "keyword"
+    },
+    "ingredients": {
+      "properties": {
+        "id": {
+          "type": "keyword"
+        },
+        "name": {
+          "type": "text",
+          "analyzer": "nori",
+          "fields": {
+            "nameKeyword": {
+              "type": "keyword"
+            }
+          }
+        },
+        "icon": {
+          "type": "keyword"
+        },
+        "categoryName": {
+          "type": "keyword"
+        },
+        "categoryId": {
+          "type": "keyword"
+        }
+      }
+    },
+    "recipeSequences": {
+      "properties": {
+        "content": {
+          "type": "text",
+          "analyzer": "nori"
+        },
+        "sequence": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
