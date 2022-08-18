@@ -8,7 +8,7 @@ import dazaram.eureka.ingredient.domain.UserIngredient;
 import lombok.Data;
 
 @Data
-// @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserIngredientDetailsDto {
 	private Long id;
 	private String name;
