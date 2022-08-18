@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import dazaram.eureka.BaseTimeEntity;
+import dazaram.eureka.connect.domain.RecipeIngredient;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,6 +48,9 @@ public abstract class Recipe extends BaseTimeEntity {
 
 	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
 	private List<RecipeSequence> recipeSequences = new ArrayList<>();
+
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+	private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
 	public Recipe(
 		String name,

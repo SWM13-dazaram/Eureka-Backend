@@ -1,0 +1,9 @@
+{
+  "analysis": {
+    "analyzer": {
+      "nori": {
+        "type": "nori"
+      }
+    }
+  }
+}
