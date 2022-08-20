@@ -39,9 +39,9 @@ public class RecipeElasticService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public void initWithExistingRecipe() {
+	public void initWithExistingRecipe(int bulkSize) {
 		recipeElasticRepository.deleteAll();
-		double pageContentSize = 5000.0;
+		double pageContentSize = bulkSize * 1.0;
 		IntStream.rangeClosed(0, (int)Math.ceil(existingRecipeRepository.findAll().size() / (pageContentSize)))
 			.forEach(i -> {
 				List<RecipeDocument> recipeDocuments = existingRecipeRepository.findAllExistingRecipeForElastic(
