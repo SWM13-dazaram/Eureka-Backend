@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-// @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserIngredientDetailsDto {
 	private Long id;
 	private String name;
@@ -24,7 +24,7 @@ public class UserIngredientDetailsDto {
 	private String memo;
 	private BasicIngredientDto ingredient;
 
-	public UserIngredientDetailsDto(UserIngredient userIngredient){
+	public UserIngredientDetailsDto(UserIngredient userIngredient) {
 		id = userIngredient.getId();
 		name = userIngredient.getName();
 		insertDate = userIngredient.getInsertDate();
