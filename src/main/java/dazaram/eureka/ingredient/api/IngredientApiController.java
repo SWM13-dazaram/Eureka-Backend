@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import dazaram.eureka.ingredient.dto.BasicIngredientDto;
 import dazaram.eureka.ingredient.dto.CustomIngredientRequest;
 import dazaram.eureka.ingredient.dto.FindAllCategoryIngredientResponse;
 import dazaram.eureka.ingredient.dto.GetSelectedIngredientInfoResponse;
@@ -20,6 +21,7 @@ import dazaram.eureka.ingredient.dto.IngredientCategoryDto;
 import dazaram.eureka.ingredient.dto.UserIngredientDetailsDto;
 import dazaram.eureka.ingredient.service.IngredientCategoryService;
 import dazaram.eureka.ingredient.service.IngredientService;
+import dazaram.eureka.ingredient.service.PrimaryIngredientService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -27,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class IngredientApiController {
 	private final IngredientService ingredientService;
 	private final IngredientCategoryService ingredientCategoryService;
+	private final PrimaryIngredientService primaryIngredientService;
 
 	@GetMapping("/api/v1/ingredients/categories")
 	public List<FindAllCategoryIngredientResponse> findAllIngredientsByCategoryId(
@@ -74,5 +77,10 @@ public class IngredientApiController {
 	@GetMapping("/api/v1/ingredients-categories")
 	public List<IngredientCategoryDto> getIngredientCategories() {
 		return ingredientCategoryService.getAllIngredientCategories();
+	}
+
+	@GetMapping("/api/v1/ingredients/primary")
+	public List<BasicIngredientDto> getPrimaryIngredient() {
+		return primaryIngredientService.getAllPrimaryIngredients();
 	}
 }

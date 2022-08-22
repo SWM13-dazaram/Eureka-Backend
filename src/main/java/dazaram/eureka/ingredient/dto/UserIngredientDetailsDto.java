@@ -30,6 +30,6 @@ public class UserIngredientDetailsDto {
 		insertDate = userIngredient.getInsertDate();
 		expireDate = userIngredient.getExpireDate();
 		memo = userIngredient.getMemo();
-		ingredient = new BasicIngredientDto(userIngredient.getIngredient());
+		ingredient = BasicIngredientDto.fromIngredient(userIngredient.getIngredient());
 	}
 }

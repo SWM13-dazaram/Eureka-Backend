@@ -15,7 +15,7 @@ public class FindAllCategoryIngredientResponse {
 	public FindAllCategoryIngredientResponse(IngredientCategory ingredientCategory, List<Ingredient> ingredients) {
 		this.category = IngredientCategoryDto.createFromEntity(ingredientCategory);
 		this.ingredients = ingredients.stream()
-			.map(BasicIngredientDto::new)
+			.map(BasicIngredientDto::fromIngredient)
 			.collect(Collectors.toList());
 	}
 }
