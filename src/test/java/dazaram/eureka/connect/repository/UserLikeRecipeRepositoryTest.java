@@ -18,8 +18,8 @@ import dazaram.eureka.connect.domain.UserLikeRecipe;
 import dazaram.eureka.recipe.RecipeTest;
 import dazaram.eureka.recipe.domain.ExistingRecipe;
 import dazaram.eureka.recipe.repository.ExistingRecipeRepository;
-import dazaram.eureka.user.domain.Gender;
 import dazaram.eureka.user.domain.User;
+import dazaram.eureka.user.enums.Gender;
 import dazaram.eureka.user.repository.UserRepository;
 
 @SpringBootTest

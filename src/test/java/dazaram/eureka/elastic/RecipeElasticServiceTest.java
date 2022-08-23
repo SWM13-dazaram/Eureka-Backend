@@ -14,8 +14,8 @@ import dazaram.eureka.ingredient.domain.UserIngredient;
 import dazaram.eureka.ingredient.repository.IngredientRepository;
 import dazaram.eureka.ingredient.repository.UserIngredientRepository;
 import dazaram.eureka.recipe.domain.dto.RecipeDto;
-import dazaram.eureka.user.domain.Gender;
 import dazaram.eureka.user.domain.User;
+import dazaram.eureka.user.enums.Gender;
 import dazaram.eureka.user.repository.UserRepository;
 
 @SpringBootTest

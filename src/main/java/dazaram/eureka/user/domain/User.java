@@ -16,8 +16,10 @@ import javax.persistence.OneToMany;
 import dazaram.eureka.BaseTimeEntity;
 import dazaram.eureka.ingredient.domain.CustomIngredient;
 import dazaram.eureka.ingredient.domain.UserIngredient;
+import dazaram.eureka.user.enums.Gender;
+import dazaram.eureka.user.enums.LoginType;
+import dazaram.eureka.user.enums.RoleType;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,39 +34,54 @@ public class User extends BaseTimeEntity {
 	@Column(name = "user_id")
 	private Long id;
 
+	private String loginId;
+	private String nickName;
+	private String email;
 	private String name;
 	private String phoneNumber;
-	private boolean pushAlarmAllow;
-
+	private Boolean pushAlarmAllow;
 	private String profileImage;
 
 	@Enumerated(EnumType.STRING)
+	private LoginType loginType;
+
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
+
+	@Enumerated(EnumType.STRING)
+	private RoleType roleType;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Oauth> oauths = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<UserTaste> userTastes;
+	private List<UserTaste> userTastes = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<UserIngredient> userIngredients;
+	private List<UserIngredient> userIngredients = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<CustomIngredient> customIngredients;
+	private List<CustomIngredient> customIngredients = new ArrayList<>();
 
 	@Builder
-	public User(Long id, String name, String phoneNumber, boolean pushAlarmAllow, String profileImage, Gender gender) {
-		this.id = id;
+	public User(String loginId, String nickName, String email, String name, String phoneNumber,
+		Boolean pushAlarmAllow, String profileImage, LoginType loginType, Gender gender, RoleType roleType,
+		List<Oauth> oauths, List<UserTaste> userTastes, List<UserIngredient> userIngredients,
+		List<CustomIngredient> customIngredients) {
+		this.loginId = loginId;
+		this.nickName = nickName;
+		this.email = email;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.pushAlarmAllow = pushAlarmAllow;
 		this.profileImage = profileImage;
+		this.loginType = loginType;
 		this.gender = gender;
-		this.oauths = new ArrayList<>();
-		this.userTastes = new ArrayList<>();
-		this.userIngredients = new ArrayList<>();
-		this.customIngredients = new ArrayList<>();
+		this.roleType = roleType;
+		this.oauths = oauths;
+		this.userTastes = userTastes;
+		this.userIngredients = userIngredients;
+		this.customIngredients = customIngredients;
 	}
 
 	public void addUserTaste(UserTaste userTaste) {
