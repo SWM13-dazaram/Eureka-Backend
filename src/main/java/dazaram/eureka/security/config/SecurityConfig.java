@@ -59,7 +59,7 @@ public class SecurityConfig {
 
 			.and()
 			.authorizeRequests()
-			.antMatchers("api/v1/ingredients/categories?categoryId=VEGE").permitAll()
+			.antMatchers("/api/v1/elastic/recipes/init").permitAll()
 			.antMatchers("/api/v1/login").permitAll() // 로그인
 
 			.anyRequest().authenticated()

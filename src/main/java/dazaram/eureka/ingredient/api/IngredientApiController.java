@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,10 +23,11 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1")
 public class IngredientApiController {
 	private final IngredientService ingredientService;
 
-	@GetMapping("/api/v1/ingredients/categories")
+	@GetMapping("/ingredients/categories")
 	public List<FindAllCategoryIngredientResponse> findAllIngredientsByCategoryId(
 		@RequestParam(required = false) String categoryId) {
 		if (categoryId.isEmpty()) {
@@ -34,37 +36,37 @@ public class IngredientApiController {
 		return ingredientService.findCategoryIngredient(categoryId);
 	}
 
-	@PostMapping("/api/v1/ingredients/selected")
+	@PostMapping("/ingredients/selected")
 	public List<GetSelectedIngredientInfoResponse> getSelectedIngredientInfo(
 		@RequestBody @Valid List<Long> selectedIngredientIds) {
 		return ingredientService.getSelectedIngredientInfo(selectedIngredientIds);
 	}
 
-	@PostMapping("/api/v1/ingredients/store")
+	@PostMapping("/ingredients/store")
 	public List<Long> setSelectedIngredient(
 		@RequestBody @Valid List<UserIngredientDetailsDto> userIngredientDetails) {
 		return ingredientService.storeUserIngredient(userIngredientDetails);
 	}
 
-	@PostMapping("/api/v1/custom-ingredients")
+	@PostMapping("/custom-ingredients")
 	public CustomIngredientRequest createCustomIngredient(
 		@RequestBody @Valid CustomIngredientRequest customIngredientRequest) {
 		ingredientService.storeCustomIngredient(customIngredientRequest);
 		return customIngredientRequest;
 	}
 
-	@GetMapping("/api/v1/user-ingredients")
+	@GetMapping("/user-ingredients")
 	public List<UserIngredientDetailsDto> findAllUserIngredientsByUserId() {
 		return ingredientService.getAllUserIngredientDetails();
 	}
 
-	@PutMapping("/api/v1/user-ingredients")
+	@PutMapping("/user-ingredients")
 	public Long updateUserIngredient(@RequestBody @Valid UserIngredientDetailsDto userIngredientDetailsDto) {
 		return ingredientService.updateUserIngredient(userIngredientDetailsDto);
 	}
 
-	@DeleteMapping("/api/v1/user-ingredients/{userIngredientId}")
-	public String deleteUserIngredient(@PathVariable("userIngredientId") Long id){
+	@DeleteMapping("/user-ingredients/{userIngredientId}")
+	public String deleteUserIngredient(@PathVariable("userIngredientId") Long id) {
 		return ingredientService.deleteUserIngredient(id);
 	}
 }

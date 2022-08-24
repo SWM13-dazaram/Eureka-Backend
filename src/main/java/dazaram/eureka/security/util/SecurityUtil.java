@@ -1,7 +1,5 @@
 package dazaram.eureka.security.util;
 
-import java.util.Optional;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,12 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SecurityUtil {
-	public static Optional<Long> getCurrentUserId() {
+	public static Long getCurrentUserId() {
 		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		if (authentication == null) {
-			log.debug("Security Context에 인증 정보가 없습니다.");
-			return Optional.empty();
+			throw new RuntimeException("Security Context에 인증 정보가 없습니다.");
 		}
 
 		Long userId = null;
@@ -28,8 +25,14 @@ public class SecurityUtil {
 			userId = Long.valueOf(springSecurityUser.getUsername());
 		} else if (authentication.getPrincipal() instanceof String) {
 			userId = (Long)authentication.getPrincipal();
+		} else if (authentication.getPrincipal() instanceof Long) {
+			userId = (Long)authentication.getPrincipal();
 		}
 
-		return Optional.ofNullable(userId);
+		if (userId == null) {
+			throw new RuntimeException("userId가 존재하지 않습니다");
+		}
+
+		return userId;
 	}
 }
