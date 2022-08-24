@@ -125,8 +125,9 @@ public class IngredientService {
 		customIngredientRepository.save(customIngredient);
 	}
 
-	public List<UserIngredientDetailsDto> getAllUserIngredientDetails() {
-		return userIngredientRepository.findAll().stream()
+	public List<UserIngredientDetailsDto> getAllUserIngredientDetails(Long userId) {
+		User user = getCurrentUser(userId);
+		return userIngredientRepository.findAllByUser(user).stream()
 			.map(UserIngredientDetailsDto::new)
 			.collect(Collectors.toList());
 	}

@@ -59,7 +59,7 @@ public class IngredientApiController {
 
 	@GetMapping("/user-ingredients")
 	public List<UserIngredientDetailsDto> findAllUserIngredientsByUserId() {
-		return ingredientService.getAllUserIngredientDetails();
+		return ingredientService.getAllUserIngredientDetails(getCurrentUserId());
 	}
 
 	@PutMapping("/user-ingredients")
