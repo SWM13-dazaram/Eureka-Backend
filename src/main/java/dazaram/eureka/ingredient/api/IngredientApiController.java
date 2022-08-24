@@ -1,5 +1,7 @@
 package dazaram.eureka.ingredient.api;
 
+import static dazaram.eureka.security.util.SecurityUtil.*;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -45,13 +47,13 @@ public class IngredientApiController {
 	@PostMapping("/ingredients/store")
 	public List<Long> setSelectedIngredient(
 		@RequestBody @Valid List<UserIngredientDetailsDto> userIngredientDetails) {
-		return ingredientService.storeUserIngredient(userIngredientDetails);
+		return ingredientService.storeUserIngredient(getCurrentUserId(), userIngredientDetails);
 	}
 
 	@PostMapping("/custom-ingredients")
 	public CustomIngredientRequest createCustomIngredient(
 		@RequestBody @Valid CustomIngredientRequest customIngredientRequest) {
-		ingredientService.storeCustomIngredient(customIngredientRequest);
+		ingredientService.storeCustomIngredient(getCurrentUserId(), customIngredientRequest);
 		return customIngredientRequest;
 	}
 
@@ -62,11 +64,11 @@ public class IngredientApiController {
 
 	@PutMapping("/user-ingredients")
 	public Long updateUserIngredient(@RequestBody @Valid UserIngredientDetailsDto userIngredientDetailsDto) {
-		return ingredientService.updateUserIngredient(userIngredientDetailsDto);
+		return ingredientService.updateUserIngredient(getCurrentUserId(), userIngredientDetailsDto);
 	}
 
 	@DeleteMapping("/user-ingredients/{userIngredientId}")
-	public String deleteUserIngredient(@PathVariable("userIngredientId") Long id) {
-		return ingredientService.deleteUserIngredient(id);
+	public String deleteUserIngredient(@PathVariable("userIngredientId") Long userIngredientId) {
+		return ingredientService.deleteUserIngredient(getCurrentUserId(), userIngredientId);
 	}
 }

@@ -1,5 +1,7 @@
 package dazaram.eureka.recipe.api;
 
+import static dazaram.eureka.security.util.SecurityUtil.*;
+
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,6 @@ public class RecipeApiController {
 
 	@GetMapping("/expire-date")
 	public List<RecipeDto> recommendExpireDateRecipes() {
-		return recipeElasticService.recommendExpireDateRecipes(148L);
+		return recipeElasticService.recommendExpireDateRecipes(getCurrentUserId());
 	}
 }
