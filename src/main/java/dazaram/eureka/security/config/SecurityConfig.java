@@ -1,4 +1,4 @@
-package dazaram.eureka.common.config;
+package dazaram.eureka.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -10,10 +10,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import dazaram.eureka.common.jwt.JwtAccessDeniedHandler;
-import dazaram.eureka.common.jwt.JwtAuthenticationEntryPoint;
-import dazaram.eureka.common.jwt.JwtSecurityConfig;
-import dazaram.eureka.common.jwt.TokenProvider;
+import dazaram.eureka.security.jwt.JwtAccessDeniedHandler;
+import dazaram.eureka.security.jwt.JwtAuthenticationEntryPoint;
+import dazaram.eureka.security.jwt.JwtSecurityConfig;
+import dazaram.eureka.security.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 
 @EnableWebSecurity
@@ -60,8 +60,7 @@ public class SecurityConfig {
 			.and()
 			.authorizeRequests()
 			.antMatchers("api/v1/ingredients/categories?categoryId=VEGE").permitAll()
-			.antMatchers("/api/authenticate").permitAll() // 로그인
-			.antMatchers("/api/signup").permitAll() // 회원가입
+			.antMatchers("/api/v1/login").permitAll() // 로그인
 
 			.anyRequest().authenticated()
 

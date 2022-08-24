@@ -16,9 +16,11 @@ import javax.persistence.OneToMany;
 import dazaram.eureka.BaseTimeEntity;
 import dazaram.eureka.ingredient.domain.CustomIngredient;
 import dazaram.eureka.ingredient.domain.UserIngredient;
+import dazaram.eureka.security.dto.LoginUserInfoDto;
 import dazaram.eureka.user.enums.Gender;
-import dazaram.eureka.user.enums.LoginType;
+import dazaram.eureka.user.enums.ProviderType;
 import dazaram.eureka.user.enums.RoleType;
+import dazaram.eureka.user.enums.UserStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,7 +45,10 @@ public class User extends BaseTimeEntity {
 	private String profileImage;
 
 	@Enumerated(EnumType.STRING)
-	private LoginType loginType;
+	private UserStatus userStatus;
+
+	@Enumerated(EnumType.STRING)
+	private ProviderType providerType;
 
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
@@ -64,8 +69,8 @@ public class User extends BaseTimeEntity {
 	private List<CustomIngredient> customIngredients = new ArrayList<>();
 
 	@Builder
-	public User(String loginId, String nickName, String email, String name, String phoneNumber,
-		Boolean pushAlarmAllow, String profileImage, LoginType loginType, Gender gender, RoleType roleType,
+	public User(String loginId, String nickName, String email, String name, String phoneNumber, Boolean pushAlarmAllow,
+		String profileImage, UserStatus userStatus, ProviderType providerType, Gender gender, RoleType roleType,
 		List<Oauth> oauths, List<UserTaste> userTastes, List<UserIngredient> userIngredients,
 		List<CustomIngredient> customIngredients) {
 		this.loginId = loginId;
@@ -75,7 +80,8 @@ public class User extends BaseTimeEntity {
 		this.phoneNumber = phoneNumber;
 		this.pushAlarmAllow = pushAlarmAllow;
 		this.profileImage = profileImage;
-		this.loginType = loginType;
+		this.userStatus = userStatus;
+		this.providerType = providerType;
 		this.gender = gender;
 		this.roleType = roleType;
 		this.oauths = oauths;
@@ -99,4 +105,23 @@ public class User extends BaseTimeEntity {
 	public void addCustomIngredient(CustomIngredient customIngredient) {
 		customIngredients.add(customIngredient);
 	}
+
+	public boolean isActivate() {
+		return this.userStatus.equals(UserStatus.ACTIVE);
+	}
+
+	// 이거 그냥 다 똑같이 from으로 바꿔도 되지않나 없는거 null로 넣으면ㄲ듯
+	public static User fromKaKaoDto(LoginUserInfoDto loginUserInfoDto) {
+		return User.builder()
+			.loginId(loginUserInfoDto.getLoginId())
+			.providerType(loginUserInfoDto.getProviderType())
+			.nickName(loginUserInfoDto.getNickName())
+			.profileImage(loginUserInfoDto.getProfileImage())
+			.email(loginUserInfoDto.getEmail())
+			.pushAlarmAllow(true)
+			.roleType(RoleType.USER)
+			.userStatus(UserStatus.ACTIVE)
+			.build();
+	}
+
 }

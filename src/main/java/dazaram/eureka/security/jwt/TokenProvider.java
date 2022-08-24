@@ -1,4 +1,4 @@
-package dazaram.eureka.common.jwt;
+package dazaram.eureka.security.jwt;
 
 import java.security.Key;
 import java.util.Arrays;
@@ -50,7 +50,6 @@ public class TokenProvider implements InitializingBean {
 		String authorities = authentication.getAuthorities().stream()
 			.map(GrantedAuthority::getAuthority)
 			.collect(Collectors.joining(","));
-
 		long now = (new Date()).getTime();
 		Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
@@ -74,8 +73,8 @@ public class TokenProvider implements InitializingBean {
 			.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
 			.map(SimpleGrantedAuthority::new)
 			.collect(Collectors.toList());
-		// getSubject는 authentication.getName()
-		User principal = new User(claims.getSubject(), "", authorities);
+		// getSubject는 authentication.getName() -> userId
+		User principal = new User(claims.getSubject(), "password", authorities); //여기도 해야하는거가튼뎅
 
 		return new UsernamePasswordAuthenticationToken(principal, token, authorities);
 	}

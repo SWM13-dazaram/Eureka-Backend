@@ -1,4 +1,4 @@
-package dazaram.eureka.common.jwt;
+package dazaram.eureka.security.jwt;
 
 import java.io.IOException;
 
@@ -38,7 +38,6 @@ public class JwtFilter extends GenericFilterBean {
 		} else {
 			log.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
 		}
-
 		filterChain.doFilter(servletRequest, servletResponse);
 	}
 

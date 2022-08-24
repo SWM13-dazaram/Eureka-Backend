@@ -1,6 +1,6 @@
 package dazaram.eureka.user.enums;
 
-public enum LoginType {
+public enum ProviderType {
 	APPLE,
 	KAKAO
 }

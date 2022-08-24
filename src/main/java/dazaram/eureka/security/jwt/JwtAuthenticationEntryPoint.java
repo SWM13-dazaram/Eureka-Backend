@@ -1,4 +1,4 @@
-package dazaram.eureka.common.jwt;
+package dazaram.eureka.security.jwt;
 
 import java.io.IOException;
 
