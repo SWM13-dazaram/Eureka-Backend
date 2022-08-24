@@ -39,6 +39,7 @@ class AiRecipeLogRepositoryTest extends RecipeTest {
 		user = User.builder()
 			.name(userName)
 			.gender(Gender.M)
+			.pushAlarmAllow(true)
 			.build();
 		// when
 		userRepository.save(user);

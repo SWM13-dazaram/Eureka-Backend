@@ -41,7 +41,7 @@ public class User extends BaseTimeEntity {
 	private String email;
 	private String name;
 	private String phoneNumber;
-	private Boolean pushAlarmAllow;
+	private Boolean pushAlarmAllow = Boolean.TRUE;
 	private String profileImage;
 
 	@Enumerated(EnumType.STRING)
@@ -55,10 +55,6 @@ public class User extends BaseTimeEntity {
 
 	@Enumerated(EnumType.STRING)
 	private RoleType roleType;
-
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<Oauth> oauths = new ArrayList<>();
-
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserTaste> userTastes = new ArrayList<>();
 
@@ -70,9 +66,7 @@ public class User extends BaseTimeEntity {
 
 	@Builder
 	public User(String loginId, String nickName, String email, String name, String phoneNumber, Boolean pushAlarmAllow,
-		String profileImage, UserStatus userStatus, ProviderType providerType, Gender gender, RoleType roleType,
-		List<Oauth> oauths, List<UserTaste> userTastes, List<UserIngredient> userIngredients,
-		List<CustomIngredient> customIngredients) {
+		String profileImage, UserStatus userStatus, ProviderType providerType, Gender gender, RoleType roleType) {
 		this.loginId = loginId;
 		this.nickName = nickName;
 		this.email = email;
@@ -84,20 +78,16 @@ public class User extends BaseTimeEntity {
 		this.providerType = providerType;
 		this.gender = gender;
 		this.roleType = roleType;
-		this.oauths = oauths;
-		this.userTastes = userTastes;
-		this.userIngredients = userIngredients;
-		this.customIngredients = customIngredients;
+
+		if (pushAlarmAllow == null) {
+			this.pushAlarmAllow = true;
+		}
 	}
 
 	public void addUserTaste(UserTaste userTaste) {
 		userTastes.add(userTaste);
 	}
-
-	public void addOauth(Oauth oauth) {
-		oauths.add(oauth);
-	}
-
+	
 	public void addUserIngredient(UserIngredient userIngredient) {
 		userIngredients.add(userIngredient);
 	}

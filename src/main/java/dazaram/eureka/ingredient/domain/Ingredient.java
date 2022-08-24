@@ -53,7 +53,6 @@ public class Ingredient extends BaseTimeEntity {
 		this.expirePeriod = expirePeriod;
 		this.ingredientCategory = ingredientCategory;
 		this.icon = icon;
-		this.userIngredients = new ArrayList<>();
 
 		if (ingredientCategory != null) {
 			ingredientCategory.addIngredient(this);
