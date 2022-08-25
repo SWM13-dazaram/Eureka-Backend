@@ -15,8 +15,8 @@ import dazaram.eureka.connect.domain.AiRecipeLog;
 import dazaram.eureka.recipe.RecipeTest;
 import dazaram.eureka.recipe.domain.AiRecipe;
 import dazaram.eureka.recipe.repository.AiRecipeRepository;
-import dazaram.eureka.user.domain.Gender;
 import dazaram.eureka.user.domain.User;
+import dazaram.eureka.user.enums.Gender;
 import dazaram.eureka.user.repository.UserRepository;
 
 @SpringBootTest
@@ -39,6 +39,7 @@ class AiRecipeLogRepositoryTest extends RecipeTest {
 		user = User.builder()
 			.name(userName)
 			.gender(Gender.M)
+			.pushAlarmAllow(true)
 			.build();
 		// when
 		userRepository.save(user);

@@ -54,7 +54,7 @@ public class RecipeElasticService {
 
 	public List<RecipeDto> recommendExpireDateRecipes(Long userId) {
 
-		User user = userRepository.findById(userId).get();
+		User user = getCurrentUser(userId);
 
 		List<UserIngredient> userIngredients = userIngredientRepository.findAllByUser(user);
 
@@ -185,6 +185,11 @@ public class RecipeElasticService {
 			.map(Ingredient::getName)
 			.forEach(name -> stringBuffer.append(name).append(" "));
 		return stringBuffer.toString().strip();
+	}
+
+	private User getCurrentUser(Long userId) {
+		return userRepository.findById(userId)
+			.orElseThrow(() -> new RuntimeException("존재하지 않는 유저입니다"));
 	}
 
 }

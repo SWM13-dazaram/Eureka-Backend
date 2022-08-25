@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import dazaram.eureka.user.domain.Gender;
 import dazaram.eureka.user.domain.Taste;
 import dazaram.eureka.user.domain.User;
 import dazaram.eureka.user.domain.UserTaste;
+import dazaram.eureka.user.enums.Gender;
 
 @SpringBootTest
 class UserTasteRepositoryTest {

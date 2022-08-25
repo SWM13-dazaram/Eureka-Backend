@@ -56,14 +56,12 @@ public abstract class Recipe extends BaseTimeEntity {
 		String name,
 		String image,
 		RecipeCategory recipeCategory,
-		RecipePlatform recipePlatform,
-		List<RecipeSequence> recipeSequences
+		RecipePlatform recipePlatform
 	) {
 		this.name = name;
 		this.image = image;
 		this.recipeCategory = recipeCategory;
 		this.recipePlatform = recipePlatform;
-		this.recipeSequences = recipeSequences;
 	}
 
 	public void setRecipeSequences(List<RecipeSequence> recipeSequences) {

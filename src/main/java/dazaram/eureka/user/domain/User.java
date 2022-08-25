@@ -16,8 +16,12 @@ import javax.persistence.OneToMany;
 import dazaram.eureka.BaseTimeEntity;
 import dazaram.eureka.ingredient.domain.CustomIngredient;
 import dazaram.eureka.ingredient.domain.UserIngredient;
+import dazaram.eureka.security.dto.LoginUserInfoDto;
+import dazaram.eureka.user.enums.Gender;
+import dazaram.eureka.user.enums.ProviderType;
+import dazaram.eureka.user.enums.RoleType;
+import dazaram.eureka.user.enums.UserStatus;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,49 +36,58 @@ public class User extends BaseTimeEntity {
 	@Column(name = "user_id")
 	private Long id;
 
+	private String loginId;
+	private String nickName;
+	private String email;
 	private String name;
 	private String phoneNumber;
-	private boolean pushAlarmAllow;
-
+	private Boolean pushAlarmAllow = Boolean.TRUE;
 	private String profileImage;
+
+	@Enumerated(EnumType.STRING)
+	private UserStatus userStatus;
+
+	@Enumerated(EnumType.STRING)
+	private ProviderType providerType;
 
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 
+	@Enumerated(EnumType.STRING)
+	private RoleType roleType;
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<Oauth> oauths = new ArrayList<>();
+	private List<UserTaste> userTastes = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<UserTaste> userTastes;
+	private List<UserIngredient> userIngredients = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<UserIngredient> userIngredients;
-
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<CustomIngredient> customIngredients;
+	private List<CustomIngredient> customIngredients = new ArrayList<>();
 
 	@Builder
-	public User(Long id, String name, String phoneNumber, boolean pushAlarmAllow, String profileImage, Gender gender) {
-		this.id = id;
+	public User(String loginId, String nickName, String email, String name, String phoneNumber, Boolean pushAlarmAllow,
+		String profileImage, UserStatus userStatus, ProviderType providerType, Gender gender, RoleType roleType) {
+		this.loginId = loginId;
+		this.nickName = nickName;
+		this.email = email;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.pushAlarmAllow = pushAlarmAllow;
 		this.profileImage = profileImage;
+		this.userStatus = userStatus;
+		this.providerType = providerType;
 		this.gender = gender;
-		this.oauths = new ArrayList<>();
-		this.userTastes = new ArrayList<>();
-		this.userIngredients = new ArrayList<>();
-		this.customIngredients = new ArrayList<>();
+		this.roleType = roleType;
+
+		if (pushAlarmAllow == null) {
+			this.pushAlarmAllow = true;
+		}
 	}
 
 	public void addUserTaste(UserTaste userTaste) {
 		userTastes.add(userTaste);
 	}
-
-	public void addOauth(Oauth oauth) {
-		oauths.add(oauth);
-	}
-
+	
 	public void addUserIngredient(UserIngredient userIngredient) {
 		userIngredients.add(userIngredient);
 	}
@@ -82,4 +95,23 @@ public class User extends BaseTimeEntity {
 	public void addCustomIngredient(CustomIngredient customIngredient) {
 		customIngredients.add(customIngredient);
 	}
+
+	public boolean isActivate() {
+		return this.userStatus.equals(UserStatus.ACTIVE);
+	}
+
+	// 이거 그냥 다 똑같이 from으로 바꿔도 되지않나 없는거 null로 넣으면ㄲ듯
+	public static User fromKaKaoDto(LoginUserInfoDto loginUserInfoDto) {
+		return User.builder()
+			.loginId(loginUserInfoDto.getLoginId())
+			.providerType(loginUserInfoDto.getProviderType())
+			.nickName(loginUserInfoDto.getNickName())
+			.profileImage(loginUserInfoDto.getProfileImage())
+			.email(loginUserInfoDto.getEmail())
+			.pushAlarmAllow(true)
+			.roleType(RoleType.USER)
+			.userStatus(UserStatus.ACTIVE)
+			.build();
+	}
+
 }
