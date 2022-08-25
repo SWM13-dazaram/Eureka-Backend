@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,8 @@ import dazaram.eureka.ingredient.repository.CustomIngredientRepository;
 import dazaram.eureka.ingredient.repository.IngredientCategoryRepository;
 import dazaram.eureka.ingredient.repository.IngredientRepository;
 import dazaram.eureka.ingredient.repository.UserIngredientRepository;
+import dazaram.eureka.user.domain.User;
+import dazaram.eureka.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -34,9 +37,11 @@ public class IngredientService {
 	private final CustomIngredientRepository customIngredientRepository;
 	private final IngredientCategoryRepository ingredientCategoryRepository;
 
-	private Long createUserIngredient(UserIngredientDetailsDto dto) {
+	private final UserRepository userRepository;
+
+	private Long createUserIngredient(UserIngredientDetailsDto dto, User user) {
 		Ingredient ingredient = findIngredientById(dto.getIngredient().getId());
-		UserIngredient userIngredient = UserIngredient.createFromDto(dto, ingredient);
+		UserIngredient userIngredient = UserIngredient.createFromDto(dto, user, ingredient);
 		return userIngredientRepository.save(userIngredient).getId();
 	}
 
@@ -56,9 +61,10 @@ public class IngredientService {
 	}
 
 	@Transactional
-	public List<Long> storeUserIngredient(List<UserIngredientDetailsDto> userIngredientDetails) {
+	public List<Long> storeUserIngredient(Long userId, List<UserIngredientDetailsDto> userIngredientDetails) {
+		User user = getCurrentUser(userId);
 		return userIngredientDetails.stream()
-			.map(this::createUserIngredient)
+			.map(dto -> createUserIngredient(dto, user))
 			.collect(Collectors.toList());
 	}
 
@@ -103,7 +109,7 @@ public class IngredientService {
 	}
 
 	@Transactional
-	public void storeCustomIngredient(CustomIngredientRequest customIngredientRequest) {
+	public void storeCustomIngredient(Long userId, CustomIngredientRequest customIngredientRequest) {
 		CustomIngredientDetailsDto ingredientDetails = customIngredientRequest.getUserIngredient();
 
 		CustomIngredient customIngredient = CustomIngredient.builder()
@@ -113,27 +119,45 @@ public class IngredientService {
 			.name(ingredientDetails.getIngredient().getName())
 			.icon(ingredientDetails.getIngredient().getIcon())
 			.ingredientCategory(this.findIngredientCategoryById(customIngredientRequest.getCategoryId()))
+			.user(getCurrentUser(userId))
 			.build();
 
 		customIngredientRepository.save(customIngredient);
 	}
 
-	public List<UserIngredientDetailsDto> getAllUserIngredientDetails() {
-		return userIngredientRepository.findAll().stream()
+	public List<UserIngredientDetailsDto> getAllUserIngredientDetails(Long userId) {
+		User user = getCurrentUser(userId);
+		return userIngredientRepository.findAllByUser(user).stream()
 			.map(UserIngredientDetailsDto::new)
 			.collect(Collectors.toList());
 	}
 
 	@Transactional
-	public Long updateUserIngredient(UserIngredientDetailsDto dto) {
+	public Long updateUserIngredient(Long userId, UserIngredientDetailsDto dto) {
 		Ingredient ingredient = findIngredientById(dto.getIngredient().getId());
-		UserIngredient userIngredient = UserIngredient.createFromDto(dto, ingredient);
-		return userIngredientRepository.save(userIngredient).getId();
+		User user = getCurrentUser(userId);
+		UserIngredient userIngredient = getUserIngredient(dto.getId());
+
+		userIngredient.validateUser(user);
+
+		return userIngredientRepository.save(UserIngredient.createFromDto(dto, user, ingredient)).getId();
+	}
+
+	private UserIngredient getUserIngredient(Long id) {
+		return userIngredientRepository.findById(id)
+			.orElseThrow((NoSuchElementException::new));
 	}
 
 	@Transactional
-	public String deleteUserIngredient(Long id) {
-		userIngredientRepository.deleteUserIngredientById(id);
+	public String deleteUserIngredient(Long userId, Long userIngredientId) {
+		UserIngredient userIngredient = getUserIngredient(userIngredientId);
+		userIngredient.validateUser(getCurrentUser(userId));
+		userIngredientRepository.delete(userIngredient);
 		return "Successfully Deleted";
+	}
+
+	private User getCurrentUser(Long userId) {
+		return userRepository.findById(userId)
+			.orElseThrow(() -> new RuntimeException("존재하지 않는 유저입니다"));
 	}
 }

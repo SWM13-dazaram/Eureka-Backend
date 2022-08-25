@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import dazaram.eureka.recipe.RecipeTest;
 import dazaram.eureka.recipe.domain.AiRecipe;
 import dazaram.eureka.recipe.domain.ExistingRecipe;
-import dazaram.eureka.user.domain.Gender;
 import dazaram.eureka.user.domain.User;
+import dazaram.eureka.user.enums.Gender;
 
 class UserLikeRecipeDomainTest extends RecipeTest {
 

@@ -1,7 +1,5 @@
 package dazaram.eureka.recipe.domain;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -29,11 +27,10 @@ public class AiRecipe extends Recipe {
 		String image,
 		RecipeCategory recipeCategory,
 		RecipePlatform recipePlatform,
-		List<RecipeSequence> recipeSequences,
 		Long referenceRecipeId,
 		ReplaceIngredient replaceIngredient
 	) {
-		super(name, image, recipeCategory, recipePlatform, recipeSequences);
+		super(name, image, recipeCategory, recipePlatform);
 		this.referenceRecipeId = referenceRecipeId;
 		this.replaceIngredient = replaceIngredient;
 	}

@@ -60,18 +60,25 @@ public class UserIngredient extends BaseTimeEntity {
 		}
 	}
 
-	public static UserIngredient createFromDto(UserIngredientDetailsDto dto, Ingredient ingredient) {
+	public static UserIngredient createFromDto(UserIngredientDetailsDto dto, User user, Ingredient ingredient) {
 		return UserIngredient.builder()
 			.id(dto.getId())
 			.name(dto.getName())
 			.insertDate(dto.getInsertDate())
 			.expireDate(dto.getExpireDate())
 			.memo(dto.getMemo())
+			.user(user)
 			.ingredient(ingredient)
 			.build();
 	}
 
 	public Long getIngredientId() {
 		return ingredient.getId();
+	}
+
+	public void validateUser(User user) {
+		if (!(this.user.equals(user))) {
+			throw new RuntimeException("권한이 없는 유저입니다");
+		}
 	}
 }

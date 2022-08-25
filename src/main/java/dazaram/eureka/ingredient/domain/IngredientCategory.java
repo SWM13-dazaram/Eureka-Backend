@@ -29,7 +29,7 @@ public class IngredientCategory {
 	private List<Ingredient> ingredients;
 
 	@OneToMany(mappedBy = "ingredientCategory")
-	private List<CustomIngredient> customIngredients;
+	private List<CustomIngredient> customIngredients = new ArrayList<>();
 
 	public static IngredientCategory create(String id, String name) {
 		return new IngredientCategory(id, name, new ArrayList<>(), new ArrayList<>());
