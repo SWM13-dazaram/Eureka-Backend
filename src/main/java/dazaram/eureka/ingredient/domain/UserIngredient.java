@@ -62,7 +62,6 @@ public class UserIngredient extends BaseTimeEntity {
 
 	public static UserIngredient createFromDto(UserIngredientDetailsDto dto, User user, Ingredient ingredient) {
 		return UserIngredient.builder()
-			.id(dto.getId())
 			.name(dto.getName())
 			.insertDate(dto.getInsertDate())
 			.expireDate(dto.getExpireDate())
