@@ -5,10 +5,10 @@ import dazaram.eureka.common.error.ErrorResponse;
 import lombok.Getter;
 
 @Getter
-public class GlobalException extends RuntimeException {
+public class CustomException extends RuntimeException {
 	private final ErrorCode errorCode;
 
-	public GlobalException(ErrorCode errorCode) {
+	public CustomException(ErrorCode errorCode) {
 		super(errorCode.getMessage());
 		this.errorCode = errorCode;
 	}
