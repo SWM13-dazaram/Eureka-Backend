@@ -1,15 +1,17 @@
 package dazaram.eureka.security.service;
 
+import static dazaram.eureka.common.error.ErrorCode.*;
+
 import java.util.Collections;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import dazaram.eureka.common.exception.CustomException;
 import dazaram.eureka.user.domain.User;
 import dazaram.eureka.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +27,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String userId) {
 		User user = userRepository.findById(Long.valueOf(userId))
-			.orElseThrow(() -> new UsernameNotFoundException(userId + "DB에 존재하지 않는 사용자 입니다"));
+			.orElseThrow(() -> new CustomException(UNAUTHORIZED_USER));
 		return createSecurityUser(userId, user);
 	}
 
 	private org.springframework.security.core.userdetails.User createSecurityUser(String userId, User user) {
 		if (!user.isActivate()) {
-			throw new RuntimeException(userId + " 활성 상태가 아닙니다");
+			throw new CustomException(INACTIVATED_USER);
 		}
 		return new org.springframework.security.core.userdetails.User(
 			userId, passwordEncoder.encode("password"),

@@ -1,9 +1,10 @@
 package dazaram.eureka.user.service;
 
-import java.util.NoSuchElementException;
+import static dazaram.eureka.common.error.ErrorCode.*;
+
 import java.util.Optional;
 
-import org.apache.catalina.connector.Response;
+import org.apache.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import dazaram.eureka.common.exception.CustomException;
 import dazaram.eureka.security.dto.LoginResponse;
 import dazaram.eureka.security.dto.LoginTokenDto;
 import dazaram.eureka.security.dto.LoginUserInfoDto;
@@ -40,7 +42,7 @@ public class UserService {
 		oauthUtil = setLoginUtil(loginTokenDto.getProviderType());
 
 		LoginUserInfoDto loginUserInfoDto = oauthUtil.requestUserInfo(loginTokenDto)
-			.orElseThrow(() -> new NoSuchElementException("Provider에게서 정보를 받아올 수 없습니다"));
+			.orElseThrow(() -> new CustomException(PROVIDER_NOT_IMPLEMENTED));
 
 		Optional<User> byProviderTypeAndLoginId = userRepository.findByProviderTypeAndLoginId(
 			loginUserInfoDto.getProviderType(), loginUserInfoDto.getLoginId());
@@ -62,14 +64,12 @@ public class UserService {
 		// 카카오
 		if (providerType.equals(ProviderType.KAKAO)) {
 			return kakaoLoginUtil;
-		} else if (providerType.equals(ProviderType.APPLE)) {
-			return null;
 		}
-		throw new NoSuchElementException("주어진 Provider 정보가 없습니다");
+		throw new CustomException(PROVIDER_NOT_FOUND);
 	}
 
 	private LoginResponse makeJwtResponse(String userId, Boolean isSignup) {
-		int statusCode = Response.SC_OK;
+		int statusCode = HttpStatus.SC_OK;
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
 			userId, "password");
 
@@ -79,7 +79,7 @@ public class UserService {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		if (isSignup) {
-			statusCode = Response.SC_CREATED;
+			statusCode = HttpStatus.SC_CREATED;
 		}
 
 		return new LoginResponse(tokenProvider.createToken(authentication), statusCode);

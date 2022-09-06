@@ -1,5 +1,7 @@
 package dazaram.eureka.elastic.service;
 
+import static dazaram.eureka.common.error.ErrorCode.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import dazaram.eureka.common.exception.CustomException;
 import dazaram.eureka.elastic.domain.RecipeDocument;
 import dazaram.eureka.elastic.repository.RecipeElasticQueryRepository;
 import dazaram.eureka.elastic.repository.RecipeElasticRepository;
@@ -55,10 +58,11 @@ public class RecipeElasticService {
 		User user = getCurrentUser(userId);
 
 		List<UserIngredient> userIngredients = userIngredientRepository.findAllByUser(user);
+		validateUserIngredients(userIngredients);
 
 		String nameList = getStringBuffer(userIngredients);
-
 		List<RecipeDocument> queryResults = recipeElasticQueryRepository.findByIngredientsNameList(nameList);
+		validateQueryResults(queryResults);
 
 		Set<Long> userIngredientsIds = getUserIngredientsIds(userIngredients);
 
@@ -70,6 +74,18 @@ public class RecipeElasticService {
 		List<Map.Entry<Integer, Double>> indexAndScoreEntry = getIndexAndScoreEntry(indexAndScore);
 
 		return getRecipeDtos(queryResults, indexAndScoreEntry);
+	}
+
+	private void validateUserIngredients(List<UserIngredient> userIngredients) {
+		if (userIngredients.isEmpty()) {
+			throw new CustomException(USERINGREDIENT_NOT_FOUND);
+		}
+	}
+
+	private void validateQueryResults(List<RecipeDocument> queryResults) {
+		if (queryResults.isEmpty()) {
+			throw new CustomException(ELASTIC_RESULT_NOT_FOUND);
+		}
 	}
 
 	private List<RecipeDto> getRecipeDtos(List<RecipeDocument> queryResults,
@@ -187,7 +203,7 @@ public class RecipeElasticService {
 
 	private User getCurrentUser(Long userId) {
 		return userRepository.findById(userId)
-			.orElseThrow(() -> new RuntimeException("존재하지 않는 유저입니다"));
+			.orElseThrow(() -> new CustomException(UNAUTHORIZED_USER));
 	}
 
 }
