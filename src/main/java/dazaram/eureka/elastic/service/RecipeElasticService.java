@@ -1,7 +1,5 @@
 package dazaram.eureka.elastic.service;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -155,7 +153,7 @@ public class RecipeElasticService {
 		HashMap<Long, Double> ingredientIdAndScore = new HashMap<>();
 
 		for (UserIngredient userIngredient : userIngredients) {
-			long expire = ChronoUnit.DAYS.between(LocalDate.now(), userIngredient.getExpireDate());
+			long expire = userIngredient.calculateExpireFromNow();
 			score = 0.0;
 			if (expire < 100) {
 				score = ((100 - expire) / 100.0);
