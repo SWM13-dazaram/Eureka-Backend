@@ -1,4 +1,4 @@
-package dazaram.eureka.elastic.api;
+package dazaram.eureka.elastic.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
