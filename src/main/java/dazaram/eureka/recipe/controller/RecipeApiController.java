@@ -21,6 +21,7 @@ public class RecipeApiController {
 
 	@GetMapping("/expire-date")
 	public ResponseEntity<List<RecipeDto>> recommendExpireDateRecipes() {
-		return ResponseEntity.ok(recipeElasticService.recommendExpireDateRecipes(getCurrentUserId()));
+		final int topRank = 3;
+		return ResponseEntity.ok(recipeElasticService.recommendExpireDateRecipes(getCurrentUserId(), topRank));
 	}
 }

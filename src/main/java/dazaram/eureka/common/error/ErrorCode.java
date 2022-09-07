@@ -17,6 +17,8 @@ public enum ErrorCode {
 	USER_EMAIL_DUPLICATION(HttpStatus.SC_CONFLICT, "USER-EMAIL-409", "존재하는 이메일 입니다"),
 	// recipe
 	RECIPE_NOT_FOUND(HttpStatus.SC_NOT_FOUND, "RECIPE-404", "존재하지 않는 레시피 입니다"),
+	RECIPE_USERINGREDIENT_NO_CONTENT(HttpStatus.SC_NOT_FOUND, "RECIPE-USERINGREDIENT-404",
+		"보유한 식재료로 만들 수 있는 레시피가 없습니다"),
 	// ingredient
 	INGREDIENT_NOT_FOUND(HttpStatus.SC_NOT_FOUND, "INGREDIENT-404", "존재하지 않는 재료 입니다"),
 	// userIngredient
