@@ -9,13 +9,11 @@ import lombok.Data;
 
 @Data
 public class FindAllCategoryIngredientResponse {
-	private String categoryId;
-	private String categoryName;
+	private IngredientCategoryDto category;
 	private List<BasicIngredientDto> ingredients;
 
 	public FindAllCategoryIngredientResponse(IngredientCategory ingredientCategory, List<Ingredient> ingredients) {
-		this.categoryId = ingredientCategory.getId();
-		this.categoryName = ingredientCategory.getName();
+		this.category = IngredientCategoryDto.createFromEntity(ingredientCategory);
 		this.ingredients = ingredients.stream()
 			.map(BasicIngredientDto::fromEntity)
 			.collect(Collectors.toList());
