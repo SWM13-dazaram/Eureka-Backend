@@ -4,6 +4,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import dazaram.eureka.common.error.ErrorCode;
+import dazaram.eureka.common.exception.CustomException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +17,7 @@ public class SecurityUtil {
 		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		if (authentication == null) {
-			throw new RuntimeException("Security Context에 인증 정보가 없습니다.");
+			throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
 		}
 
 		Long userId = null;
@@ -30,7 +32,7 @@ public class SecurityUtil {
 		}
 
 		if (userId == null) {
-			throw new RuntimeException("userId가 존재하지 않습니다");
+			throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
 		}
 
 		return userId;

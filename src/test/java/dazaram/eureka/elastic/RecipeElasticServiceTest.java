@@ -44,26 +44,24 @@ class RecipeElasticServiceTest {
 			.profileImage("src/test_profile.jpg")
 			.gender(Gender.M)
 			.build());
+		saveUserIngredient("양파", saveduser, 2022, 8, 21);
+		saveUserIngredient("고구마", saveduser, 2022, 8, 21);
+		saveUserIngredient("감자", saveduser, 2022, 8, 21);
+		saveUserIngredient("오일", saveduser, 2023, 9, 21);
+		saveUserIngredient("튀김가루", saveduser, 2022, 8, 25);
+		saveUserIngredient("물", saveduser, 2022, 8, 21);
+		saveUserIngredient("간장", saveduser, 2022, 8, 21);
+		saveUserIngredient("양조간장", saveduser, 2022, 8, 21);
+		saveUserIngredient("맛술", saveduser, 2022, 8, 21);
+		saveUserIngredient("다진마늘", saveduser, 2022, 8, 21);
+		saveUserIngredient("후춧가루", saveduser, 2022, 8, 21);
+		saveUserIngredient("깨", saveduser, 2022, 8, 21);
+		saveUserIngredient("대파", saveduser, 2022, 8, 21);
+		saveUserIngredient("고추장", saveduser, 2022, 8, 21);
+		saveUserIngredient("고춧가루", saveduser, 2022, 8, 21);
+		saveUserIngredient("닭", saveduser, 2022, 8, 21);
 
-		userIngredientRepository.save(UserIngredient.builder()
-			.ingredient(ingredientRepository.findByName("감자").get())
-			.user(saveduser)
-			.expireDate(LocalDate.of(2022, 8, 21))
-			.build());
-
-		userIngredientRepository.save(UserIngredient.builder()
-			.ingredient(ingredientRepository.findByName("고구마").get())
-			.user(saveduser)
-			.expireDate(LocalDate.of(2023, 9, 21))
-			.build());
-
-		userIngredientRepository.save(UserIngredient.builder()
-			.ingredient(ingredientRepository.findByName("튀김가루").get())
-			.user(saveduser)
-			.expireDate(LocalDate.of(2022, 8, 25))
-			.build());
-
-		List<RecipeDto> recipeDtos = recipeElasticService.recommendExpireDateRecipes(saveduser.getId());
+		List<RecipeDto> recipeDtos = recipeElasticService.recommendExpireDateRecipes(saveduser.getId(), 3);
 
 		recipeDtos.forEach(recipeDto -> {
 			System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
@@ -72,6 +70,14 @@ class RecipeElasticServiceTest {
 				i -> System.out.println(i.getName())
 			);
 		});
+	}
+
+	private void saveUserIngredient(String name, User saveduser, int year, int month, int dayOfMonth) {
+		userIngredientRepository.save(UserIngredient.builder()
+			.ingredient(ingredientRepository.findByName(name).get())
+			.user(saveduser)
+			.expireDate(LocalDate.of(year, month, dayOfMonth))
+			.build());
 	}
 
 }

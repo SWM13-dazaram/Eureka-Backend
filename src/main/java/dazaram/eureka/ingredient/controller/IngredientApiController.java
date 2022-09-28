@@ -1,4 +1,4 @@
-package dazaram.eureka.ingredient.api;
+package dazaram.eureka.ingredient.controller;
 
 import static dazaram.eureka.security.util.SecurityUtil.*;
 
@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,46 +37,47 @@ public class IngredientApiController {
 	private final PrimaryIngredientService primaryIngredientService;
 
 	@GetMapping("/ingredients/categories")
-	public List<FindAllCategoryIngredientResponse> findAllIngredientsByCategoryId(
+	public ResponseEntity<List<FindAllCategoryIngredientResponse>> findAllIngredientsByCategoryId(
 		@RequestParam(required = false) String categoryId) {
 		if (categoryId.isEmpty()) {
-			return ingredientService.findAllCategoryIngredient();
+			return ResponseEntity.ok(ingredientService.findAllCategoryIngredient());
 		}
-		return ingredientService.findCategoryIngredient(categoryId);
+		return ResponseEntity.ok(ingredientService.findCategoryIngredient(categoryId));
 	}
 
 	@PostMapping("/ingredients/selected")
-	public List<GetSelectedIngredientInfoResponse> getSelectedIngredientInfo(
+	public ResponseEntity<List<GetSelectedIngredientInfoResponse>> getSelectedIngredientInfo(
 		@RequestBody @Valid List<Long> selectedIngredientIds) {
-		return ingredientService.getSelectedIngredientInfo(selectedIngredientIds);
+		return ResponseEntity.ok(ingredientService.getSelectedIngredientInfo(selectedIngredientIds));
 	}
 
 	@PostMapping("/ingredients/store")
-	public List<Long> setSelectedIngredient(
+	public ResponseEntity<List<Long>> setSelectedIngredient(
 		@RequestBody @Valid List<UserIngredientDetailsDto> userIngredientDetails) {
-		return ingredientService.storeUserIngredient(getCurrentUserId(), userIngredientDetails);
+		return ResponseEntity.ok(ingredientService.storeUserIngredient(getCurrentUserId(), userIngredientDetails));
 	}
 
 	@PostMapping("/custom-ingredients")
-	public CustomIngredientRequest createCustomIngredient(
+	public ResponseEntity<CustomIngredientRequest> createCustomIngredient(
 		@RequestBody @Valid CustomIngredientRequest customIngredientRequest) {
 		ingredientService.storeCustomIngredient(getCurrentUserId(), customIngredientRequest);
-		return customIngredientRequest;
+		return ResponseEntity.ok(customIngredientRequest);
 	}
 
 	@GetMapping("/user-ingredients")
-	public List<UserIngredientDetailsDto> findAllUserIngredientsByUserId() {
-		return ingredientService.getAllUserIngredientDetails(getCurrentUserId());
+	public ResponseEntity<List<UserIngredientDetailsDto>> findAllUserIngredientsByUserId() {
+		return ResponseEntity.ok(ingredientService.getAllUserIngredientDetails(getCurrentUserId()));
 	}
 
 	@PutMapping("/user-ingredients")
-	public Long updateUserIngredient(@RequestBody @Valid UserIngredientDetailsDto userIngredientDetailsDto) {
-		return ingredientService.updateUserIngredient(getCurrentUserId(), userIngredientDetailsDto);
+	public ResponseEntity<Long> updateUserIngredient(
+		@RequestBody @Valid UserIngredientDetailsDto userIngredientDetailsDto) {
+		return ResponseEntity.ok(ingredientService.updateUserIngredient(getCurrentUserId(), userIngredientDetailsDto));
 	}
 
 	@DeleteMapping("/user-ingredients/{userIngredientId}")
-	public String deleteUserIngredient(@PathVariable("userIngredientId") Long userIngredientId) {
-		return ingredientService.deleteUserIngredient(getCurrentUserId(), userIngredientId);
+	public ResponseEntity<String> deleteUserIngredient(@PathVariable("userIngredientId") Long userIngredientId) {
+		return ResponseEntity.ok(ingredientService.deleteUserIngredient(getCurrentUserId(), userIngredientId));
 	}
 
 	@GetMapping("/ingredients-categories")

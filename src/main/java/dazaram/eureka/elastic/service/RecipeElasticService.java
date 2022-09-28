@@ -1,7 +1,7 @@
 package dazaram.eureka.elastic.service;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import static dazaram.eureka.common.error.ErrorCode.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import dazaram.eureka.common.exception.CustomException;
 import dazaram.eureka.elastic.domain.RecipeDocument;
 import dazaram.eureka.elastic.repository.RecipeElasticQueryRepository;
 import dazaram.eureka.elastic.repository.RecipeElasticRepository;
@@ -52,110 +53,139 @@ public class RecipeElasticService {
 			});
 	}
 
-	public List<RecipeDto> recommendExpireDateRecipes(Long userId) {
+	public List<RecipeDto> recommendExpireDateRecipes(Long userId, int topRank) {
+		double minScore;
 
 		User user = getCurrentUser(userId);
 
 		List<UserIngredient> userIngredients = userIngredientRepository.findAllByUser(user);
+		validateUserIngredients(userIngredients);
 
 		String nameList = getStringBuffer(userIngredients);
-
 		List<RecipeDocument> queryResults = recipeElasticQueryRepository.findByIngredientsNameList(nameList);
+		validateQueryResults(queryResults);
 
 		Set<Long> userIngredientsIds = getUserIngredientsIds(userIngredients);
 
-		HashMap<Long, Double> ingredientIdAndExpireScore = getExpireScoreMap(userIngredients);
+		HashMap<Integer, Double> indexAndScore = getTotalScore(userIngredients, userIngredientsIds, queryResults);
 
-		HashMap<Integer, Double> indexAndScore = getIntegerDoubleHashMap(userIngredients.size(),
-			userIngredientsIds, queryResults, ingredientIdAndExpireScore);
+		List<Map.Entry<Integer, Double>> sortedIndexAndScoreEntry = sortByScore(indexAndScore);
+		// 100 * ingredientsMaxSize * userIngredientsSize
+		minScore = 100.0 * getIngredientsMaxSize(queryResults) * userIngredients.size();
 
-		List<Map.Entry<Integer, Double>> indexAndScoreEntry = getIndexAndScoreEntry(indexAndScore);
-
-		return getRecipeDtos(queryResults, indexAndScoreEntry);
+		return getTopPerfectRecipeDtos(queryResults, sortedIndexAndScoreEntry, topRank, minScore);
 	}
 
-	private List<RecipeDto> getRecipeDtos(List<RecipeDocument> queryResults,
-		List<Map.Entry<Integer, Double>> indexAndScoreEntry) {
-		List<RecipeDto> recipeDtos = new ArrayList<>();
-		for (int i = 0; i < 3; i++) {
-			recipeDtos.add(RecipeDto.fromDocument(queryResults.get(indexAndScoreEntry.get(i).getKey())));
+	private void validateUserIngredients(List<UserIngredient> userIngredients) {
+		if (userIngredients.isEmpty()) {
+			throw new CustomException(USERINGREDIENT_NOT_FOUND);
 		}
+	}
+
+	private void validateQueryResults(List<RecipeDocument> queryResults) {
+		if (queryResults.isEmpty()) {
+			throw new CustomException(ELASTIC_RESULT_NOT_FOUND);
+		}
+	}
+
+	private List<RecipeDto> getTopPerfectRecipeDtos(List<RecipeDocument> queryResults,
+		List<Map.Entry<Integer, Double>> indexAndScoreEntry, int topRank, double minScore) {
+		List<RecipeDto> recipeDtos = new ArrayList<>();
+		for (int i = 0; i < topRank; i++) {
+			Map.Entry<Integer, Double> indexAndScore = indexAndScoreEntry.get(i);
+			if (Math.abs(indexAndScore.getValue()) < minScore) {
+				break;
+			}
+			recipeDtos.add(RecipeDto.fromDocument(queryResults.get(indexAndScore.getKey())));
+		}
+		validateRecipeDtos(recipeDtos);
 		return recipeDtos;
 	}
 
-	private List<Map.Entry<Integer, Double>> getIndexAndScoreEntry(HashMap<Integer, Double> indexAndScore) {
+	private void validateRecipeDtos(List<RecipeDto> recipeDtos) {
+		if (recipeDtos.isEmpty()) {
+			throw new CustomException(RECIPE_USERINGREDIENT_NO_CONTENT);
+		}
+	}
+
+	private List<Map.Entry<Integer, Double>> sortByScore(HashMap<Integer, Double> indexAndScore) {
 		return indexAndScore.entrySet().stream()
 			.sorted(Map.Entry.comparingByValue())
 			.collect(Collectors.toList());
 	}
 
-	private HashMap<Integer, Double> getIntegerDoubleHashMap(int userIngredientsSize,
-		Set<Long> userIngredientsIds, List<RecipeDocument> queryResults,
-		HashMap<Long, Double> ingredientIdAndExpireScore) {
+	private HashMap<Integer, Double> getTotalScore(List<UserIngredient> userIngredients,
+		Set<Long> userIngredientsIds, List<RecipeDocument> queryResults) {
 
 		double score = 0;
 		int index = 0;
-
+		int userIngredientsSize = userIngredients.size();
 		int ingredientsMaxSize = getIngredientsMaxSize(queryResults);
 
-		HashMap<Integer, Double> indexAndScore = new HashMap<>();
+		HashMap<Long, Double> ingredientIdAndExpireScore = getExpireScorePerIngredient(userIngredients);
+		HashMap<Integer, Double> indexAndTotalScore = new HashMap<>();
 
 		for (RecipeDocument recipeDocument : queryResults) {
 			Set<Long> recipeIngredientsIds = new HashSet<>(recipeDocument.getAllIngredientsIds());
 
-			// 차집합
 			int originalSize = recipeIngredientsIds.size();
-			recipeIngredientsIds.removeAll(userIngredientsIds);
-			int removedSize = recipeIngredientsIds.size();
+			//이 레시피의 재료들 중에서 내가 가지고 있는 것 만 남긴다
+			recipeIngredientsIds.retainAll(userIngredientsIds);
+			int usedSize = recipeIngredientsIds.size();
 
-			score = getUsedScore(userIngredientsSize, ingredientsMaxSize, originalSize, removedSize)
+			score = getUsedScore(userIngredientsSize, ingredientsMaxSize, originalSize, usedSize)
 				+ getQuantityScore(ingredientsMaxSize, originalSize)
-				+ getExpireScore(userIngredientsIds, ingredientIdAndExpireScore, recipeDocument.getAllIngredientsIds());
+				+ getExpireScore(ingredientIdAndExpireScore, recipeIngredientsIds);
 			//내림차순을 위한 음수화
 			score = -score;
-			indexAndScore.put(index, score);
+			indexAndTotalScore.put(index, score);
 			index += 1;
 		}
-		return indexAndScore;
+		return indexAndTotalScore;
 	}
 
-	// 하나라도 있으면 score가 1/200 보다 커야한다 다 더해도 ingredientsMaxSize*userIngredientsSize 보다 작아야한다
-	// 이유 : 1순위: 레시피의 필요 재료를 만족하는가
-	// 		2순위: 유통기한 임박 식재료가 쓰였는가
-	// 		3순위: 얼마나 많은 재료가 레시피에 필요한가
-	private double getExpireScore(Set<Long> userIngredientsIds, HashMap<Long, Double> ingredientIdAndExpireScore,
-		List<Long> ingredientsIds) {
-		double expireScore = 0;
-		Set<Long> intersection = new HashSet<>(ingredientsIds);
-		intersection.retainAll(userIngredientsIds);
-		for (Long ingredientId : intersection) {
-			expireScore += ingredientIdAndExpireScore.get(ingredientId);
-		}
-		return expireScore;
+	/*
+		하나라도 있으면 score가 1/200 보다 커야한다 다 더해도 ingredientsMaxSize * userIngredientsSize 보다 작아야한다
+		이유 : 1순위: 레시피의 필요 재료를 만족하는가
+		2순위: 유통기한 임박 식재료가 쓰였는가
+		3순위: 얼마나 많은 재료가 레시피에 필요한가
+		만약 모든 재료가 오늘 마감이고 모든 재료를 레시피에서 사용한다면 ExpireScore는  userIngredientsSize 이다.
+	*/
+	private double getExpireScore(HashMap<Long, Double> ingredientIdAndExpireScore, Set<Long> recipeIngredientsIds) {
+		return recipeIngredientsIds.stream()
+			.mapToDouble(ingredientIdAndExpireScore::get)
+			.sum();
 	}
 
-	// 재료가 많이 필요한 레시피일수록 score 높게 설정
+	/*
+		QuantityScore (많은 재료가 필요한 레시피 score 높음 범위 : 0~1/200)
+		재료가 많이 필요한 레시피일수록 score 높게 설정
+		레시피에 필요한 재료 갯수/ ingredientsMaxSize
+	 */
 	private double getQuantityScore(int ingredientsMaxSize, int originalSize) {
 		return originalSize / ingredientsMaxSize / 200.0;
 	}
 
-	// score 계산 이 레시피에 사용된 내 식재료 퍼센트(0~100) * ingredientsMaxSize * 100(최소값 : 0, 최대값 ingredientsMaxSize *100)
-	// + 레시피에 필요한 재료 갯수/ ingredientsMaxSize(최대값 1/200, 모두 사용한거라면 똑같은 값 나오므로 많은 재료 필요한 레시피 우선순위 높게)
-	private double getUsedScore(int userIngredientsSize, int ingredientsMaxSize, int originalSize, int removedSize) {
-		return ((originalSize - removedSize) / (double)originalSize) * 100 * ingredientsMaxSize * userIngredientsSize;
+	/*
+		UsedScore
+		이 레시피에 사용된 내 식재료 퍼센트(0~100) * ingredientsMaxSize * userIngredientsSize
+		(최소값 : 0, 최대값 100 * ingredientsMaxSize * userIngredientsSize)
+	*/
+	private double getUsedScore(int userIngredientsSize, int ingredientsMaxSize, int originalSize, int usedSize) {
+		double usedPercent = ((usedSize) / (double)originalSize) * 100;
+		return usedPercent * ingredientsMaxSize * userIngredientsSize;
 	}
 
 	/*
-	유통기한 임박일자 score 매기기
-	한 score 최소 0 최대 1 하나 있으면 1/100
-	각 재료들의 최대 score 다 더한 최대값은 userIngredientsSize
+		유통기한 임박일자 score 매기기
+		한 score 최소 0 최대 1 하나 있으면 1/100
 	 */
-	private HashMap<Long, Double> getExpireScoreMap(List<UserIngredient> userIngredients) {
+	private HashMap<Long, Double> getExpireScorePerIngredient(List<UserIngredient> userIngredients) {
 		double score;
 		HashMap<Long, Double> ingredientIdAndScore = new HashMap<>();
 
 		for (UserIngredient userIngredient : userIngredients) {
-			long expire = ChronoUnit.DAYS.between(LocalDate.now(), userIngredient.getExpireDate());
+			long expire = userIngredient.calculateExpireFromNow();
 			score = 0.0;
 			if (expire < 100) {
 				score = ((100 - expire) / 100.0);
@@ -168,7 +198,7 @@ public class RecipeElasticService {
 	private int getIngredientsMaxSize(List<RecipeDocument> queryResults) {
 		return queryResults.stream()
 			.map(recipeDocument -> recipeDocument.getIngredients().size())
-			.max(Integer::compare).orElse(1000);
+			.max(Integer::compare).orElse(10000);
 	}
 
 	private HashSet<Long> getUserIngredientsIds(List<UserIngredient> userIngredients) {
@@ -189,7 +219,7 @@ public class RecipeElasticService {
 
 	private User getCurrentUser(Long userId) {
 		return userRepository.findById(userId)
-			.orElseThrow(() -> new RuntimeException("존재하지 않는 유저입니다"));
+			.orElseThrow(() -> new CustomException(UNAUTHORIZED_USER));
 	}
 
 }
