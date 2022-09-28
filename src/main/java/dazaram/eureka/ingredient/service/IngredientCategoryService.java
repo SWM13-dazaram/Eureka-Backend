@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dazaram.eureka.ingredient.domain.IngredientCategory;
-import dazaram.eureka.ingredient.dto.FindAllCategoryIngredientResponse;
+import dazaram.eureka.ingredient.dto.IngredientCategoryDto;
 import dazaram.eureka.ingredient.repository.IngredientCategoryRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -22,5 +22,11 @@ public class IngredientCategoryService {
 		Optional<IngredientCategory> byId = ingredientCategoryRepository.findById(id);
 
 		return byId.isEmpty() ? null : byId.get();
+	}
+
+	public List<IngredientCategoryDto> getAllIngredientCategories() {
+		return ingredientCategoryRepository.findAll().stream()
+			.map(IngredientCategoryDto::createFromEntity)
+			.collect(Collectors.toList());
 	}
 }

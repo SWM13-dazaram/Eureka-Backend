@@ -17,11 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import dazaram.eureka.ingredient.dto.BasicIngredientDto;
 import dazaram.eureka.ingredient.dto.CustomIngredientRequest;
 import dazaram.eureka.ingredient.dto.FindAllCategoryIngredientResponse;
 import dazaram.eureka.ingredient.dto.GetSelectedIngredientInfoResponse;
+import dazaram.eureka.ingredient.dto.IngredientCategoryDto;
 import dazaram.eureka.ingredient.dto.UserIngredientDetailsDto;
+import dazaram.eureka.ingredient.service.IngredientCategoryService;
 import dazaram.eureka.ingredient.service.IngredientService;
+import dazaram.eureka.ingredient.service.PrimaryIngredientService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,6 +33,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1")
 public class IngredientApiController {
 	private final IngredientService ingredientService;
+	private final IngredientCategoryService ingredientCategoryService;
+	private final PrimaryIngredientService primaryIngredientService;
 
 	@GetMapping("/ingredients/categories")
 	public ResponseEntity<List<FindAllCategoryIngredientResponse>> findAllIngredientsByCategoryId(
@@ -72,5 +78,15 @@ public class IngredientApiController {
 	@DeleteMapping("/user-ingredients/{userIngredientId}")
 	public ResponseEntity<String> deleteUserIngredient(@PathVariable("userIngredientId") Long userIngredientId) {
 		return ResponseEntity.ok(ingredientService.deleteUserIngredient(getCurrentUserId(), userIngredientId));
+	}
+
+	@GetMapping("/ingredients-categories")
+	public List<IngredientCategoryDto> getIngredientCategories() {
+		return ingredientCategoryService.getAllIngredientCategories();
+	}
+
+	@GetMapping("/ingredients/primary")
+	public List<BasicIngredientDto> getPrimaryIngredient() {
+		return primaryIngredientService.getAllPrimaryIngredients();
 	}
 }
