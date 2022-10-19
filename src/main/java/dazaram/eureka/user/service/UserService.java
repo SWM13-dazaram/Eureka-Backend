@@ -38,7 +38,6 @@ public class UserService {
 
 	@Transactional
 	public LoginResponse loginOrSignUp(LoginTokenDto loginTokenDto) {
-		Boolean isSignUp = false;
 		oauthUtil = setLoginUtil(loginTokenDto.getProviderType());
 
 		LoginUserInfoDto loginUserInfoDto = oauthUtil.requestUserInfo(loginTokenDto)
@@ -47,13 +46,10 @@ public class UserService {
 		Optional<User> byProviderTypeAndLoginId = userRepository.findByProviderTypeAndLoginId(
 			loginUserInfoDto.getProviderType(), loginUserInfoDto.getLoginId());
 		// 정보 없으면 회원가입하기
-		if (byProviderTypeAndLoginId.isEmpty()) {
-			isSignUp = true;
-		}
 		User user = byProviderTypeAndLoginId
 			.orElseGet(() -> signUp(oauthUtil.createEntity(loginUserInfoDto)));
 
-		return makeJwtResponse(user.getId().toString(), isSignUp);
+		return makeJwtResponse(user.getId().toString(), byProviderTypeAndLoginId.isEmpty());
 	}
 
 	private User signUp(User user) {
