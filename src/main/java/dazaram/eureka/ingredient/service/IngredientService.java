@@ -81,7 +81,9 @@ public class IngredientService {
 			map.get(category).add(ing);
 		}
 
-		for (IngredientCategory category : map.keySet()) {
+		ArrayList<IngredientCategory> keyList = new ArrayList<>(map.keySet());
+		keyList.sort((s1, s2) -> s1.getId().compareTo(s2.getId()));
+		for (IngredientCategory category : keyList) {
 			ret.add(new FindAllCategoryIngredientResponse(category, map.get(category)));
 		}
 		return ret;

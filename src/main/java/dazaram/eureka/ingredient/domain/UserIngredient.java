@@ -1,6 +1,7 @@
 package dazaram.eureka.ingredient.domain;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -75,9 +76,17 @@ public class UserIngredient extends BaseTimeEntity {
 		return ingredient.getId();
 	}
 
+	public String getIngredientName() {
+		return ingredient.getName();
+	}
+
 	public void validateUser(User user) {
 		if (!(this.user.equals(user))) {
 			throw new RuntimeException("권한이 없는 유저입니다");
 		}
+	}
+
+	public long calculateExpireFromNow() {
+		return ChronoUnit.DAYS.between(LocalDate.now(), expireDate);
 	}
 }

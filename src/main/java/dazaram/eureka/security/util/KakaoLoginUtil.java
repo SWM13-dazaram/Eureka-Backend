@@ -1,12 +1,13 @@
 package dazaram.eureka.security.util;
 
+import static dazaram.eureka.common.error.ErrorCode.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import dazaram.eureka.common.exception.CustomException;
 import dazaram.eureka.security.dto.LoginTokenDto;
 import dazaram.eureka.security.dto.LoginUserInfoDto;
 import dazaram.eureka.user.domain.User;
@@ -36,14 +38,14 @@ public class KakaoLoginUtil implements OauthUtil {
 			HttpURLConnection conn = getHttpURLConnection(loginTokenDto, reqURL);
 
 			if (conn.getResponseCode() != 200) {
-				throw new NoSuchElementException("Provider에게서 정보를 받아올 수 없습니다");
+				throw new CustomException(PROVIDER_NOT_IMPLEMENTED);
 			}
 
 			String result = getResult(conn.getInputStream());
 			loginUserInfoDto = parseUserInfo(result, loginTokenDto.getProviderType());
 
 		} catch (IOException e) {
-			throw new RuntimeException("정보를 읽는과정에서 문제가 생겼습니다");
+			throw new CustomException(PROVIDER_NOT_IMPLEMENTED);
 		}
 		return loginUserInfoDto;
 	}
