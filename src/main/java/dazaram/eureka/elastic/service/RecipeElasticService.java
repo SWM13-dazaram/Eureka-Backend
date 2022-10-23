@@ -19,7 +19,6 @@ import dazaram.eureka.common.exception.CustomException;
 import dazaram.eureka.elastic.domain.RecipeDocument;
 import dazaram.eureka.elastic.repository.RecipeElasticQueryRepository;
 import dazaram.eureka.elastic.repository.RecipeElasticRepository;
-import dazaram.eureka.ingredient.domain.Ingredient;
 import dazaram.eureka.ingredient.domain.UserIngredient;
 import dazaram.eureka.ingredient.repository.UserIngredientRepository;
 import dazaram.eureka.recipe.domain.dto.RecipeDto;
@@ -211,8 +210,7 @@ public class RecipeElasticService {
 		StringBuffer stringBuffer = new StringBuffer();
 
 		sortedUserIngredients.stream()
-			.map(UserIngredient::getIngredient)
-			.map(Ingredient::getName)
+			.map(UserIngredient::getIngredientName)
 			.forEach(name -> stringBuffer.append(name).append(" "));
 		return stringBuffer.toString().strip();
 	}
