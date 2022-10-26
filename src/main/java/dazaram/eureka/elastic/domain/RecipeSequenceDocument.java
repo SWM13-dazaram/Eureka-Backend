@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecipeSequenceDocument {
 	private String content;
-	private int sequence;
+	private Long sequence;
 
 	public RecipeSequenceDocument(RecipeSequence recipeSequence) {
 		this.content = recipeSequence.getContent();

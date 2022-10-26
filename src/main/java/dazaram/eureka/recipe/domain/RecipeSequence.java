@@ -33,5 +33,5 @@ public class RecipeSequence extends BaseTimeEntity {
 
 	private String content;
 
-	private int sequence;
+	private Long sequence;
 }
