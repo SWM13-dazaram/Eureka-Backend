@@ -17,6 +17,7 @@ import dazaram.eureka.security.dto.LoginResponse;
 import dazaram.eureka.security.dto.LoginTokenDto;
 import dazaram.eureka.security.dto.LoginUserInfoDto;
 import dazaram.eureka.security.jwt.TokenProvider;
+import dazaram.eureka.security.util.AppleLoginUtil;
 import dazaram.eureka.security.util.KakaoLoginUtil;
 import dazaram.eureka.security.util.OauthUtil;
 import dazaram.eureka.user.domain.User;
@@ -34,6 +35,7 @@ public class UserService {
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final TokenProvider tokenProvider;
 	private final KakaoLoginUtil kakaoLoginUtil;
+	private final AppleLoginUtil appleLoginUtil;
 	private OauthUtil oauthUtil;
 
 	@Transactional
@@ -61,9 +63,10 @@ public class UserService {
 	}
 
 	private OauthUtil setLoginUtil(ProviderType providerType) {
-		// 카카오
 		if (providerType.equals(ProviderType.KAKAO)) {
 			return kakaoLoginUtil;
+		} else if (providerType.equals(ProviderType.APPLE)) {
+			return appleLoginUtil;
 		}
 		throw new CustomException(PROVIDER_NOT_FOUND);
 	}

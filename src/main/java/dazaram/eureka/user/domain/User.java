@@ -87,7 +87,7 @@ public class User extends BaseTimeEntity {
 	public void addUserTaste(UserTaste userTaste) {
 		userTastes.add(userTaste);
 	}
-	
+
 	public void addUserIngredient(UserIngredient userIngredient) {
 		userIngredients.add(userIngredient);
 	}
@@ -100,8 +100,7 @@ public class User extends BaseTimeEntity {
 		return this.userStatus.equals(UserStatus.ACTIVE);
 	}
 
-	// 이거 그냥 다 똑같이 from으로 바꿔도 되지않나 없는거 null로 넣으면ㄲ듯
-	public static User fromKaKaoDto(LoginUserInfoDto loginUserInfoDto) {
+	public static User fromLoginUserInfoDto(LoginUserInfoDto loginUserInfoDto) {
 		return User.builder()
 			.loginId(loginUserInfoDto.getLoginId())
 			.providerType(loginUserInfoDto.getProviderType())
