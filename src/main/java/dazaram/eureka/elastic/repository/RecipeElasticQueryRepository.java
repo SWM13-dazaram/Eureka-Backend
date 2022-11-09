@@ -48,7 +48,7 @@ public class RecipeElasticQueryRepository {
 			.withPageable(PageRequest.of(0, 10000))
 			.build();
 
-		SearchScrollHits<RecipeDocument> scroll = template.searchScrollStart(1000, query, RecipeDocument.class,
+		SearchScrollHits<RecipeDocument> scroll = template.searchScrollStart(10000, query, RecipeDocument.class,
 			index);
 
 		List<String> scrollIds = new ArrayList<>();
@@ -56,6 +56,9 @@ public class RecipeElasticQueryRepository {
 		String scrollId = scroll.getScrollId();
 
 		while (scroll.hasSearchHits()) {
+			if (!scrollIds.isEmpty()) {
+				break;
+			}
 			scrollIds.add(scrollId);
 			recipeDocuments.addAll(
 				scroll.getSearchHits().stream().map(SearchHit::getContent).collect(Collectors.toList()));
