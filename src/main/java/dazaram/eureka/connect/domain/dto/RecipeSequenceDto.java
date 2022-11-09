@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecipeSequenceDto {
 	private String content;
-	private int sequence;
+	private Long sequence;
 
 	@Builder
-	public RecipeSequenceDto(String content, int sequence) {
+	public RecipeSequenceDto(String content, Long sequence) {
 		this.content = content;
 		this.sequence = sequence;
 	}
