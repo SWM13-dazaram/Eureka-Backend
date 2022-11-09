@@ -13,8 +13,8 @@ public abstract class RecipeTest {
 	public final String AI_RECIPE_NAME = "된장찌개";
 	public final String AI_IMAGE = "aiImg";
 
-	public final int SEQ_1 = 1;
-	public final int SEQ_2 = 2;
+	public final Long SEQ_1 = 1L;
+	public final Long SEQ_2 = 2L;
 
 	public final String CONTENT_1 = "만든다";
 	public final String CONTENT_2 = "먹는다";
@@ -35,7 +35,7 @@ public abstract class RecipeTest {
 			.build();
 	}
 
-	public RecipeSequence makeSequence(int sequence, String content, Recipe recipe) {
+	public RecipeSequence makeSequence(Long sequence, String content, Recipe recipe) {
 		return RecipeSequence.builder()
 			.sequence(sequence)
 			.content(content)

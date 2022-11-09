@@ -69,7 +69,7 @@ public class RecipeDomainTest extends RecipeTest {
 		existingRecipe.setRecipeSequences(recipeSequences);
 
 		assertAll(
-			() -> assertThat(existingRecipe.getRecipeSequences().size()).isEqualTo(2),
+			() -> assertThat(existingRecipe.getRecipeSequences()).hasSize(2),
 			() -> assertThat(existingRecipe.getRecipeSequences().get(0).getContent()).isEqualTo(CONTENT_1),
 			() -> assertThat(existingRecipe.getRecipeSequences().get(1).getContent()).isEqualTo(CONTENT_2)
 		);
