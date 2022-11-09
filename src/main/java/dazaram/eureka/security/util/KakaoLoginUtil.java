@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class KakaoLoginUtil implements OauthUtil {
 	@Override
 	public User createEntity(LoginUserInfoDto loginUserInfoDto) {
-		return User.fromKaKaoDto(loginUserInfoDto);
+		return User.fromLoginUserInfoDto(loginUserInfoDto);
 	}
 
 	@Override
