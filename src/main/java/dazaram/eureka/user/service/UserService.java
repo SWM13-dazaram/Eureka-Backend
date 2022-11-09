@@ -1,6 +1,7 @@
 package dazaram.eureka.user.service;
 
 import static dazaram.eureka.common.error.ErrorCode.*;
+import static dazaram.eureka.security.util.SecurityUtil.*;
 
 import java.util.Optional;
 
@@ -86,6 +87,12 @@ public class UserService {
 		}
 
 		return new LoginResponse(tokenProvider.createToken(authentication), statusCode);
+	}
+
+	@Transactional
+	public String deleteUser() {
+		userRepository.deleteById(getCurrentUserId());
+		return "Successfully Deleted";
 	}
 
 }
