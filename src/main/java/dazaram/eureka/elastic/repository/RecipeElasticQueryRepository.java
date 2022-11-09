@@ -60,7 +60,7 @@ public class RecipeElasticQueryRepository {
 			recipeDocuments.addAll(
 				scroll.getSearchHits().stream().map(SearchHit::getContent).collect(Collectors.toList()));
 			scrollId = scroll.getScrollId();
-			scroll = template.searchScrollContinue(scrollId, 5000, RecipeDocument.class, index);
+			scroll = template.searchScrollContinue(scrollId, 10000, RecipeDocument.class, index);
 		}
 		scrollIds.add(scrollId);
 		template.searchScrollClear(scrollIds);
