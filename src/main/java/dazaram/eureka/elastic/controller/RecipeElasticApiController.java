@@ -15,7 +15,7 @@ public class RecipeElasticApiController {
 	private final RecipeElasticService recipeElasticService;
 
 	@PostMapping("/recipes/init")
-	public void initRecipeElastic(@RequestParam(defaultValue = "5000") int bulkSize) {
+	public void initRecipeElastic(@RequestParam(defaultValue = "2000") int bulkSize) {
 		recipeElasticService.initWithExistingRecipe(bulkSize);
 	}
 }
