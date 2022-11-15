@@ -21,7 +21,7 @@ import dazaram.eureka.elastic.repository.RecipeElasticQueryRepository;
 import dazaram.eureka.elastic.repository.RecipeElasticRepository;
 import dazaram.eureka.ingredient.domain.UserIngredient;
 import dazaram.eureka.ingredient.repository.UserIngredientRepository;
-import dazaram.eureka.recipe.domain.dto.RecipeDto;
+import dazaram.eureka.recipe.dto.ExpireDateRecipeDto;
 import dazaram.eureka.recipe.repository.ExistingRecipeRepository;
 import dazaram.eureka.user.domain.User;
 import dazaram.eureka.user.repository.UserRepository;
@@ -52,7 +52,7 @@ public class RecipeElasticService {
 			});
 	}
 
-	public List<RecipeDto> recommendExpireDateRecipes(Long userId, int topRank) {
+	public List<ExpireDateRecipeDto> recommendExpireDateRecipes(Long userId, int topRank) {
 		double minScore;
 
 		User user = getCurrentUser(userId);
@@ -87,21 +87,21 @@ public class RecipeElasticService {
 		}
 	}
 
-	private List<RecipeDto> getTopPerfectRecipeDtos(List<RecipeDocument> queryResults,
+	private List<ExpireDateRecipeDto> getTopPerfectRecipeDtos(List<RecipeDocument> queryResults,
 		List<Map.Entry<Integer, Double>> indexAndScoreEntry, int topRank, double minScore) {
-		List<RecipeDto> recipeDtos = new ArrayList<>();
+		List<ExpireDateRecipeDto> recipeDtos = new ArrayList<>();
 		for (int i = 0; i < topRank; i++) {
 			Map.Entry<Integer, Double> indexAndScore = indexAndScoreEntry.get(i);
 			if (Math.abs(indexAndScore.getValue()) < minScore) {
 				break;
 			}
-			recipeDtos.add(RecipeDto.fromDocument(queryResults.get(indexAndScore.getKey())));
+			recipeDtos.add(ExpireDateRecipeDto.fromDocument(queryResults.get(indexAndScore.getKey()), null));
 		}
 		validateRecipeDtos(recipeDtos);
 		return recipeDtos;
 	}
 
-	private void validateRecipeDtos(List<RecipeDto> recipeDtos) {
+	private void validateRecipeDtos(List<ExpireDateRecipeDto> recipeDtos) {
 		if (recipeDtos.isEmpty()) {
 			throw new CustomException(RECIPE_USERINGREDIENT_NO_CONTENT);
 		}

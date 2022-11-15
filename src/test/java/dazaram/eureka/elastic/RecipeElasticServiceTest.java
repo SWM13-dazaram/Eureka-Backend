@@ -13,7 +13,7 @@ import dazaram.eureka.elastic.service.RecipeElasticService;
 import dazaram.eureka.ingredient.domain.UserIngredient;
 import dazaram.eureka.ingredient.repository.IngredientRepository;
 import dazaram.eureka.ingredient.repository.UserIngredientRepository;
-import dazaram.eureka.recipe.domain.dto.RecipeDto;
+import dazaram.eureka.recipe.dto.ExpireDateRecipeDto;
 import dazaram.eureka.user.domain.User;
 import dazaram.eureka.user.enums.Gender;
 import dazaram.eureka.user.repository.UserRepository;
@@ -61,7 +61,7 @@ class RecipeElasticServiceTest {
 		saveUserIngredient("고춧가루", saveduser, 2022, 8, 21);
 		saveUserIngredient("닭", saveduser, 2022, 8, 21);
 
-		List<RecipeDto> recipeDtos = recipeElasticService.recommendExpireDateRecipes(saveduser.getId(), 3);
+		List<ExpireDateRecipeDto> recipeDtos = recipeElasticService.recommendExpireDateRecipes(saveduser.getId(), 3);
 
 		recipeDtos.forEach(recipeDto -> {
 			System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
