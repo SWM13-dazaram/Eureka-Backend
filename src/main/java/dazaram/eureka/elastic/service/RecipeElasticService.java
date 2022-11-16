@@ -2,6 +2,7 @@ package dazaram.eureka.elastic.service;
 
 import static dazaram.eureka.common.error.ErrorCode.*;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,6 +20,7 @@ import dazaram.eureka.common.exception.CustomException;
 import dazaram.eureka.elastic.domain.RecipeDocument;
 import dazaram.eureka.elastic.repository.RecipeElasticQueryRepository;
 import dazaram.eureka.elastic.repository.RecipeElasticRepository;
+import dazaram.eureka.ingredient.domain.Ingredient;
 import dazaram.eureka.ingredient.domain.UserIngredient;
 import dazaram.eureka.ingredient.repository.UserIngredientRepository;
 import dazaram.eureka.recipe.dto.ExpireDateRecipeDto;
@@ -72,7 +74,7 @@ public class RecipeElasticService {
 		// 100 * ingredientsMaxSize * userIngredientsSize
 		minScore = 100.0 * getIngredientsMaxSize(queryResults) * userIngredients.size();
 
-		return getTopPerfectRecipeDtos(queryResults, sortedIndexAndScoreEntry, topRank, minScore);
+		return getTopPerfectRecipeDtos(userIngredients, queryResults, sortedIndexAndScoreEntry, topRank, minScore);
 	}
 
 	private void validateUserIngredients(List<UserIngredient> userIngredients) {
@@ -87,18 +89,34 @@ public class RecipeElasticService {
 		}
 	}
 
-	private List<ExpireDateRecipeDto> getTopPerfectRecipeDtos(List<RecipeDocument> queryResults,
-		List<Map.Entry<Integer, Double>> indexAndScoreEntry, int topRank, double minScore) {
+	private List<ExpireDateRecipeDto> getTopPerfectRecipeDtos(List<UserIngredient> userIngredients,
+		List<RecipeDocument> queryResults, List<Map.Entry<Integer, Double>> indexAndScoreEntry, int topRank,
+		double minScore) {
 		List<ExpireDateRecipeDto> recipeDtos = new ArrayList<>();
 		for (int i = 0; i < topRank; i++) {
 			Map.Entry<Integer, Double> indexAndScore = indexAndScoreEntry.get(i);
 			if (Math.abs(indexAndScore.getValue()) < minScore) {
 				break;
 			}
-			recipeDtos.add(ExpireDateRecipeDto.fromDocument(queryResults.get(indexAndScore.getKey()), null));
+			Ingredient imminentIngredient = getImminentIngredient(queryResults.get(indexAndScore.getKey()),
+				userIngredients);
+			recipeDtos.add(
+				ExpireDateRecipeDto.fromDocument(queryResults.get(indexAndScore.getKey()), imminentIngredient));
 		}
 		validateRecipeDtos(recipeDtos);
 		return recipeDtos;
+	}
+
+	private Ingredient getImminentIngredient(RecipeDocument recipeDocument, List<UserIngredient> userIngredients) {
+		List<Long> ingredientsIds = recipeDocument.getAllIngredientsIds();
+		Map.Entry<Ingredient, Long> ret = new AbstractMap.SimpleEntry<>(null, Long.MAX_VALUE);
+		for (UserIngredient userIngredient : userIngredients) {
+			long expire = userIngredient.calculateExpireFromNow();
+			if (ret.getValue() > expire) {
+				ret = new AbstractMap.SimpleEntry<>(userIngredient.getIngredient(), expire);
+			}
+		}
+		return ret.getKey();
 	}
 
 	private void validateRecipeDtos(List<ExpireDateRecipeDto> recipeDtos) {
