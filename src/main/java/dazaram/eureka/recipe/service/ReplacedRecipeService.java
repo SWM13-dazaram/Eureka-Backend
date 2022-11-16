@@ -66,7 +66,7 @@ public class ReplacedRecipeService {
 				Ingredient missingIngredient = ingredientRepository.findById(missingIngredientId).get();
 
 				Map.Entry<Long, Double> replacedIngredientInfo = getReplacedIngredient(missingIngredientId,
-					userIngredientsIds);
+					userIngredientsIds, recipeDocument.getAllIngredientsIds());
 
 				Long replacedIngredientId = replacedIngredientInfo.getKey();
 				if (replacedIngredientId == 0L)
@@ -89,11 +89,15 @@ public class ReplacedRecipeService {
 		return ret.subList(0, 3);
 	}
 
-	private Map.Entry<Long, Double> getReplacedIngredient(Long missingIngredientId, Set<Long> userIngredientIds) {
+	private Map.Entry<Long, Double> getReplacedIngredient(Long missingIngredientId, Set<Long> userIngredientIds,
+		List<Long> recipeIngredientsIds) {
 		Map.Entry<Long, Double> ret = new AbstractMap.SimpleEntry<>(0L, 0.0);
 		Ingredient missingIngredient = ingredientRepository.findById(missingIngredientId).get();
 
 		for (Long ingredientId : userIngredientIds) {
+			if (recipeIngredientsIds.contains(ingredientId)) {
+				continue;
+			}
 			Ingredient ingredient = ingredientRepository.findById(ingredientId).get();
 			Double similarity = getCosineSimilarity(missingIngredient, ingredient);
 			if (similarity > ret.getValue()) {
