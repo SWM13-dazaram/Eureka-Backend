@@ -13,8 +13,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
-import javax.persistence.EntityManager;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +39,6 @@ public class ReplacedRecipeService {
 	private final RecipeElasticQueryRepository recipeElasticQueryRepository;
 	private final IngredientRepository ingredientRepository;
 	private final UserRepository userRepository;
-	private final EntityManager em;
 
 	// TODO : 코드 모듈화
 	public List<ReplacedRecipeDto> getReplacedRecipes() {
