@@ -3,37 +3,37 @@ package dazaram.eureka.recipe.domain;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+
+import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
 
+import lombok.Getter;
+
+@Component
+@Getter
 public class Ingr2Vec {
 
-	public static final HashMap<String, List<Double>> ingr2Vec;
+	public final HashMap<String, List<Double>> ingr2Vec;
 
-	static {
-		try {
-			ingr2Vec = ingr2Vec();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private static HashMap<String, List<Double>> ingr2Vec() throws FileNotFoundException {
-		JsonParser parser = new JsonParser();
+	public Ingr2Vec() throws FileNotFoundException {
 		File file = new File("./src/main/resources/model/Model.json");
 		Gson gson = new Gson();
 
 		FileReader reader = new FileReader(file);
-		JsonReader jsonReader = new JsonReader(reader);
 		gson.newJsonReader(reader);
 
-		HashMap<String, List<Double>> ret = gson.fromJson(reader, HashMap.class);
+		ingr2Vec = gson.fromJson(reader, HashMap.class);
+	}
 
-		return ret;
+	public Set<String> getKeyset() {
+		return ingr2Vec.keySet();
+	}
+
+	public List<Double> getValue(String key) {
+		return ingr2Vec.get(key);
 	}
 }

@@ -39,6 +39,7 @@ public class ReplacedRecipeService {
 	private final RecipeElasticQueryRepository recipeElasticQueryRepository;
 	private final IngredientRepository ingredientRepository;
 	private final UserRepository userRepository;
+	private final Ingr2Vec ingr2Vec;
 
 	// TODO : 코드 모듈화
 	public List<ReplacedRecipeDto> getReplacedRecipes() {
@@ -86,7 +87,11 @@ public class ReplacedRecipeService {
 			.collect(Collectors.toList());
 		Collections.reverse(ret);
 
-		return ret.subList(0, 3);
+		if (ret.size() > 3) {
+			ret = ret.subList(0, 3);
+		}
+
+		return ret;
 	}
 
 	private Map.Entry<Long, Double> getReplacedIngredient(Long missingIngredientId, Set<Long> userIngredientIds,
@@ -118,8 +123,8 @@ public class ReplacedRecipeService {
 	}
 
 	private List<Double> getIngredientVector(String ingredientName) {
-		if (Ingr2Vec.ingr2Vec.keySet().contains(ingredientName))
-			return Ingr2Vec.ingr2Vec.get(ingredientName);
+		if (ingr2Vec.getKeyset().contains(ingredientName))
+			return ingr2Vec.getValue(ingredientName);
 		return DoubleStream.of(new double[250])
 			.boxed()
 			.collect(Collectors.toList());
