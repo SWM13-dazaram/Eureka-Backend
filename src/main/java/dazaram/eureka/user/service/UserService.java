@@ -3,6 +3,7 @@ package dazaram.eureka.user.service;
 import static dazaram.eureka.common.error.ErrorCode.*;
 import static dazaram.eureka.security.util.SecurityUtil.*;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.apache.http.HttpStatus;
@@ -14,10 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dazaram.eureka.common.exception.CustomException;
+import dazaram.eureka.security.dto.AppleExitRequest;
 import dazaram.eureka.security.dto.LoginResponse;
 import dazaram.eureka.security.dto.LoginTokenDto;
 import dazaram.eureka.security.dto.LoginUserInfoDto;
 import dazaram.eureka.security.jwt.TokenProvider;
+import dazaram.eureka.security.util.AppleClient;
 import dazaram.eureka.security.util.AppleLoginUtil;
 import dazaram.eureka.security.util.KakaoLoginUtil;
 import dazaram.eureka.security.util.OauthUtil;
@@ -38,6 +41,7 @@ public class UserService {
 	private final KakaoLoginUtil kakaoLoginUtil;
 	private final AppleLoginUtil appleLoginUtil;
 	private OauthUtil oauthUtil;
+	private final AppleClient appleClient;
 
 	@Transactional
 	public LoginResponse loginOrSignUp(LoginTokenDto loginTokenDto) {
@@ -90,7 +94,11 @@ public class UserService {
 	}
 
 	@Transactional
-	public String deleteUser() {
+	public String deleteUser(AppleExitRequest request) throws IOException {
+		if (request.getProviderType() == ProviderType.APPLE) {
+			appleLoginUtil.revoke(request.getAccessToken());
+		}
+
 		userRepository.deleteById(getCurrentUserId());
 		return "Successfully Deleted";
 	}

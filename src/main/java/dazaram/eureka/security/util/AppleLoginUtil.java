@@ -167,4 +167,18 @@ public class AppleLoginUtil implements OauthUtil {
 		PrivateKeyInfo object = (PrivateKeyInfo)pemParser.readObject();
 		return converter.getPrivateKey(object);
 	}
+
+	public void revoke(String code) throws IOException {
+
+		AppleToken.Response response = generateAuthToken(code);
+
+		if (response.getAccess_token() != null) {
+			appleClient.revoke(AppleToken.RevokeRequest.of(
+					CLIENT_ID,
+					createClientSecret(),
+					response.getAccess_token()
+				)
+			);
+		}
+	}
 }
