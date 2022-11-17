@@ -17,8 +17,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-// @Builder
-// @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Document(indexName = "recipe")
 @Mapping(mappingPath = "elastic/recipe-mapping.json")
@@ -51,5 +49,4 @@ public class RecipeDocument {
 		return ingredients.stream().map(IngredientDocument::getId)
 			.collect(Collectors.toList());
 	}
-	
 }
