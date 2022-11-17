@@ -14,6 +14,5 @@ class PrimaryIngredientServiceTest {
 	@Test
 	void getAllIcon() {
 		System.out.println(primaryIngredientService.getAllIcon());
-		;
 	}
 }
