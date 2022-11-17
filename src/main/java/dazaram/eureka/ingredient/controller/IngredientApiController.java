@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import dazaram.eureka.ingredient.dto.BasicIngredientDto;
 import dazaram.eureka.ingredient.dto.CustomIngredientRequest;
 import dazaram.eureka.ingredient.dto.FindAllCategoryIngredientResponse;
 import dazaram.eureka.ingredient.dto.GetSelectedIngredientInfoResponse;
@@ -86,7 +85,7 @@ public class IngredientApiController {
 	}
 
 	@GetMapping("/ingredients/primary")
-	public List<BasicIngredientDto> getPrimaryIngredient() {
-		return primaryIngredientService.getAllPrimaryIngredients();
+	public List<String> getAllIcon() {
+		return primaryIngredientService.getAllIcon();
 	}
 }
