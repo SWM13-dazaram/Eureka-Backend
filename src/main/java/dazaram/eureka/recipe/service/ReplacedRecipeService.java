@@ -1,5 +1,6 @@
 package dazaram.eureka.recipe.service;
 
+import static dazaram.eureka.common.error.ErrorCode.*;
 import static dazaram.eureka.security.util.SecurityUtil.*;
 
 import java.util.AbstractMap;
@@ -16,6 +17,7 @@ import java.util.stream.DoubleStream;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import dazaram.eureka.common.exception.CustomException;
 import dazaram.eureka.elastic.domain.RecipeDocument;
 import dazaram.eureka.elastic.repository.RecipeElasticQueryRepository;
 import dazaram.eureka.ingredient.domain.Ingredient;
@@ -53,7 +55,7 @@ public class ReplacedRecipeService {
 			.map(UserIngredient::getIngredientId)
 			.collect(Collectors.toCollection(HashSet::new));
 
-		List<ReplacedRecipeDto> ret = new ArrayList<>();
+		List<ReplacedRecipeDto> recommendResult = new ArrayList<>();
 		for (RecipeDocument recipeDocument : queryResult) {
 			Set<Long> recipeIngredientsIds = new HashSet<>(recipeDocument.getAllIngredientsIds());
 
@@ -78,20 +80,28 @@ public class ReplacedRecipeService {
 
 				ReplacedRecipeDto replacedRecipeDto = ReplacedRecipeDto.fromRecipeDocument(recipeDocument,
 					missingIngredient, replacedIngredient, similarity);
-				ret.add(replacedRecipeDto);
+				recommendResult.add(replacedRecipeDto);
 			}
 		}
 
-		ret = ret.stream()
+		recommendResult = recommendResult.stream()
 			.sorted(Comparator.comparing(o -> o.getReplacement().getSimilarity()))
 			.collect(Collectors.toList());
-		Collections.reverse(ret);
+		Collections.reverse(recommendResult);
 
-		if (ret.size() > 3) {
-			ret = ret.subList(0, 3);
+		if (recommendResult.size() > 3) {
+			recommendResult = recommendResult.subList(0, 3);
 		}
 
-		return ret;
+		validateRecommendResult(recommendResult);
+
+		return recommendResult;
+	}
+
+	private void validateRecommendResult(List<ReplacedRecipeDto> recommendResult) {
+		if (recommendResult.isEmpty()) {
+			throw new CustomException(RECIPE_USERINGREDIENT_NO_CONTENT);
+		}
 	}
 
 	private Map.Entry<Long, Double> getReplacedIngredient(Long missingIngredientId, Set<Long> userIngredientIds,
