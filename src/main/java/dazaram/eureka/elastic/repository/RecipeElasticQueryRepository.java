@@ -11,10 +11,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.SearchScrollHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import dazaram.eureka.elastic.domain.RecipeDocument;
@@ -26,19 +28,20 @@ public class RecipeElasticQueryRepository {
 	private final ElasticsearchOperations elasticsearchOperations;
 	private final ElasticsearchRestTemplate template;
 
-	// public List<RecipeDocument> example(String nameList) {
-	// 	Query query = new NativeSearchQueryBuilder()
-	// 		.withQuery(new BoolQueryBuilder()
-	// 			.must(QueryBuilders.matchQuery("ingredients.name", nameList).operator(Operator.OR)))
-	// 		.build();
-	//
-	// 	SearchHits<RecipeDocument> search = elasticsearchOperations.search(query, RecipeDocument.class);
-	// 	return search.stream()
-	// 		.map(SearchHit::getContent)
-	// 		.collect(Collectors.toList());
-	// }
-
 	public List<RecipeDocument> findByIngredientsNameList(String nameList) {
+		Query query = new NativeSearchQueryBuilder()
+			.withQuery(new BoolQueryBuilder()
+				.must(QueryBuilders.matchQuery("ingredients.name", nameList).operator(Operator.OR)))
+			.withPageable(PageRequest.of(0, 1000))
+			.build();
+
+		SearchHits<RecipeDocument> search = elasticsearchOperations.search(query, RecipeDocument.class);
+		return search.stream()
+			.map(SearchHit::getContent)
+			.collect(Collectors.toList());
+	}
+
+	public List<RecipeDocument> findByIngredientsNameListWithScroll(String nameList) {
 
 		IndexCoordinates index = IndexCoordinates.of("recipe");
 
@@ -56,9 +59,6 @@ public class RecipeElasticQueryRepository {
 		String scrollId = scroll.getScrollId();
 
 		while (scroll.hasSearchHits()) {
-			if (!scrollIds.isEmpty()) {
-				break;
-			}
 			scrollIds.add(scrollId);
 			recipeDocuments.addAll(
 				scroll.getSearchHits().stream().map(SearchHit::getContent).collect(Collectors.toList()));
