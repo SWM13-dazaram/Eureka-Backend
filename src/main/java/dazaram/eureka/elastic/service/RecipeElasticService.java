@@ -136,7 +136,7 @@ public class RecipeElasticService {
 	private void fillRecipeDtosWithSpare(int topRank, List<ExpireDateRecipeDto> recipeDtos,
 		List<ExpireDateRecipeDto> spareRecipeDtos) {
 		int i = 0;
-		while (recipeDtos.size() < topRank) {
+		while (recipeDtos.size() < topRank && i < spareRecipeDtos.size()) {
 			recipeDtos.add(spareRecipeDtos.get(i));
 			i++;
 
