@@ -129,9 +129,14 @@ public class IngredientService {
 
 	public List<UserIngredientDetailsDto> getAllUserIngredientDetails(Long userId) {
 		User user = getCurrentUser(userId);
-		return userIngredientRepository.findAllByUser(user).stream()
-			.map(UserIngredientDetailsDto::new)
+		List<UserIngredientDetailsDto> userIngredients = userIngredientRepository.findAllByUser(user).stream()
+			.map(UserIngredientDetailsDto::fromUserIngredient)
 			.collect(Collectors.toList());
+		List<UserIngredientDetailsDto> customIngredients = customIngredientRepository.findAllByUser(user).stream()
+			.map(UserIngredientDetailsDto::fromCustomIngredient)
+			.collect(Collectors.toList());
+		userIngredients.addAll(customIngredients);
+		return userIngredients;
 	}
 
 	@Transactional
