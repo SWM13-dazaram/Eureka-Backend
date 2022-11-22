@@ -98,17 +98,16 @@ public class RecipeElasticService {
 			if (Math.abs(indexAndScore.getValue()) < minScore) {
 				break;
 			}
-			Ingredient imminentIngredient = getImminentIngredient(queryResults.get(indexAndScore.getKey()),
-				userIngredients);
-			recipeDtos.add(
-				ExpireDateRecipeDto.fromDocument(queryResults.get(indexAndScore.getKey()), imminentIngredient));
+
+			recipeDtos.add(ExpireDateRecipeDto.fromDocument(queryResults.get(indexAndScore.getKey()),
+				getImminentIngredient(userIngredients)));
 		}
+
 		validateRecipeDtos(recipeDtos);
 		return recipeDtos;
 	}
 
-	private Ingredient getImminentIngredient(RecipeDocument recipeDocument, List<UserIngredient> userIngredients) {
-		List<Long> ingredientsIds = recipeDocument.getAllIngredientsIds();
+	private Ingredient getImminentIngredient(List<UserIngredient> userIngredients) {
 		Map.Entry<Ingredient, Long> ret = new AbstractMap.SimpleEntry<>(null, Long.MAX_VALUE);
 		for (UserIngredient userIngredient : userIngredients) {
 			long expire = userIngredient.calculateExpireFromNow();
