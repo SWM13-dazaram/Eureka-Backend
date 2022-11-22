@@ -32,7 +32,7 @@ public class RecipeElasticQueryRepository {
 		Query query = new NativeSearchQueryBuilder()
 			.withQuery(new BoolQueryBuilder()
 				.must(QueryBuilders.matchQuery("ingredients.name", nameList).operator(Operator.OR)))
-			.withPageable(PageRequest.of(0, 1000))
+			.withPageable(PageRequest.of(0, 100))
 			.build();
 
 		SearchHits<RecipeDocument> search = elasticsearchOperations.search(query, RecipeDocument.class);
