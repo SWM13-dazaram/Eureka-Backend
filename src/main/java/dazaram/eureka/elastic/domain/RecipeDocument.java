@@ -1,6 +1,7 @@
 package dazaram.eureka.elastic.domain;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.Id;
@@ -46,7 +47,14 @@ public class RecipeDocument {
 	}
 
 	public List<Long> getAllIngredientsIds() {
-		return ingredients.stream().map(IngredientDocument::getId)
+		return ingredients.stream()
+			.map(IngredientDocument::getId)
 			.collect(Collectors.toList());
+	}
+	
+	public Set<Long> getAllIngredientsIdsSet() {
+		return ingredients.stream()
+			.map(IngredientDocument::getId)
+			.collect(Collectors.toSet());
 	}
 }

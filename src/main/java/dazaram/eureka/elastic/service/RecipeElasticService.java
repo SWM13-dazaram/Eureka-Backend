@@ -93,22 +93,57 @@ public class RecipeElasticService {
 		List<RecipeDocument> queryResults, List<Map.Entry<Integer, Double>> indexAndScoreEntry, int topRank,
 		double minScore) {
 		List<ExpireDateRecipeDto> recipeDtos = new ArrayList<>();
-		for (int i = 0; i < topRank; i++) {
+		List<ExpireDateRecipeDto> spareRecipeDtos = new ArrayList<>();
+		Set<Set<Long>> checkDuplicateIngredients = new HashSet<>();
+		int i = 0;
+		int size = indexAndScoreEntry.size();
+
+		while (recipeDtos.size() < topRank && i < size) {
 			Map.Entry<Integer, Double> indexAndScore = indexAndScoreEntry.get(i);
 			if (Math.abs(indexAndScore.getValue()) < minScore) {
 				break;
 			}
-			Ingredient imminentIngredient = getImminentIngredient(queryResults.get(indexAndScore.getKey()),
-				userIngredients);
-			recipeDtos.add(
-				ExpireDateRecipeDto.fromDocument(queryResults.get(indexAndScore.getKey()), imminentIngredient));
+
+			RecipeDocument recipeDocument = queryResults.get(indexAndScore.getKey());
+			Set<Long> ingredientsIdsSet = recipeDocument.getAllIngredientsIdsSet();
+			// 같은 재료를 사용하는 레시피는 바로 추천하지 않고 예비용으로 저장한다
+			addRecipeDtosExceptSameIngredient(userIngredients, topRank, recipeDtos, spareRecipeDtos,
+				checkDuplicateIngredients, recipeDocument, ingredientsIdsSet);
+			i++;
 		}
 		validateRecipeDtos(recipeDtos);
+		fillRecipeDtosWithSpare(topRank, recipeDtos, spareRecipeDtos);
 		return recipeDtos;
 	}
 
-	private Ingredient getImminentIngredient(RecipeDocument recipeDocument, List<UserIngredient> userIngredients) {
-		List<Long> ingredientsIds = recipeDocument.getAllIngredientsIds();
+	private void addRecipeDtosExceptSameIngredient(List<UserIngredient> userIngredients, int topRank,
+		List<ExpireDateRecipeDto> recipeDtos, List<ExpireDateRecipeDto> spareRecipeDtos,
+		Set<Set<Long>> checkDuplicateIngredients,
+		RecipeDocument recipeDocument, Set<Long> ingredientsIdsSet) {
+
+		if (!checkDuplicateIngredients.contains(ingredientsIdsSet)) {
+			checkDuplicateIngredients.add(ingredientsIdsSet);
+			recipeDtos.add(ExpireDateRecipeDto.fromDocument(recipeDocument,
+				getImminentIngredient(userIngredients)));
+			// 다른 재료를 사용하는 레시피가 원하는 갯수만큼 없을 경우 사용하도록 저장해놓는다
+			// 최소 1개는 추천했을 때 이 구문이 실행되므로 topRank - 1
+		} else if (spareRecipeDtos.size() < topRank - 1) {
+			spareRecipeDtos.add(ExpireDateRecipeDto.fromDocument(recipeDocument,
+				getImminentIngredient(userIngredients)));
+		}
+	}
+
+	private void fillRecipeDtosWithSpare(int topRank, List<ExpireDateRecipeDto> recipeDtos,
+		List<ExpireDateRecipeDto> spareRecipeDtos) {
+		int i = 0;
+		while (recipeDtos.size() < topRank && i < spareRecipeDtos.size()) {
+			recipeDtos.add(spareRecipeDtos.get(i));
+			i++;
+
+		}
+	}
+
+	private Ingredient getImminentIngredient(List<UserIngredient> userIngredients) {
 		Map.Entry<Ingredient, Long> ret = new AbstractMap.SimpleEntry<>(null, Long.MAX_VALUE);
 		for (UserIngredient userIngredient : userIngredients) {
 			long expire = userIngredient.calculateExpireFromNow();
