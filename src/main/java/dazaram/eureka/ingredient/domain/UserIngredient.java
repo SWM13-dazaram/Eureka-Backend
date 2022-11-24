@@ -89,4 +89,12 @@ public class UserIngredient extends BaseTimeEntity {
 	public long calculateExpireFromNow() {
 		return ChronoUnit.DAYS.between(LocalDate.now(), expireDate);
 	}
+
+	public void updateInfo(UserIngredientDetailsDto dto) {
+		this.id = dto.getId();
+		this.name = dto.getName();
+		this.insertDate = dto.getInsertDate();
+		this.expireDate = dto.getExpireDate();
+		this.memo = dto.getMemo();
+	}
 }
