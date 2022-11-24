@@ -91,7 +91,6 @@ public class UserIngredient extends BaseTimeEntity {
 	}
 
 	public void updateInfo(UserIngredientDetailsDto dto) {
-		this.id = dto.getId();
 		this.name = dto.getName();
 		this.insertDate = dto.getInsertDate();
 		this.expireDate = dto.getExpireDate();
