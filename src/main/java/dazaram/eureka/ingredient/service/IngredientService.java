@@ -36,7 +36,6 @@ public class IngredientService {
 	private final UserIngredientRepository userIngredientRepository;
 	private final CustomIngredientRepository customIngredientRepository;
 	private final IngredientCategoryRepository ingredientCategoryRepository;
-
 	private final UserRepository userRepository;
 
 	private Long createUserIngredient(UserIngredientDetailsDto dto, User user) {
@@ -146,8 +145,9 @@ public class IngredientService {
 		UserIngredient userIngredient = getUserIngredient(dto.getId());
 
 		userIngredient.validateUser(user);
+		userIngredient.updateInfo(dto);
 
-		return userIngredientRepository.save(UserIngredient.createFromDto(dto, user, ingredient)).getId();
+		return userIngredientRepository.save(userIngredient).getId();
 	}
 
 	private UserIngredient getUserIngredient(Long id) {
