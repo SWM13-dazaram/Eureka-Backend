@@ -13,17 +13,17 @@ import lombok.Getter;
 @Getter
 public class ReplacedRecipeDto {
 	private Long id;
-	private String name;
+	private String title;
 	private String image;
 	private List<BasicIngredientDto> ingredients;
 	private ReplacementDto replacement;
 	private List<RecipeSequenceDto> recipeSequences;
 
 	@Builder
-	public ReplacedRecipeDto(Long id, String name, String image, List<BasicIngredientDto> ingredients,
+	public ReplacedRecipeDto(Long id, String title, String image, List<BasicIngredientDto> ingredients,
 		ReplacementDto replacement, List<RecipeSequenceDto> recipeSequences) {
 		this.id = id;
-		this.name = name;
+		this.title = title;
 		this.image = image;
 		this.ingredients = ingredients;
 		this.replacement = replacement;
@@ -40,7 +40,7 @@ public class ReplacedRecipeDto {
 
 		return ReplacedRecipeDto.builder()
 			.id(recipeDocument.getId())
-			.name(recipeDocument.getTitle())
+			.title(recipeDocument.getTitle())
 			.image(recipeDocument.getImage())
 			.ingredients(recipeDocument.getIngredients().stream().map(BasicIngredientDto::fromDocument).collect(
 				Collectors.toList()))
