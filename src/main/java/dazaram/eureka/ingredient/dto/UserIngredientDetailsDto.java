@@ -55,7 +55,11 @@ public class UserIngredientDetailsDto {
 			.memo(customIngredient.getMemo())
 			.insertDate(customIngredient.getInsertDate())
 			.expireDate(customIngredient.getExpireDate())
-			.ingredient(BasicIngredientDto.builder().icon(customIngredient.getIcon()).build())
+			.ingredient(BasicIngredientDto.builder()
+				.id(customIngredient.getId())
+				.name(customIngredient.getName())
+				.icon(customIngredient.getIcon())
+				.build())
 			.build();
 	}
 }
